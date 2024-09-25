@@ -1,5 +1,4 @@
-import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
-import { userActions } from '../actions/userActions';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 // Define the User interface based on the API response
 interface User {
@@ -33,10 +32,8 @@ interface User {
         notifications?: boolean;
         language?: string;
     };
-
 }
 
-// Define the initial state for the auth slice
 interface AuthState {
     isAuthenticated: boolean;
     user: User | null;
@@ -47,41 +44,10 @@ interface AuthState {
 }
 
 const initialState: AuthState = {
-    isAuthenticated: false,
-    user: {
-        username: '',
-        email: '',
-        fullname: '',
-        avatar: '',
-        coverImage: '',
-        age: '',
-        role: 'STUDENT',
-        gender: 'male',
-        organizationId: '',
-        phone: '',
-        address: {
-            street: '',
-            city: '',
-            state: '',
-            zip: '',
-            country: ''
-        },
-        status: 'active' as 'active' | 'inactive' | undefined,
-        dateOfBirth: new Date(),
-        biography: '',
-        permissions: [] as string[],
-        socialLinks: {
-            facebook: '',
-            twitter: '',
-            linkedin: ''
-        },
-        preferences: {
-            notifications: false,
-            language: 'en'
-        },
-    },
-    accessToken: null,
-    refreshToken: null,
+    isAuthenticated: localStorage.getItem('accessToken') !== null && localStorage.getItem('refreshToken') !== null,
+    user: localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user') as string) : null,
+    accessToken: localStorage.getItem('accessToken') || null,
+    refreshToken: localStorage.getItem('refreshToken') || null,
     loading: false,
     error: '',
 };
@@ -91,43 +57,54 @@ const authSlice = createSlice({
     name: 'auth',
     initialState,
     reducers: {
+        loginUserStart(state) {
+            state.loading = true;
+        },
+        loginUserSuccess(state, action: PayloadAction<{ loggedInUser: User; accessToken: string; refreshToken: string }>) {
+            console.log(action.payload.data)
+            const { loggedInUser, accessToken, refreshToken } = action.payload.data;
+            console.log(loggedInUser)
+            state.loading = false;
+            state.isAuthenticated = true;
+            state.user = loggedInUser;
+            state.accessToken = accessToken;
+            state.refreshToken = refreshToken;
+            state.isAuthenticated = true;
 
+            // Save tokens and user data in localStorage for persistence
+            localStorage.setItem('user', JSON.stringify(loggedInUser));
+            localStorage.setItem('accessToken', accessToken);
+            localStorage.setItem('refreshToken', refreshToken);
+        },
+        loginUserFailure(state, action: PayloadAction<string>) {
+            state.loading = false;
+            state.error = action.payload;
+            state.isAuthenticated = false;
+            state.accessToken = null;
+            state.refreshToken = null;
+        },
+        logoutUserStart(state) {
+            state.loading = true;
+        },
+        logoutUserSuccess(state) {
+            state.loading = false;
+            state.user = null;
+            state.accessToken = null;
+            state.refreshToken = null;
+            state.isAuthenticated = false;
+
+            // Remove tokens and user data from localStorage
+            localStorage.removeItem('user');
+            localStorage.removeItem('accessToken');
+            localStorage.removeItem('refreshToken');
+        },
+        logoutUserFailure(state, action: PayloadAction<string>) {
+            state.loading = false;
+            state.error = action.payload;
+        },
     },
-    // extraReducers: (builder) => {
-    //     builder
-    //         .addCase(userActions.loginUser.fulfilled, (state, action) => {
-    //             state.isAuthenticated = true;
-    //             state.user = action.payload.data;
-    //             state.accessToken = action.payload.data.accessToken;
-    //             state.refreshToken = action.payload.data.refreshToken;
-    //         })
-    //         .addCase(userActions.loginUser.pending, (state, action) => {
-    //             console.log('pending');
-    //             state.loading = true;
-    //         }).
-    //         addCase(userActions.loginUser.rejected, (state, action) => {
-    //             console.log('rejected');
-    //             state.loading = false;
-    //             state.error = action.error.message || 'An error occurred while logging in';
-    //         });
-
-    //     builder
-    //         .addCase(userActions.logoutUser.fulfilled, (state, action) => {
-    //             state.isAuthenticated = false;
-    //             state.user = null;
-    //             state.accessToken = null;
-    //             state.refreshToken = null;
-    //         }).addCase(userActions.logoutUser.pending, (state, action) => {
-    //             console.log('pending');
-    //             state.loading = true;
-    //         })
-    //         .addCase(userActions.logoutUser.rejected, (state, action) => {
-    //             console.log('rejected');
-    //             state.loading = false;
-    //             state.error = action.error.message || 'An error occurred while logging out';
-    //         });
-    // },
 });
 
-// Export the actions and reducer
+export const { loginUserStart, loginUserSuccess, loginUserFailure, logoutUserStart, logoutUserSuccess, logoutUserFailure } = authSlice.actions;
+
 export default authSlice.reducer;

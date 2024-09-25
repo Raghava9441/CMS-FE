@@ -7,6 +7,8 @@ const appRoutes = {
     PARENTS: '/parents',
     PROFILE: '/profile',
     USERS: '/users',
+    SETTINGS: '/settings',
+    LOGOUT: '/logout',
 
     LOGIN: '/user/auth/login',
     LOGIN_SESSION: '/user/auth/session',

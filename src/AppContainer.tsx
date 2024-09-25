@@ -13,21 +13,21 @@ import 'react-toastify/dist/ReactToastify.css';
 function AppContainer() {
     return (
         <>
-            <AuthProvider>
-                <SettingsProvider>
-                    <ThemeConfig>
-                        <ThemeLocalization>
-                            <NotificationsProvider>
-                                <Box sx={{ backgroundColor: 'background.paper', width: '100vw', height: '100vh' }}>
-                                    <ToastContainer />
-                                    <SettingsPanel />
-                                    <App />
-                                </Box>
-                            </NotificationsProvider>
-                        </ThemeLocalization>
-                    </ThemeConfig>
-                </SettingsProvider>
-            </AuthProvider>
+            {/* <AuthProvider> */}
+            <SettingsProvider>
+                <ThemeConfig>
+                    <ThemeLocalization>
+                        <NotificationsProvider>
+                            <Box sx={{ backgroundColor: 'background.paper', width: '100vw', height: '100vh' }}>
+                                <ToastContainer />
+                                <SettingsPanel />
+                                <App />
+                            </Box>
+                        </NotificationsProvider>
+                    </ThemeLocalization>
+                </ThemeConfig>
+            </SettingsProvider>
+            {/* </AuthProvider> */}
         </>
     )
 }

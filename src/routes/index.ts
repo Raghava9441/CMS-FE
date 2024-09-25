@@ -8,6 +8,7 @@ import ProfilePage from "../pages/Profile.page";
 import LoginPage from "../pages/Login.page";
 import SignUpPage from "../pages/SignUp.page";
 import UsersPage from "../pages/Users.page";
+import SettingsPage from "../pages/Settings.page";
 
 interface RouteModel {
     id: number;
@@ -30,6 +31,7 @@ const routes: RouteModel[] = [
         label: 'Dashboard',
         roles: ['ADMIN', 'TEACHER', 'STUDENT', 'PARENT'],
         authenticationRequired: true,
+        isSideMenu: true,
     },
     {
         id: 2,
@@ -39,6 +41,7 @@ const routes: RouteModel[] = [
         label: 'Organizations',
         roles: ['ADMIN', 'TEACHER', 'STUDENT', 'PARENT'],
         authenticationRequired: true,
+        isSideMenu: true,
     },
     {
         id: 3,
@@ -48,6 +51,7 @@ const routes: RouteModel[] = [
         label: 'ParentPage',
         roles: ['ADMIN', 'TEACHER', 'STUDENT', 'PARENT'],
         authenticationRequired: true,
+        isSideMenu: true,
     },
     {
         id: 4,
@@ -57,6 +61,7 @@ const routes: RouteModel[] = [
         label: 'StudentPage',
         roles: ['ADMIN', 'TEACHER', 'STUDENT', 'PARENT'],
         authenticationRequired: true,
+        isSideMenu: true,
     },
     {
         id: 5,
@@ -66,34 +71,52 @@ const routes: RouteModel[] = [
         label: 'ProfilePage',
         roles: ['ADMIN', 'TEACHER', 'STUDENT', 'PARENT'],
         authenticationRequired: true,
+        isSideMenu: false,
     },
     {
-        id: 5,
+        id: 6,
         path: appRoutes.USERS,
         component: UsersPage,
         exact: true,
         label: 'Users',
         roles: ['ADMIN', 'TEACHER', 'STUDENT', 'PARENT'],
         authenticationRequired: true,
+        isSideMenu: true,
     },
     {
-        id: 6,
+        id: 7,
         path: appRoutes.LOGIN,
         component: LoginPage,
         exact: true,
         label: 'LoginPage',
         roles: ['ADMIN', 'TEACHER', 'STUDENT', 'PARENT'],
         authenticationRequired: false,
+        isSideMenu: false,
     },
     {
-        id: 7,
+        id: 8,
         path: appRoutes.REGISTER,
         component: SignUpPage,
         exact: true,
         label: 'SignUp Page',
         roles: ['ADMIN', 'TEACHER', 'STUDENT', 'PARENT'],
         authenticationRequired: false,
+        isSideMenu: false,
+    },
+    {
+        id: 9,
+        path: appRoutes.SETTINGS,
+        component: SettingsPage,
+        exact: true,
+        label: 'SignUp Page',
+        roles: ['ADMIN', 'TEACHER', 'STUDENT', 'PARENT'],
+        authenticationRequired: true,
+        isSideMenu: false,
     },
 ]
+
+export const routesWithoutAuth = routes.filter(route => !route.authenticationRequired)
+export const routesWithAuth = routes.filter(route => route.authenticationRequired)
+export const routesWithSideMenu = routes.filter(route => route.isSideMenu)
 
 export default routes

@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { useEffect } from 'react';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -15,26 +16,45 @@ import MailIcon from '@mui/icons-material/Mail';
 import MenuIcon from '@mui/icons-material/Menu';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
-import { Outlet, useNavigate } from 'react-router-dom';
-import { useTheme } from '@mui/material';
-import routes from '../routes';
+import { Outlet, useNavigate, useLocation } from 'react-router-dom';
+import { Avatar, Menu, MenuItem, Theme, useTheme } from '@mui/material';
+import routes, { routesWithSideMenu } from '../routes';
+import { authservice } from '../api/auth.api';
+import { AppDispatch, RootState } from '../redux/store';
+import { useDispatch, useSelector } from 'react-redux';
+import appRoutes from '../routes/routePaths';
+import { authActions } from '../redux/actions/auth.actions';
 
 const drawerWidth = 240;
 
 interface Props {
-    /**
-     * Injected by the documentation to work in an iframe.
-     * Remove this when copying and pasting into your project.
-     */
     window?: () => Window;
 }
 
 export default function MainLayout(props: Props) {
     const theme = useTheme();
+    const dispatch = useDispatch<AppDispatch>();
     const navigate = useNavigate();
+    const location = useLocation();
     const { window } = props;
     const [mobileOpen, setMobileOpen] = React.useState(false);
     const [isClosing, setIsClosing] = React.useState(false);
+    const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+    const open = Boolean(anchorEl);
+    const isauthenticated = useSelector((state: RootState) => state.auth.isAuthenticated);
+    const user = useSelector((state: RootState) => state.auth.user);
+    console.log(isauthenticated)
+    console.log(user)
+
+    useEffect(() => {
+        const checkAuthentication = async () => {
+            if (!isauthenticated) {
+                navigate(appRoutes.LOGIN);
+            }
+        };
+        checkAuthentication();
+    }, [navigate, isauthenticated]);
+
 
     const handleDrawerClose = () => {
         setIsClosing(true);
@@ -51,16 +71,42 @@ export default function MainLayout(props: Props) {
         }
     };
 
+    const handleAvatarClick = (event: React.MouseEvent<HTMLElement>) => {
+        setAnchorEl(event.currentTarget);
+    };
+
+    const handleMenuClose = () => {
+        setAnchorEl(null);
+    };
+    const getSlideDirection = (theme: Theme) => {
+        return theme.direction === 'rtl' ? 'right' : 'left';
+    };
+    const handleLogout = () => {
+        // localStorage.removeItem('refreshToken');
+        // localStorage.removeItem('user');
+        // authservice.logoutUser();
+        // navigate('/');
+        dispatch(authActions.logoutUser(navigate));
+    };
+
+    const currentPath = location.pathname;
+
     const drawer = (
         <div>
             <Toolbar />
             <Divider />
             <List>
-                {[...routes].filter(route => route.authenticationRequired).map((route, index) => (
-                    <ListItem key={route.id} disablePadding>
+                {[...routesWithSideMenu].filter(route => route.authenticationRequired && route.isSideMenu).map((route, index) => (
+                    <ListItem
+                        key={route.id}
+                        disablePadding
+                        sx={{
+                            backgroundColor: route.path === currentPath ? theme.palette.primary.main : 'inherit',
+                        }}
+                    >
                         <ListItemButton onClick={() => route.path !== '/' && navigate(route.path)}>
                             <ListItemIcon>
-                                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
+                                {route.id % 2 === 0 ? <InboxIcon /> : <MailIcon />}
                             </ListItemIcon>
                             <ListItemText primary={route.label} />
                         </ListItemButton>
@@ -75,43 +121,74 @@ export default function MainLayout(props: Props) {
         <Box sx={{ display: 'flex', height: '100vh' }}>
             <CssBaseline />
             <AppBar
-                position="fixed"
+                position="absolute"
                 sx={{
-                    width: { sm: `calc(100% - ${drawerWidth}px)` },
-                    ml: { sm: `${drawerWidth}px` },
+                    width: { md: `calc(100% - ${drawerWidth}px)` },
+                    ml: { md: `${drawerWidth}px` },
                 }}
             >
-                <Toolbar>
-                    <IconButton
-                        color="inherit"
-                        aria-label="open drawer"
-                        edge="start"
-                        onClick={handleDrawerToggle}
-                        sx={{ mr: 2, display: { sm: 'none' } }}
-                    >
-                        <MenuIcon />
-                    </IconButton>
-                    <Typography variant="h6" noWrap component="div">
-                        Responsive drawer
-                    </Typography>
+                <Toolbar sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                        <IconButton
+                            color="inherit"
+                            aria-label="open drawer"
+                            edge="start"
+                            onClick={handleDrawerToggle}
+                            sx={{ mr: 2, display: { md: 'none' } }}
+                        >
+                            <MenuIcon />
+                        </IconButton>
+                        <Typography variant="h6" noWrap component="div">
+                            CMS
+                        </Typography>
+                    </Box>
+
+                    <Box sx={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center' }}>
+                        <IconButton
+                            color="inherit"
+                            aria-label="user menu"
+                            edge="start"
+                            onClick={handleAvatarClick}
+                            sx={{ padding: '0px' }}
+                        >
+                            <Avatar />
+                        </IconButton>
+                        {/* Avatar dropdown menu */}
+                        <Menu
+                            anchorEl={anchorEl}
+                            open={open}
+                            onClose={handleMenuClose}
+                            PaperProps={{
+                                sx: {
+                                    width: '200px',
+                                    maxWidth: 'calc(100% - 48px)',
+                                },
+                            }}
+                        >
+                            <MenuItem onClick={() => { handleMenuClose(); navigate('/profile'); }}>Profile</MenuItem>
+                            <MenuItem onClick={() => { handleMenuClose(); navigate('/settings'); }}>Settings</MenuItem>
+                            <MenuItem onClick={() => { handleMenuClose(); handleLogout() }}>Logout</MenuItem>
+                        </Menu>
+                    </Box>
                 </Toolbar>
             </AppBar>
             <Box
                 component="nav"
-                sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }}
+                sx={{ width: { md: drawerWidth }, flexShrink: { md: 0 } }}
                 aria-label="mailbox folders"
             >
-                {/* The implementation can be swapped with js to avoid SEO duplication of links. */}
                 <Drawer
                     variant="temporary"
                     open={mobileOpen}
                     onTransitionEnd={handleDrawerTransitionEnd}
                     onClose={handleDrawerClose}
                     ModalProps={{
-                        keepMounted: true, // Better open performance on mobile.
+                        keepMounted: true,
                     }}
+                    anchor={theme.direction === 'rtl' ? 'left' : 'right'}
+                    SlideProps={{ direction: getSlideDirection(theme) }}
                     sx={{
-                        display: { xs: 'block', sm: 'none' },
+                        display: { xs: 'block', md: 'none' },
                         '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth },
                     }}
                 >
@@ -121,7 +198,7 @@ export default function MainLayout(props: Props) {
                     variant="permanent"
                     sx={{
                         zIndex: -1,
-                        display: { xs: 'none', sm: 'block' },
+                        display: { xs: 'none', md: 'block' },
                         '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth },
                     }}
                     open

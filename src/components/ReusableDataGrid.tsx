@@ -32,6 +32,7 @@ interface ReusableDataGridProps {
     setRowModesModel: React.Dispatch<React.SetStateAction<GridRowModesModel>>;
     loading: boolean;
 }
+
 const StyledGridOverlay = styled('div')(({ theme }) => ({
     display: 'flex',
     flexDirection: 'column',
@@ -51,17 +52,16 @@ function CustomLoadingOverlay() {
 
 function EditToolbar({ onAdd }: { onAdd: () => void }) {
     return (
-        <GridToolbarContainer>
-            <Button color="primary" startIcon={<AddIcon />} onClick={onAdd}>
-                Add record
-            </Button>
+        <GridToolbarContainer sx={{ display: 'flex', justifyContent: 'right', alignItems: 'center', padding: 1 }}>
             <GridToolbarExport
                 slotProps={{
                     tooltip: { title: 'Export data' },
                     button: { variant: 'outlined' },
                 }}
             />
-
+            <Button color="primary" startIcon={<AddIcon />} onClick={onAdd} variant='outlined'>
+                Add record
+            </Button>
         </GridToolbarContainer>
     );
 }
@@ -76,7 +76,7 @@ export const ReusableDataGrid: React.FC<ReusableDataGridProps> = ({
     setRowModesModel,
     loading,
 }) => {
-    // const [rowModesModel, setRowModesModel] = React.useState<GridRowModesModel>({});
+
     const theme = useTheme();
     const handleRowEditStop: GridEventListener<'rowEditStop'> = (params, event) => {
         if (params.reason === GridRowEditStopReasons.rowFocusOut) {
@@ -85,14 +85,19 @@ export const ReusableDataGrid: React.FC<ReusableDataGridProps> = ({
     };
 
     const handleEditClick = (id: GridRowId) => () => {
-        setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.Edit } });
+        // console.log(id)
+        // setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.Edit } });
     };
 
     const handleSaveClick = (id: GridRowId) => async () => {
         setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.View } });
+        // Get the updated row by finding it in the rows array after the user edits it
         const updatedRow = rows.find((row) => row._id === id);
         if (updatedRow) {
-            await onEdit(id, updatedRow);
+            // Apply the row update and use the updated data
+            const processedRow = processRowUpdate(updatedRow, rows.find(row => row._id === id) || updatedRow);
+            console.log(processedRow)
+            await onEdit(id, processedRow); // Pass the updated row to the handleEdit function
         }
     };
 
@@ -107,8 +112,9 @@ export const ReusableDataGrid: React.FC<ReusableDataGridProps> = ({
         });
     };
 
-    const processRowUpdate = (newRow: GridRowModel) => {
-        const updatedRow = { ...newRow, isNew: false };
+    const processRowUpdate = (newRow: GridRowModel, oldRow: GridRowModel) => {
+        const updatedRow = { ...oldRow, ...newRow };
+        console.log(updatedRow)
         return updatedRow;
     };
 
@@ -142,7 +148,6 @@ export const ReusableDataGrid: React.FC<ReusableDataGridProps> = ({
                         type: 'actions',
                         headerName: 'Actions',
                         headerClassName: 'theme--header',
-                        // width: 100,
                         cellClassName: 'actions',
                         getActions: ({ id }) => {
                             const isInEditMode = rowModesModel[id]?.mode === GridRowModes.Edit;

@@ -15,6 +15,7 @@ import { Link, Navigate, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../redux/store';
 import { authservice } from '../api/auth.api';
+import { authActions } from '../redux/actions/auth.actions';
 
 interface LoginCredentials {
     email: string;
@@ -43,11 +44,12 @@ const LoginPage: React.FC = () => {
         event.preventDefault();
 
         try {
-            const result = await authservice.loginUser(credentials);
-            localStorage.setItem('refreshToken', result.data.refreshToken);
-            navigate(appRoutes.DASHBOARD);
-            console.log(result.data.accessToken);
-            console.log(result);
+            // const result = await authservice.loginUser(credentials);
+            // localStorage.setItem('refreshToken', result.data.refreshToken);
+            // navigate(appRoutes.DASHBOARD);
+            // console.log(result.data.accessToken);
+            // console.log(result);
+            dispatch(authActions.loginUser(credentials, navigate));
         } catch (error: unknown) {
             console.log(error)
         }

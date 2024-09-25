@@ -9,11 +9,10 @@ const fetchOrganizations = () => async (dispatch: AppDispatch) => {
     try {
         dispatch(fetchOrganizationsStart());
         const response = await AsyncorganizationApi.getOrganizations();
-        console.log(response.data)
+        console.log(response)
         dispatch(fetchOrganizationsSuccess(response.data.data));
     } catch (error) {
-        // console.log(error.response.data)
-        toast.error(error.response.data.data || 'Failed to fetch organizations', {
+        toast.error(error.response?.data?.data || 'Failed to fetch organizations', {
             autoClose: 3000,
         });
     }
