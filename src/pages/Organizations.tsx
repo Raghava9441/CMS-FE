@@ -1,7 +1,6 @@
 import { GridColDef, GridRowId, GridRowModel, GridRowModesModel } from '@mui/x-data-grid'
 import React, { useEffect, useState } from 'react'
 import { ReusableDataGrid } from '../components/ReusableDataGrid'
-import { randomId } from '@mui/x-data-grid-generator';
 import { Box } from '@mui/material'
 import { AppDispatch, RootState } from '../redux/store'
 import { useDispatch, useSelector } from 'react-redux'
@@ -42,8 +41,12 @@ function Organizations({ }: Props) {
         handleOpen();
     };
 
-    const handleEdit = (id: GridRowId, updatedRow: GridRowModel) => {
-        
+    const handleEdit = (id: GridRowId) => {
+        const selectedOrganization = organizations?.organizations.find((org: any) => org._id === id); // Find the row by ID
+        console.log("selectedOrganization", selectedOrganization)
+        setSelectedRow(selectedOrganization);
+        setModalTitle('Edit Organization');
+        handleOpen()
     };
 
     const handleDelete = async (id: GridRowId) => {
@@ -51,6 +54,7 @@ function Organizations({ }: Props) {
     };
 
     const handleSave = async (data: any) => {
+        console.log(data)
         if (selectedRow) {
             dispatch(organizationActions.updateOrganization({ id: selectedRow._id, ...data }));
         } else {
@@ -82,6 +86,7 @@ function Organizations({ }: Props) {
                 <OrganizationForm
                     initialValues={selectedRow}
                     onSubmit={handleSave}
+                    onClose={handleClose}
                 />
             </GenericModal>
         </Box>

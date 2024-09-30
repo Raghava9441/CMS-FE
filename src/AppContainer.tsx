@@ -9,24 +9,28 @@ import { AuthProvider } from './contexts/AuthContext'
 import App from './App'
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 
 function AppContainer() {
     return (
         <>
             {/* <AuthProvider> */}
-            <SettingsProvider>
-                <ThemeConfig>
-                    <ThemeLocalization>
-                        <NotificationsProvider>
-                            <Box sx={{ backgroundColor: 'background.paper', width: '100vw', height: '100vh' }}>
-                                <ToastContainer />
-                                <SettingsPanel />
-                                <App />
-                            </Box>
-                        </NotificationsProvider>
-                    </ThemeLocalization>
-                </ThemeConfig>
-            </SettingsProvider>
+            <LocalizationProvider dateAdapter={AdapterDayjs}>
+                <SettingsProvider>
+                    <ThemeConfig>
+                        <ThemeLocalization>
+                            <NotificationsProvider>
+                                <Box sx={{ backgroundColor: 'background.paper', width: '100vw', height: '100vh' }}>
+                                    <ToastContainer />
+                                    <SettingsPanel />
+                                    <App />
+                                </Box>
+                            </NotificationsProvider>
+                        </ThemeLocalization>
+                    </ThemeConfig>
+                </SettingsProvider>
+            </LocalizationProvider>
             {/* </AuthProvider> */}
         </>
     )

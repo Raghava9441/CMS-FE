@@ -24,6 +24,7 @@ import { AppDispatch, RootState } from '../redux/store';
 import { useDispatch, useSelector } from 'react-redux';
 import appRoutes from '../routes/routePaths';
 import { authActions } from '../redux/actions/auth.actions';
+import SchoolIcon from '@mui/icons-material/School';
 
 const drawerWidth = 240;
 
@@ -82,10 +83,6 @@ export default function MainLayout(props: Props) {
         return theme.direction === 'rtl' ? 'right' : 'left';
     };
     const handleLogout = () => {
-        // localStorage.removeItem('refreshToken');
-        // localStorage.removeItem('user');
-        // authservice.logoutUser();
-        // navigate('/');
         dispatch(authActions.logoutUser(navigate));
     };
 
@@ -93,7 +90,11 @@ export default function MainLayout(props: Props) {
 
     const drawer = (
         <div>
-            <Toolbar />
+            <Toolbar>
+                <Box sx={{ display: 'flex', alignItems: 'center', width: '100%', justifyContent: 'center' }}>
+                    <Typography variant="h5" sx={{ color: theme.palette.primary.main }}>ScholarSync</Typography>  <SchoolIcon sx={{ fontSize: 48, color: theme.palette.primary.main }} />
+                </Box>
+            </Toolbar>
             <Divider />
             <List>
                 {[...routesWithSideMenu].filter(route => route.authenticationRequired && route.isSideMenu).map((route, index) => (
@@ -139,7 +140,7 @@ export default function MainLayout(props: Props) {
                             <MenuIcon />
                         </IconButton>
                         <Typography variant="h6" noWrap component="div">
-                            CMS
+                            ScholarSync
                         </Typography>
                     </Box>
 

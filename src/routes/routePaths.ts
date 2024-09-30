@@ -6,6 +6,7 @@ const appRoutes = {
     STUDENTS: '/students',
     PARENTS: '/parents',
     PROFILE: '/profile',
+    TEACHER:'/teacher',
     USERS: '/users',
     SETTINGS: '/settings',
     LOGOUT: '/logout',

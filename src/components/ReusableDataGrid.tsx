@@ -26,7 +26,7 @@ interface ReusableDataGridProps {
     rows: GridRowsProp;
     columns: GridColDef[];
     onAdd: () => void;
-    onEdit: (id: GridRowId, updatedRow: GridRowModel) => Promise<void>;
+    onEdit: (id: GridRowId) => Promise<void>;
     onDelete: (id: GridRowId) => Promise<void>;
     rowModesModel: GridRowModesModel;
     setRowModesModel: React.Dispatch<React.SetStateAction<GridRowModesModel>>;
@@ -86,18 +86,16 @@ export const ReusableDataGrid: React.FC<ReusableDataGridProps> = ({
 
     const handleEditClick = (id: GridRowId) => () => {
         // console.log(id)
+        onEdit(id);
         // setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.Edit } });
     };
 
     const handleSaveClick = (id: GridRowId) => async () => {
-        setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.View } });
-        // Get the updated row by finding it in the rows array after the user edits it
+        // setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.View } });
         const updatedRow = rows.find((row) => row._id === id);
         if (updatedRow) {
-            // Apply the row update and use the updated data
             const processedRow = processRowUpdate(updatedRow, rows.find(row => row._id === id) || updatedRow);
             console.log(processedRow)
-            await onEdit(id, processedRow); // Pass the updated row to the handleEdit function
         }
     };
 
@@ -106,10 +104,10 @@ export const ReusableDataGrid: React.FC<ReusableDataGridProps> = ({
     };
 
     const handleCancelClick = (id: GridRowId) => () => {
-        setRowModesModel({
-            ...rowModesModel,
-            [id]: { mode: GridRowModes.View, ignoreModifications: true },
-        });
+        // setRowModesModel({
+        //     ...rowModesModel,
+        //     [id]: { mode: GridRowModes.View, ignoreModifications: true },
+        // });
     };
 
     const processRowUpdate = (newRow: GridRowModel, oldRow: GridRowModel) => {
@@ -119,7 +117,7 @@ export const ReusableDataGrid: React.FC<ReusableDataGridProps> = ({
     };
 
     const handleRowModesModelChange = (newRowModesModel: GridRowModesModel) => {
-        setRowModesModel(newRowModesModel);
+        // setRowModesModel(newRowModesModel);
     };
 
     return (

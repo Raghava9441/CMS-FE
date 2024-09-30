@@ -9,6 +9,7 @@ import LoginPage from "../pages/Login.page";
 import SignUpPage from "../pages/SignUp.page";
 import UsersPage from "../pages/Users.page";
 import SettingsPage from "../pages/Settings.page";
+import TeacherPage from "../pages/Teacher.page";
 
 interface RouteModel {
     id: number;
@@ -44,11 +45,21 @@ const routes: RouteModel[] = [
         isSideMenu: true,
     },
     {
-        id: 3,
-        path: appRoutes.PARENTS,
-        component: ParentPage,
+        id: 6,
+        path: appRoutes.USERS,
+        component: UsersPage,
         exact: true,
-        label: 'ParentPage',
+        label: 'Users',
+        roles: ['ADMIN', 'TEACHER', 'STUDENT', 'PARENT'],
+        authenticationRequired: true,
+        isSideMenu: true,
+    },
+    {
+        id: 10,
+        path: appRoutes.TEACHER,
+        component: TeacherPage,
+        exact: true,
+        label: 'Teachers',
         roles: ['ADMIN', 'TEACHER', 'STUDENT', 'PARENT'],
         authenticationRequired: true,
         isSideMenu: true,
@@ -64,6 +75,16 @@ const routes: RouteModel[] = [
         isSideMenu: true,
     },
     {
+        id: 3,
+        path: appRoutes.PARENTS,
+        component: ParentPage,
+        exact: true,
+        label: 'ParentPage',
+        roles: ['ADMIN', 'TEACHER', 'STUDENT', 'PARENT'],
+        authenticationRequired: true,
+        isSideMenu: true,
+    },
+    {
         id: 5,
         path: appRoutes.PROFILE,
         component: ProfilePage,
@@ -72,16 +93,6 @@ const routes: RouteModel[] = [
         roles: ['ADMIN', 'TEACHER', 'STUDENT', 'PARENT'],
         authenticationRequired: true,
         isSideMenu: false,
-    },
-    {
-        id: 6,
-        path: appRoutes.USERS,
-        component: UsersPage,
-        exact: true,
-        label: 'Users',
-        roles: ['ADMIN', 'TEACHER', 'STUDENT', 'PARENT'],
-        authenticationRequired: true,
-        isSideMenu: true,
     },
     {
         id: 7,

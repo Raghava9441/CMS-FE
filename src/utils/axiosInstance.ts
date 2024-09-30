@@ -22,7 +22,7 @@ export class ApiError extends Error {
 }
 
 export const axiosInstance = axios.create({
-    baseURL: "http://localhost:8000/api/v1/",
+    baseURL: "https://cmsbe-1hzzygsm.b4a.run/api/v1/",
     withCredentials: true,
     headers: {
         "Content-Type": "application/json",

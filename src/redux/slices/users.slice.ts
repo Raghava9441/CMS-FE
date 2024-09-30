@@ -79,9 +79,7 @@ const usersSlice = createSlice({
         },
         fetchUsersSuccess(state, action: PayloadAction<NewApiResponseData>) {
             state.loading = false;
-            console.log(action.payload)
             state.data = action.payload;
-            console.log(state.data)
             state.error = null;
         },
         fetchUsersFailure(state, action: PayloadAction<string>) {
@@ -94,9 +92,7 @@ const usersSlice = createSlice({
         },
         fetchUserByIdSuccess(state, action: PayloadAction<NewApiResponseData>) {
             state.loading = false;
-            console.log(action.payload)
             state.data = action.payload;
-            console.log(state.data)
             state.error = null;
         },
         fetchUserByIdFailure(state, action: PayloadAction<string>) {
@@ -109,9 +105,7 @@ const usersSlice = createSlice({
         },
         createUserSuccess(state, action: PayloadAction<NewApiResponseData>) {
             state.loading = false;
-            console.log(action.payload)
             state.data = action.payload;
-            console.log(state.data)
             state.error = null;
         },
         createUserFailure(state, action: PayloadAction<string>) {
@@ -124,9 +118,7 @@ const usersSlice = createSlice({
         },
         updateUserSuccess(state, action: PayloadAction<NewApiResponseData>) {
             state.loading = false;
-            console.log(action.payload)
             state.data = action.payload;
-            console.log(state.data)
             state.error = null;
         },
         updateUserFailure(state, action: PayloadAction<string>) {
@@ -139,9 +131,7 @@ const usersSlice = createSlice({
         },
         deleteUserSuccess(state, action: PayloadAction<NewApiResponseData>) {
             state.loading = false;
-            console.log(action.payload)
             state.data = action.payload;
-            console.log(state.data)
             state.error = null;
         },
         deleteUserFailure(state, action: PayloadAction<string>) {
