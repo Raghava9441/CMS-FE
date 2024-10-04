@@ -35,12 +35,13 @@ export const fetchUserById = (id: string) => async (dispatch: AppDispatch) => {
 export const createUser = (user: Omit<User, 'password' | 'accessToken' | 'refreshToken'>) => async (dispatch: AppDispatch) => {
     try {
         dispatch(createUserStart()); // Set loading state to true
-        const response = await authservice.createUser(user);
-        dispatch(createUserSuccess(response.data)); // Pass data to success action
+        const response = await userApi.createUser(user);
+        console.log(response)
+        dispatch(createUserSuccess(response.data.data)); // Pass data to success action
         return response.data;
     } catch (error) {
         toast.error(error.message || 'Failed to fetch user', {
-            autoClose: 3000, // Auto close after 3 seconds
+            autoClose: 3000,
         });
     }
 };
@@ -48,8 +49,9 @@ export const createUser = (user: Omit<User, 'password' | 'accessToken' | 'refres
 export const updateUser = (user: Omit<User, 'password' | 'accessToken' | 'refreshToken'>) => async (dispatch: AppDispatch) => {
     try {
         dispatch(updateUserStart()); // Set loading state to true
-        const response = await authservice.updateUser(user);
-        dispatch(updateUserSuccess(response.data)); // Pass data to success action
+        const response = await userApi.updateUser(user);
+        console.log(response.data.data)
+        dispatch(updateUserSuccess(response.data.data)); // Pass data to success action
         return response.data;
     } catch (error) {
         toast.error(error.message || 'Failed to fetch user', {

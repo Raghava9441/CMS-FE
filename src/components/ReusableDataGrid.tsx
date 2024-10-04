@@ -6,6 +6,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/DeleteOutlined';
 import SaveIcon from '@mui/icons-material/Save';
 import CancelIcon from '@mui/icons-material/Close';
+import CachedIcon from '@mui/icons-material/Cached';
 import {
     GridRowsProp,
     GridRowModesModel,
@@ -20,17 +21,18 @@ import {
     GridRowEditStopReasons,
     GridToolbarExport,
 } from '@mui/x-data-grid';
-import { CircularProgress, styled, Typography, useTheme } from '@mui/material';
+import { CircularProgress, IconButton, styled, Typography, useTheme } from '@mui/material';
 
 interface ReusableDataGridProps {
     rows: GridRowsProp;
     columns: GridColDef[];
     onAdd: () => void;
-    onEdit: (id: GridRowId) => Promise<void>;
-    onDelete: (id: GridRowId) => Promise<void>;
+    onEdit: (id: GridRowId) => void;
+    onDelete: (id: GridRowId) => void;
     rowModesModel: GridRowModesModel;
     setRowModesModel: React.Dispatch<React.SetStateAction<GridRowModesModel>>;
     loading: boolean;
+    reloadData?: () => void;
 }
 
 const StyledGridOverlay = styled('div')(({ theme }) => ({
@@ -50,9 +52,26 @@ function CustomLoadingOverlay() {
     );
 }
 
-function EditToolbar({ onAdd }: { onAdd: () => void }) {
+function EditToolbar({ onAdd, reloadData }: { onAdd: () => void; reloadData?: () => void }) {
+    const [isRotating, setIsRotating] = React.useState(false);
+
+    const handleIconClick = () => {
+        setIsRotating(true);
+        reloadData?.();
+        setTimeout(() => setIsRotating(false), 1000);
+    };
+
     return (
         <GridToolbarContainer sx={{ display: 'flex', justifyContent: 'right', alignItems: 'center', padding: 1 }}>
+            <IconButton onClick={handleIconClick}>
+                <CachedIcon
+                    color='primary'
+                    sx={{
+                        transition: 'transform 1s linear',
+                        transform: isRotating ? 'rotate(360deg)' : 'rotate(0deg)',
+                    }}
+                />
+            </IconButton>
             <GridToolbarExport
                 slotProps={{
                     tooltip: { title: 'Export data' },
@@ -75,6 +94,7 @@ export const ReusableDataGrid: React.FC<ReusableDataGridProps> = ({
     rowModesModel,
     setRowModesModel,
     loading,
+    reloadData,
 }) => {
 
     const theme = useTheme();
@@ -192,7 +212,7 @@ export const ReusableDataGrid: React.FC<ReusableDataGridProps> = ({
                 onRowEditStop={handleRowEditStop}
                 processRowUpdate={processRowUpdate}
                 slots={{
-                    toolbar: () => <EditToolbar onAdd={onAdd} />,
+                    toolbar: () => <EditToolbar onAdd={onAdd} reloadData={reloadData} />,
                     loadingOverlay: CustomLoadingOverlay
                 }}
                 loading={loading}

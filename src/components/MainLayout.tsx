@@ -44,8 +44,6 @@ export default function MainLayout(props: Props) {
     const open = Boolean(anchorEl);
     const isauthenticated = useSelector((state: RootState) => state.auth.isAuthenticated);
     const user = useSelector((state: RootState) => state.auth.user);
-    console.log(isauthenticated)
-    console.log(user)
 
     useEffect(() => {
         const checkAuthentication = async () => {
