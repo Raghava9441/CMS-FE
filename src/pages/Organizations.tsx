@@ -8,9 +8,11 @@ import { organizationActions } from '../redux/actions/organization.actions'
 import GenericModal from '../components/GenericModal';
 import OrganizationForm from '../components/Forms/OrganizationForm';
 
+
 type Props = {}
 
 function Organizations({ }: Props) {
+
     const dispatch = useDispatch<AppDispatch>()
 
     const columns: GridColDef[] = [

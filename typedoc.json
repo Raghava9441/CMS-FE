@@ -1,0 +1,21 @@
+{
+    "entryPoints": [
+        "src/main.tsx"
+    ],
+    "entryPointStrategy": "expand",
+    "out": "docs",
+    "exclude": [
+        "**/node_modules/**",
+        "**/*.spec.ts",
+        "**/*.test.ts"
+    ],
+    "excludePrivate": true,
+    "excludeProtected": true,
+    "excludeExternals": true,
+    "includeVersion": true,
+    "hideGenerator": true,
+    "plugin": [
+        "typedoc-plugin-react-doc-constructor"
+    ],
+    "skipErrorChecking": true
+}
