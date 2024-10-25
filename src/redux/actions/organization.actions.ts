@@ -63,12 +63,12 @@ const deleteOrganization = (id: string) => async (dispatch: AppDispatch) => {
         const response = await AsyncorganizationApi.deleteOrganization(id);
         dispatch(deleteOrganizationSuccess(id));
         toast.info(response.message || 'Organization deleted successfully', {
-            autoClose: 3000, // Auto close after 3 seconds
+            autoClose: 3000,
         });
     } catch (error) {
         console.log(error)
         toast.error(error.response.data.data || 'Failed to fetch organization', {
-            autoClose: 3000, // Auto close after 3 seconds
+            autoClose: 3000,
         });
     }
 };

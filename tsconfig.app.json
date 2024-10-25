@@ -1,5 +1,8 @@
 {
   "compilerOptions": {
+    "types": [
+      "unplugin-turbo-console/client"
+    ],
     "target": "ES2020",
     "useDefineForClassFields": true,
     "lib": [

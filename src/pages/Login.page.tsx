@@ -72,15 +72,15 @@ const LoginPage: React.FC = () => {
 
         try {
             dispatch(authActions.loginUser(credentials, navigate));
+            // notifications.show('Consider yourself notified!', {
+            //     autoHideDuration: 3000,
+            //     severity: 'warning',
+            // });
         } catch (error: unknown) {
-        }
 
-        notifications.show('Consider yourself notified!', {
-            autoHideDuration: 3000,
-            severity: 'warning',
-        });
-        // Here you would typically send the credentials to your backend for authentication
+        }
     };
+
     return (
         <Container component="main" maxWidth="xs">
             <Paper elevation={3} sx={{ p: 4, mt: 8, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>

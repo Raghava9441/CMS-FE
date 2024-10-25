@@ -34,7 +34,8 @@ function Organizations({ }: Props) {
     const { data: organizations, loading } = useSelector((state: RootState) => state.organization);
 
     useEffect(() => {
-        dispatch(organizationActions.fetchOrganizations());
+        console.log("object")
+        organizations?.organizations?.length === undefined && dispatch(organizationActions.fetchOrganizations());
     }, [dispatch]);
 
     const handleAdd = () => {
@@ -51,18 +52,21 @@ function Organizations({ }: Props) {
         handleOpen()
     };
 
-    const handleDelete = async (id: GridRowId) => {
+    const handleDelete = async (id: string) => {
         dispatch(organizationActions.deleteOrganization(id));
     };
 
     const handleSave = async (data: any) => {
-        console.log(data)
         if (selectedRow) {
             dispatch(organizationActions.updateOrganization({ id: selectedRow._id, ...data }));
         } else {
             dispatch(organizationActions.createOrganization(data));
         }
         handleClose();
+    };
+
+    const handleReloadData = () => {
+        dispatch(organizationActions.fetchOrganizations());
     };
 
     const handleOpen = () => setOpen(true);
@@ -75,10 +79,11 @@ function Organizations({ }: Props) {
                 onAdd={handleAdd}
                 onDelete={handleDelete}
                 onEdit={handleEdit}
-                rows={organizations?.organizations}
+                rows={organizations?.organizations ?? []}
                 rowModesModel={rowModesModel}
                 setRowModesModel={setRowModesModel}
                 loading={loading}
+                reloadData={handleReloadData}
             />
             <GenericModal
                 open={open}

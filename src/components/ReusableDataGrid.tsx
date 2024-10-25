@@ -27,8 +27,8 @@ interface ReusableDataGridProps {
     rows: GridRowsProp;
     columns: GridColDef[];
     onAdd: () => void;
-    onEdit: (id: GridRowId) => void;
-    onDelete: (id: GridRowId) => void;
+    onEdit: (id: string) => void;
+    onDelete: (id: string) => void;
     rowModesModel: GridRowModesModel;
     setRowModesModel: React.Dispatch<React.SetStateAction<GridRowModesModel>>;
     loading: boolean;
@@ -104,7 +104,7 @@ export const ReusableDataGrid: React.FC<ReusableDataGridProps> = ({
         }
     };
 
-    const handleEditClick = (id: GridRowId) => () => {
+    const handleEditClick = (id: string) => () => {
         // console.log(id)
         onEdit(id);
         // setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.Edit } });
@@ -119,7 +119,7 @@ export const ReusableDataGrid: React.FC<ReusableDataGridProps> = ({
         }
     };
 
-    const handleDeleteClick = (id: GridRowId) => async () => {
+    const handleDeleteClick = (id: string) => async () => {
         await onDelete(id);
     };
 
@@ -193,13 +193,13 @@ export const ReusableDataGrid: React.FC<ReusableDataGridProps> = ({
                                     icon={<EditIcon />}
                                     label="Edit"
                                     className="textPrimary"
-                                    onClick={handleEditClick(id)}
+                                    onClick={handleEditClick(id as string)}
                                     color="inherit"
                                 />,
                                 <GridActionsCellItem
                                     icon={<DeleteIcon />}
                                     label="Delete"
-                                    onClick={handleDeleteClick(id)}
+                                    onClick={handleDeleteClick(id as string)}
                                     color="inherit"
                                 />,
                             ];

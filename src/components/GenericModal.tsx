@@ -4,7 +4,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import { TransitionProps } from '@mui/material/transitions';
 
 const Transition = React.forwardRef(function Transition(
-    props: TransitionProps & { children: React.ReactElement<any, any> },
+    props: TransitionProps & { children: React.ReactElement<unknown, any> },
     ref: React.Ref<unknown>,
 ) {
     return <Slide direction="left" ref={ref} {...props} />;

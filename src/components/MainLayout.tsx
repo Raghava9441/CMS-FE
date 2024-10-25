@@ -18,8 +18,7 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import { Outlet, useNavigate, useLocation } from 'react-router-dom';
 import { Avatar, Menu, MenuItem, Theme, useTheme } from '@mui/material';
-import routes, { routesWithSideMenu } from '../routes';
-import { authservice } from '../api/auth.api';
+import { routesWithSideMenu } from '../routes';
 import { AppDispatch, RootState } from '../redux/store';
 import { useDispatch, useSelector } from 'react-redux';
 import appRoutes from '../routes/routePaths';
@@ -28,31 +27,30 @@ import SchoolIcon from '@mui/icons-material/School';
 
 const drawerWidth = 240;
 
-interface Props {
-    window?: () => Window;
-}
 
-export default function MainLayout(props: Props) {
+
+export default function MainLayout() {
     const theme = useTheme();
     const dispatch = useDispatch<AppDispatch>();
     const navigate = useNavigate();
     const location = useLocation();
-    const { window } = props;
     const [mobileOpen, setMobileOpen] = React.useState(false);
     const [isClosing, setIsClosing] = React.useState(false);
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
     const open = Boolean(anchorEl);
     const isauthenticated = useSelector((state: RootState) => state.auth.isAuthenticated);
-    const user = useSelector((state: RootState) => state.auth.user);
+    // const user = useSelector((state: RootState) => state.auth.user);
 
     useEffect(() => {
         const checkAuthentication = async () => {
             if (!isauthenticated) {
                 navigate(appRoutes.LOGIN);
+            } else {
+                navigate(appRoutes.DASHBOARD);
             }
         };
         checkAuthentication();
-    }, [navigate, isauthenticated]);
+    }, []);
 
 
     const handleDrawerClose = () => {
@@ -95,7 +93,7 @@ export default function MainLayout(props: Props) {
             </Toolbar>
             <Divider />
             <List>
-                {[...routesWithSideMenu].filter(route => route.authenticationRequired && route.isSideMenu).map((route, index) => (
+                {[...routesWithSideMenu].filter(route => route.authenticationRequired && route.isSideMenu).map((route) => (
                     <ListItem
                         key={route.id}
                         disablePadding

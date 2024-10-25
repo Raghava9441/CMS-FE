@@ -1,10 +1,12 @@
-import React from 'react'
+import { Box } from '@mui/material'
 
 type Props = {}
 
 function _404({ }: Props) {
     return (
-        <div>404</div>
+        <Box sx={{ width: '100%', height: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+            <div>404 Page Not Found</div>
+        </Box>
     )
 }
 
