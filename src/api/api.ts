@@ -1,4 +1,4 @@
-import { ApiResponse, Organization } from "../models/organization.modal";
+import { ApiResponse, Organization } from "../types/organization.modal";
 import axiosInstance from "../utils/axiosInstance";
 import { User } from "../types/user.modals";
 import { Teacher, TeacherApiResponse } from "../types/teacher.modals";

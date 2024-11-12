@@ -24,6 +24,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import appRoutes from '../routes/routePaths';
 import { authActions } from '../redux/actions/auth.actions';
 import SchoolIcon from '@mui/icons-material/School';
+import NotificationsIcon from '@mui/icons-material/Notifications';
 
 const drawerWidth = 240;
 
@@ -37,6 +38,7 @@ export default function MainLayout() {
     const [mobileOpen, setMobileOpen] = React.useState(false);
     const [isClosing, setIsClosing] = React.useState(false);
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+    const [notificationAnchorEl, setNotificationAnchorEl] = React.useState<null | HTMLElement>(null);
     const open = Boolean(anchorEl);
     const isauthenticated = useSelector((state: RootState) => state.auth.isAuthenticated);
     // const user = useSelector((state: RootState) => state.auth.user);
@@ -46,7 +48,7 @@ export default function MainLayout() {
             if (!isauthenticated) {
                 navigate(appRoutes.LOGIN);
             } else {
-                navigate(appRoutes.DASHBOARD);
+                // navigate(appRoutes.DASHBOARD);
             }
         };
         checkAuthentication();
@@ -72,9 +74,18 @@ export default function MainLayout() {
         setAnchorEl(event.currentTarget);
     };
 
+    const handleNotificationsClick = (event: React.MouseEvent<HTMLElement>) => {
+        setNotificationAnchorEl(event.currentTarget);
+    };
+
+    const handleNotificationsClose = () => {
+        setNotificationAnchorEl(null);
+    };
+
     const handleMenuClose = () => {
         setAnchorEl(null);
     };
+
     const getSlideDirection = (theme: Theme) => {
         return theme.direction === 'rtl' ? 'right' : 'left';
     };
@@ -141,15 +152,26 @@ export default function MainLayout() {
                     </Box>
 
                     <Box sx={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center' }}>
-                        <IconButton
-                            color="inherit"
-                            aria-label="user menu"
-                            edge="start"
-                            onClick={handleAvatarClick}
-                            sx={{ padding: '0px' }}
-                        >
-                            <Avatar />
-                        </IconButton>
+                        <Box sx={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center' }}>
+                            <IconButton
+                                color="inherit"
+                                aria-label="user menu"
+                                edge="start"
+                                onClick={handleNotificationsClick}
+                                sx={{ paddingRight: '2rem' }}
+                            >
+                                <NotificationsIcon />
+                            </IconButton>
+                            <IconButton
+                                color="inherit"
+                                aria-label="user menu"
+                                edge="start"
+                                onClick={handleAvatarClick}
+                                sx={{ padding: '0px' }}
+                            >
+                                <Avatar />
+                            </IconButton>
+                        </Box>
                         {/* Avatar dropdown menu */}
                         <Menu
                             anchorEl={anchorEl}
@@ -165,6 +187,20 @@ export default function MainLayout() {
                             <MenuItem onClick={() => { handleMenuClose(); navigate('/profile'); }}>Profile</MenuItem>
                             <MenuItem onClick={() => { handleMenuClose(); navigate('/settings'); }}>Settings</MenuItem>
                             <MenuItem onClick={() => { handleMenuClose(); handleLogout() }}>Logout</MenuItem>
+                        </Menu>
+                        {/* Notification menu */}
+                        <Menu
+                            anchorEl={notificationAnchorEl}
+                            open={Boolean(notificationAnchorEl)}
+                            onClose={handleNotificationsClose}
+                            PaperProps={{
+                                sx: {
+                                    width: '200px',
+                                    maxWidth: 'calc(100% - 48px)',
+                                },
+                            }}
+                        >
+                            <MenuItem onClick={() => { handleNotificationsClose(); navigate('/notifications'); }}>Notifications</MenuItem>
                         </Menu>
                     </Box>
                 </Toolbar>
