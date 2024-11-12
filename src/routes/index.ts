@@ -17,6 +17,7 @@ import CoursesPage from "../pages/Courses.page";
 import ClassesPage from "../pages/Classes.page";
 import AssignmentPage from "../pages/Assignment.page";
 import EventsPage from "../pages/Events.page";
+import ForgotPasswordPage from "@pages/ForgotPassword.page";
 
 interface RouteModel {
     id: number;
@@ -200,6 +201,16 @@ const routes: RouteModel[] = [
         roles: ['ADMIN', 'TEACHER', 'STUDENT', 'PARENT'],
         authenticationRequired: true,
         isSideMenu: true,
+    },
+    {
+        id: 18,
+        path: appRoutes.FORGOT_PASSWORD,
+        component: ForgotPasswordPage,
+        exact: true,
+        label: 'Forgot Password',
+        roles: ['ADMIN', 'TEACHER', 'STUDENT', 'PARENT'],
+        authenticationRequired: false,
+        isSideMenu: false,
     },
 ]
 

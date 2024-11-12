@@ -25,6 +25,7 @@ const appRoutes = {
     REGISTER_UNPROTECTED: '/user/auth/register-unprotected',
     RESET_PASSWORD: '/user/auth/reset-password',
     VERIFY_SIGNUP: '/user/auth/verify-signup',
+    FORGOT_PASSWORD: '/user/auth/forgot-password',
 }
 
 export default appRoutes

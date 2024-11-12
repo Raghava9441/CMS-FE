@@ -128,7 +128,7 @@ const LoginPage: React.FC = () => {
                     </Button>
                     <Grid container>
                         <Grid item xs>
-                            <Link to="#">
+                            <Link to={appRoutes.FORGOT_PASSWORD}>
                                 Forgot password?
                             </Link>
                         </Grid>

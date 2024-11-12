@@ -25,6 +25,7 @@ export default defineConfig({
       '@types': path.resolve(__dirname, 'src/types'),
       '@utils': path.resolve(__dirname, 'src/utils'),
       '@lottie files': path.resolve(__dirname, 'src/lottie files'),
+      '@assets': path.resolve(__dirname, 'src/assets'),
     },
   },
   plugins: [
