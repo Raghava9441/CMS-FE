@@ -19,6 +19,7 @@ import { AppDispatch, RootState } from '../redux/store';
 import { authservice } from '../api/auth.api';
 import { authActions } from '../redux/actions/auth.actions';
 import { Icon } from '@iconify-icon/react';
+import SchoolIcon from '@mui/icons-material/School';
 import { LoginIcon } from '@assets/icons';
 
 /**
@@ -83,16 +84,17 @@ const LoginPage: React.FC = () => {
     };
 
     return (
-        <Container component="main" maxWidth="xl" sx={{ maxWidth: { xs: '90%', sm: '80%', md: 'md' }, display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100vh' }}>
-            <Paper elevation={3} sx={{ p: { xs: 2, sm: 3, md: 4 }, display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: { xs: 'column', sm: 'row' }, width: '100%' }}>
+        <Container component="main" maxWidth="xl" sx={{ maxWidth: { xs: '90%', sm: '80%', md: 'md' }, display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100vh', position: 'relative' }}>
+            <SchoolIcon sx={{ fontSize: 496, color: theme.palette.primary.main, position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)' }} />
+            <Paper elevation={3} sx={{ p: { xs: 2, sm: 3, md: 4 }, display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: { xs: 'column', sm: 'row' }, width: '100%', zIndex: 10, opacity: 0.95, position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)' }}>
                 <Box sx={{ width: { xs: '100%', sm: '50%' }, display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
                     <LoginIcon width="100%" height="auto" fill={theme.palette.primary.main} />
                 </Box>
                 <Box sx={{ width: { xs: '100%', sm: '50%' }, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                     <Box>
-                        <Typography component="h1" variant="h5">
-                            Sign in
-                        </Typography>
+                        <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginBottom: '1rem' }}>
+                            <Typography variant="h5" sx={{ color: theme.palette.primary.main }}>ScholarSync</Typography>  <SchoolIcon sx={{ fontSize: 48, color: theme.palette.primary.main }} />
+                        </Box>
                         <Box component="form" onSubmit={handleSubmit} sx={{ mt: 1, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                             <TextField
                                 margin="normal"

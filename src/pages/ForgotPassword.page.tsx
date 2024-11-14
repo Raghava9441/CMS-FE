@@ -2,11 +2,8 @@ import { Button, Grid, Divider, TextField, Typography } from "@mui/material";
 // import Grid from '@mui/material/Grid2';
 import { FormEvent, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { toast } from 'react-toastify';
-import { authActions } from "@redux/actions/auth.actions";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "@redux/store";
-import forgotPassword from "@assets/forgot_password.svg";
 
 import { ForgotPassword } from "@assets/icons"
 
@@ -104,32 +101,25 @@ function ForgotPasswordPage({ }: Props) {
                         <Divider sx={useStyles.divider} />
                     </Grid>
 
-                    {/* Content */}
                     <Grid container spacing={4}>
-                        {/* Image Section */}
                         <Grid item xs={12} md={6} display="flex" alignItems="center" justifyContent="center">
-                            {/* <img
-                                src={forgotPassword}
-                                alt="forgot-password"
-                            // style={useStyles.image}4
-                            /> */}
                             <ForgotPassword width="100%" height="auto" />
                         </Grid>
 
                         {/* Form Section */}
                         <Grid item xs={12} md={6}>
                             <Typography variant="h3" sx={useStyles.title}>
-                                Forgot<br /> Password?
+                                Forgot Password?
                             </Typography>
 
                             <Typography variant="body1" sx={useStyles.description}>
                                 Enter your email address and we will send you a link to reset your password.
                             </Typography>
-
                             <form onSubmit={handleSubmit} style={useStyles.form}>
                                 <TextField
                                     sx={useStyles.emailInput}
                                     label="Email Address"
+                                    size="small"
                                     variant="outlined"
                                     fullWidth
                                     name="email"
