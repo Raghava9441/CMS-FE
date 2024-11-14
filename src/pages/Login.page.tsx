@@ -79,7 +79,6 @@ const LoginPage: React.FC = () => {
             //     severity: 'warning',
             // });
         } catch (error: unknown) {
-
         }
     };
 

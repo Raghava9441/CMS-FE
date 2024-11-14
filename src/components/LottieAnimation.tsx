@@ -1,11 +1,34 @@
+import React from 'react';
 import Lottie from 'lottie-react';
-import lottie from '@lottie files/404.json';
 
-const LottieAnimation = () => {
+interface LottieAnimationProps {
+    animationData: any;
+    width?: string | number;
+    height?: string | number;
+    loop?: boolean;
+    autoplay?: boolean;
+}
+
+const LottieAnimation: React.FC<LottieAnimationProps> = ({
+    animationData,
+    width = 300,
+    height = 300,
+    loop = true,
+    autoplay = true
+}) => {
+    if (!animationData) {
+        return null;
+    }
+
     return (
-        <div style={{ width: '300px', height: '300px' }}> {/* Adjust size as needed */}
-            <Lottie animationData={lottie} loop={true} />
-            
+        <div className="flex items-center justify-center">
+            <div style={{ width, height }}>
+                <Lottie
+                    animationData={animationData}
+                    loop={loop}
+                    autoplay={autoplay}
+                />
+            </div>
         </div>
     );
 };
