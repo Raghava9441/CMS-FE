@@ -19,6 +19,7 @@ import { AppDispatch, RootState } from '../redux/store';
 import { authservice } from '../api/auth.api';
 import { authActions } from '../redux/actions/auth.actions';
 import { Icon } from '@iconify-icon/react';
+import { LoginIcon } from '@assets/icons';
 
 /**
  * @property {string} email - The email address of the user.
@@ -82,62 +83,70 @@ const LoginPage: React.FC = () => {
     };
 
     return (
-        <Container component="main" maxWidth="xs">
-            <Paper elevation={3} sx={{ p: 4, mt: 8, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                <Typography component="h1" variant="h5">
-                    Sign in
-                </Typography>
-                <Icon icon="mdi-light:alert" width={50} height={50} style={{ color: theme.palette.primary.main }} rotate={4} data-flip="vertical" />
-                <Box component="form" onSubmit={handleSubmit} sx={{ mt: 1 }}>
-                    <TextField
-                        margin="normal"
-                        required
-                        fullWidth
-                        id="email"
-                        label="Email Address"
-                        name="email"
-                        autoComplete="email"
-                        autoFocus
-                        value={credentials.email}
-                        onChange={handleChange}
-                    />
-                    <TextField
-                        margin="normal"
-                        required
-                        fullWidth
-                        name="password"
-                        label="Password"
-                        type="password"
-                        id="password"
-                        autoComplete="current-password"
-                        value={credentials.password}
-                        onChange={handleChange}
-                    />
-                    <Button
-                        type="submit"
-                        fullWidth
-                        variant="contained"
-                        sx={{ mt: 3, mb: 2 }}
-                        disabled={loading}
-                    >
-                        {loading ? (
-                            <><CircularProgress size={24} sx={{ mr: 1 }} /> Sign In</>
-                        ) : (
-                            'Sign In'
-                        )}
-                    </Button>
-                    <Grid container>
-                        <Grid item xs>
-                            <Link to={appRoutes.FORGOT_PASSWORD}>
-                                Forgot password?
-                            </Link>
-                        </Grid>
-                        <Grid item>
-                            <Link to={appRoutes.REGISTER}>
-                                {"Don't have an account? Sign Up"}
-                            </Link>
-                        </Grid>
-                    </Grid>
+        <Container component="main" maxWidth="xl" sx={{ maxWidth: { xs: '90%', sm: '80%', md: 'md' }, display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100vh' }}>
+            <Paper elevation={3} sx={{ p: { xs: 2, sm: 3, md: 4 }, display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: { xs: 'column', sm: 'row' }, width: '100%' }}>
+                <Box sx={{ width: { xs: '100%', sm: '50%' }, display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                    <LoginIcon width="100%" height="auto" fill={theme.palette.primary.main} />
+                </Box>
+                <Box sx={{ width: { xs: '100%', sm: '50%' }, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                    <Box>
+                        <Typography component="h1" variant="h5">
+                            Sign in
+                        </Typography>
+                        <Box component="form" onSubmit={handleSubmit} sx={{ mt: 1, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                            <TextField
+                                margin="normal"
+                                required
+                                size='small'
+                                fullWidth
+                                id="email"
+                                label="Email Address"
+                                name="email"
+                                autoComplete="email"
+                                autoFocus
+                                value={credentials.email}
+                                onChange={handleChange}
+                            />
+                            <TextField
+                                margin="normal"
+                                required
+                                size='small'
+                                fullWidth
+                                name="password"
+                                label="Password"
+                                type="password"
+                                id="password"
+                                autoComplete="current-password"
+                                value={credentials.password}
+                                onChange={handleChange}
+                            />
+                            <Grid item sx={{ fontSize: 'small', width: '100%', textAlign: "right", }}>
+                                <Link to={appRoutes.FORGOT_PASSWORD}>
+                                    Forgot password?
+                                </Link>
+                            </Grid>
+                            <Button
+                                type="submit"
+                                fullWidth
+                                variant="contained"
+                                sx={{ mt: 3, mb: 2 }}
+                                disabled={loading}
+                            >
+                                {loading ? (
+                                    <><CircularProgress size={24} sx={{ mr: 1 }} /> Sign In</>
+                                ) : (
+                                    'Sign In'
+                                )}
+                            </Button>
+                            <Grid container sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                                <Grid item sx={{ fontSize: 'small' }}>
+                                    <Link to={appRoutes.REGISTER}>
+                                        {"Don't have an account? Sign Up"}
+                                    </Link>
+                                </Grid>
+                            </Grid>
+                        </Box>
+                    </Box>
                 </Box>
             </Paper>
         </Container>

@@ -6,6 +6,9 @@ import { reactClickToComponent } from "vite-plugin-react-click-to-component";
 // import { Schema, ValidateEnv } from "@julr/vite-plugin-validate-env";
 // import autoAlias from 'vite-plugin-auto-alias';
 import TurboConsole from 'unplugin-turbo-console/vite'
+import svgr from "vite-plugin-svgr";
+import richSvg from "vite-plugin-react-rich-svg";
+
 // import Icons from 'unplugin-icons/vite'
 
 // https://vitejs.dev/config/
@@ -30,7 +33,35 @@ export default defineConfig({
   },
   plugins: [
     react(),
+    richSvg(),
     TurboConsole({}),
+    svgr({
+      // svgr options: https://react-svgr.com/docs/options/
+      svgrOptions: {
+        // Keep title by default
+        titleProp: true,
+        // Convert SVG to React Native format
+        native: false,
+        // Custom props to component
+        exportType: 'named',
+        ref: true,
+        svgo: true,
+        // Plugin options
+        plugins: ['@svgr/plugin-svgo', '@svgr/plugin-jsx'],
+        svgoConfig: {
+          plugins: [
+            {
+              name: 'removeViewBox',
+              active: false
+            },
+            {
+              name: 'removeDimensions',
+              active: true
+            }
+          ]
+        }
+      }
+    }),
     reactClickToComponent(),// alt+right click to see  where the component is locatedd in the code base
     // ValidateEnv({ configFile: 'config/env' })
   ],

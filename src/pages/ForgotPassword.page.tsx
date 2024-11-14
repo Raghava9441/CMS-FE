@@ -8,6 +8,8 @@ import { useDispatch } from "react-redux";
 import { AppDispatch } from "@redux/store";
 import forgotPassword from "@assets/forgot_password.svg";
 
+import { ForgotPassword } from "@assets/icons"
+
 type Props = {}
 
 const useStyles = {
@@ -106,11 +108,12 @@ function ForgotPasswordPage({ }: Props) {
                     <Grid container spacing={4}>
                         {/* Image Section */}
                         <Grid item xs={12} md={6} display="flex" alignItems="center" justifyContent="center">
-                            <img
+                            {/* <img
                                 src={forgotPassword}
                                 alt="forgot-password"
-                                // style={useStyles.image}4
-                            />
+                            // style={useStyles.image}4
+                            /> */}
+                            <ForgotPassword width="100%" height="auto" />
                         </Grid>
 
                         {/* Form Section */}

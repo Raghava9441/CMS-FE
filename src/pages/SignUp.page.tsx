@@ -177,6 +177,7 @@ const SignUpPage: React.FC = () => {
                             margin="normal"
                             name="username"
                             label="Username"
+                            size='small'
                             value={user.username}
                             onChange={handleChange}
                         />
@@ -185,6 +186,7 @@ const SignUpPage: React.FC = () => {
                             margin="normal"
                             name="email"
                             label="Email"
+                            size='small'
                             type="email"
                             value={user.email}
                             onChange={handleChange}
@@ -194,6 +196,7 @@ const SignUpPage: React.FC = () => {
                             margin="normal"
                             name="fullname"
                             label="Full Name"
+                            size='small'
                             value={user.fullname}
                             onChange={handleChange}
                         />
@@ -203,13 +206,14 @@ const SignUpPage: React.FC = () => {
                             name="password"
                             label="Password"
                             type="password"
+                            size='small'
                             value={user.password}
                             onChange={handleChange}
                         />
                         <FormControl fullWidth margin="normal">
-                            <InputLabel>Role</InputLabel>
                             <Select
                                 name="role"
+                                size='small'
                                 value={user.role}
                                 onChange={handleSelectChange}
                             >
@@ -220,10 +224,11 @@ const SignUpPage: React.FC = () => {
                             </Select>
                         </FormControl>
                         <FormControl fullWidth margin="normal">
-                            <InputLabel>Gender</InputLabel>
                             <Select
                                 name="gender"
+                                size='small'
                                 value={user.gender}
+                                variant='outlined'
                                 onChange={handleSelectChange}
                             >
                                 <MenuItem value="male">Male</MenuItem>
@@ -241,6 +246,7 @@ const SignUpPage: React.FC = () => {
                             margin="normal"
                             name="avatar"
                             label="Avatar URL"
+                            size='small'
                             value={user.avatar}
                             onChange={handleChange}
                         />
@@ -249,6 +255,7 @@ const SignUpPage: React.FC = () => {
                             margin="normal"
                             name="coverImage"
                             label="Cover Image URL"
+                            size='small'
                             value={user.coverImage}
                             onChange={handleChange}
                         />
@@ -257,6 +264,7 @@ const SignUpPage: React.FC = () => {
                             margin="normal"
                             name="age"
                             label="Age"
+                            size='small'
                             value={user.age}
                             onChange={handleChange}
                         />
@@ -265,6 +273,7 @@ const SignUpPage: React.FC = () => {
                             margin="normal"
                             name="organizationId"
                             label="Organization ID"
+                            size='small'
                             value={user.organizationId}
                             onChange={handleChange}
                         />
@@ -273,6 +282,7 @@ const SignUpPage: React.FC = () => {
                             margin="normal"
                             name="phone"
                             label="Phone"
+                            size='small'
                             value={user.phone}
                             onChange={handleChange}
                         />
@@ -294,6 +304,7 @@ const SignUpPage: React.FC = () => {
                             margin="normal"
                             name="biography"
                             label="Biography"
+                            size='small'
                             multiline
                             rows={4}
                             value={user.biography}
@@ -312,6 +323,7 @@ const SignUpPage: React.FC = () => {
                             margin="normal"
                             name="street"
                             label="Street"
+                            size='small'
                             value={user.address?.street}
                             onChange={handleAddressChange}
                         />
@@ -320,6 +332,7 @@ const SignUpPage: React.FC = () => {
                             margin="normal"
                             name="city"
                             label="City"
+                            size='small'
                             value={user.address?.city}
                             onChange={handleAddressChange}
                         />
@@ -328,6 +341,7 @@ const SignUpPage: React.FC = () => {
                             margin="normal"
                             name="state"
                             label="State"
+                            size='small'
                             value={user.address?.state}
                             onChange={handleAddressChange}
                         />
@@ -336,6 +350,7 @@ const SignUpPage: React.FC = () => {
                             margin="normal"
                             name="zip"
                             label="ZIP Code"
+                            size='small'
                             value={user.address?.zip}
                             onChange={handleAddressChange}
                         />
@@ -344,6 +359,7 @@ const SignUpPage: React.FC = () => {
                             margin="normal"
                             name="country"
                             label="Country"
+                            size='small'
                             value={user.address?.country}
                             onChange={handleAddressChange}
                         />
@@ -355,6 +371,7 @@ const SignUpPage: React.FC = () => {
                             margin="normal"
                             name="facebook"
                             label="Facebook"
+                            size='small'
                             value={user.socialLinks?.facebook}
                             onChange={handleSocialLinksChange}
                         />
@@ -363,6 +380,7 @@ const SignUpPage: React.FC = () => {
                             margin="normal"
                             name="twitter"
                             label="Twitter"
+                            size='small'
                             value={user.socialLinks?.twitter}
                             onChange={handleSocialLinksChange}
                         />
@@ -371,6 +389,7 @@ const SignUpPage: React.FC = () => {
                             margin="normal"
                             name="linkedin"
                             label="LinkedIn"
+                            size='small'
                             value={user.socialLinks?.linkedin}
                             onChange={handleSocialLinksChange}
                         />
@@ -388,9 +407,9 @@ const SignUpPage: React.FC = () => {
                             label="Receive Notifications"
                         />
                         <FormControl fullWidth margin="normal">
-                            <InputLabel>Language</InputLabel>
                             <Select
                                 name="language"
+                                size='small'
                                 value={user.preferences?.language}
                                 onChange={handleSelectChange}
                             >
@@ -407,7 +426,7 @@ const SignUpPage: React.FC = () => {
     };
 
     return (
-        <Container component="main" sx={{ overflow: 'auto', height: '100%', width: '50%' }} >
+        <Container component="main" sx={{ display: "flex", alignItems: "center", justifyContent: "center", overflow: 'auto', height: '100%', width: '50%' }} >
             <Paper elevation={3} sx={{ p: 4, mt: 4 }}>
                 <Typography component="h1" variant="h4" align="center" gutterBottom>
                     Register

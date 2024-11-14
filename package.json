@@ -42,7 +42,8 @@
     "redux-thunk": "^3.1.0",
     "sass": "^1.79.3",
     "simplebar-react": "^3.2.6",
-    "vite-plugin-react-click-to-component": "^3.0.0"
+    "vite-plugin-react-click-to-component": "^3.0.0",
+    "vite-plugin-svgr": "^4.3.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.9.0",
@@ -65,6 +66,7 @@
     "unplugin-turbo-console": "^1.10.4",
     "vite": "^5.4.1",
     "vite-aliases": "^0.11.7",
-    "vite-plugin-auto-alias": "^1.0.8"
+    "vite-plugin-auto-alias": "^1.0.8",
+    "vite-plugin-react-rich-svg": "^1.1.2"
   }
 }
