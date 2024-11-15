@@ -72,6 +72,7 @@ const OrganizationForm: React.FC<OrganizationFormProps> = ({ initialValues, onSu
                             <TextField
                                 {...field}
                                 label="Name"
+                                size='small'
                                 fullWidth
                                 margin="normal"
                                 error={!!errors.name}
@@ -89,6 +90,7 @@ const OrganizationForm: React.FC<OrganizationFormProps> = ({ initialValues, onSu
                             <TextField
                                 {...field}
                                 label="Category"
+                                size='small'
                                 fullWidth
                                 margin="normal"
                                 error={!!errors.category}
@@ -106,6 +108,7 @@ const OrganizationForm: React.FC<OrganizationFormProps> = ({ initialValues, onSu
                             <TextField
                                 {...field}
                                 label="Number"
+                                size='small'
                                 fullWidth
                                 margin="normal"
                                 error={!!errors.number}
@@ -129,6 +132,7 @@ const OrganizationForm: React.FC<OrganizationFormProps> = ({ initialValues, onSu
                             <TextField
                                 {...field}
                                 label="Contact Email"
+                                size='small'
                                 fullWidth
                                 margin="normal"
                                 error={!!errors.contactEmail}
@@ -152,6 +156,7 @@ const OrganizationForm: React.FC<OrganizationFormProps> = ({ initialValues, onSu
                             <TextField
                                 {...field}
                                 label="Contact Phone"
+                                size='small'
                                 fullWidth
                                 margin="normal"
                                 error={!!errors.contactPhone}
@@ -175,6 +180,7 @@ const OrganizationForm: React.FC<OrganizationFormProps> = ({ initialValues, onSu
                             <TextField
                                 {...field}
                                 label="Website"
+                                size='small'
                                 fullWidth
                                 margin="normal"
                                 error={!!errors.website}
@@ -192,6 +198,7 @@ const OrganizationForm: React.FC<OrganizationFormProps> = ({ initialValues, onSu
                             <TextField
                                 {...field}
                                 label="Logo URL"
+                                size='small'
                                 fullWidth
                                 margin="normal"
                                 error={!!errors.logo}
@@ -212,6 +219,7 @@ const OrganizationForm: React.FC<OrganizationFormProps> = ({ initialValues, onSu
                                 onChange={(date: Dayjs | null) => field.onChange(date)} // Update value as Dayjs object
                                 slotProps={{
                                     textField: {
+                                        size: 'small',
                                         fullWidth: true,
                                         margin: "normal",
                                         error: !!errors.establishedDate,
@@ -230,6 +238,7 @@ const OrganizationForm: React.FC<OrganizationFormProps> = ({ initialValues, onSu
                         render={({ field }) => (
                             <TextField
                                 {...field}
+                                size='small'
                                 label="Description"
                                 fullWidth
                                 multiline

@@ -29,6 +29,7 @@ export default defineConfig({
       '@utils': path.resolve(__dirname, 'src/utils'),
       '@lottie files': path.resolve(__dirname, 'src/lottie files'),
       '@assets': path.resolve(__dirname, 'src/assets'),
+      '@api': path.resolve(__dirname, 'src/api'),
     },
   },
   plugins: [

@@ -101,9 +101,11 @@ const organizationSlice = createSlice({
         },
         updateOrganizationSuccess(state, action: PayloadAction<NewApiResponseData>) {
             state.loading = false;
-            // console.log(action.payload)
-            state.data = action.payload;
-            // console.log(state.data)
+            if (state.data) {
+                state.data.organizations = [...(state.data.organizations || []), action.payload as Organization];
+            } else {
+                state.data = { ...action.payload as Organization, organizations: [action.payload as Organization] };
+            }
             state.error = null;
         },
         deleteOrganizationStart(state) {

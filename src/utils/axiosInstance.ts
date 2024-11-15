@@ -1,5 +1,4 @@
-import axios, { AxiosError, AxiosRequestConfig } from 'axios';
-import authSlice from '../redux/slices/authSlice';
+import axios from 'axios';
 import { authservice } from '../api/auth.api';
 
 export interface ApiErrorResponse {
@@ -22,109 +21,69 @@ export class ApiError extends Error {
 }
 
 export const axiosInstance = axios.create({
-    baseURL: "https://cmsbe-1hzzygsm.b4a.run/api/v1/",
+    baseURL: "http://localhost:8000/api/v1/",  // Make sure this matches your backend URL exactly
     withCredentials: true,
     headers: {
         "Content-Type": "application/json",
-    },
+        "Accept": "application/json",
+    }
 });
 
-let isRefreshing = false;
-let failedQueue: any[] = [];
-
-const processQueue = (error: AxiosError | null, token: string | null = null) => {
-    failedQueue.forEach(prom => {
-        if (error) {
-            prom.reject(error);
-        } else {
-            prom.resolve(token);
-        }
-    });
-
-    failedQueue = [];
-};
-
-// axiosInstance.interceptors.response.use(
-//     (response) => response,
-//     async (error) => {
-//         const originalRequest = error.config;
-
-//         if (error.response?.status === 401 && !originalRequest._retry) {
-//             if (isRefreshing) {
-//                 return new Promise((resolve, reject) => {
-//                     failedQueue.push({ resolve, reject });
-//                 }).then(token => {
-//                     originalRequest.headers['Authorization'] = 'Bearer ' + token;
-//                     return axiosInstance(originalRequest);
-//                 }).catch(err => {
-//                     return Promise.reject(err);
-//                 });
-//             }
-
-//             originalRequest._retry = true;
-//             isRefreshing = true;
-
-//             return new Promise((resolve, reject) => {
-//                 axiosInstance.post('/user/auth/refresh')
-//                     .then(({ data }) => {
-//                         const { accessToken } = data.data;
-//                         axiosInstance.defaults.headers.common['Authorization'] = 'Bearer ' + accessToken;
-//                         originalRequest.headers['Authorization'] = 'Bearer ' + accessToken;
-//                         processQueue(null, accessToken);
-//                         resolve(axiosInstance(originalRequest));
-//                     })
-//                     .catch((err) => {
-//                         processQueue(err, null);
-//                         reject(err);
-//                     })
-//                     .finally(() => {
-//                         isRefreshing = false;
-//                     });
-//             });
-//         }
-
-//         return Promise.reject(error);
-//     }
-// );
+// Add request interceptor to ensure proper headers
+axiosInstance.interceptors.request.use(
+    (config) => {
+        // Ensure these are set for every request
+        config.withCredentials = true;
+        config.headers = {
+            ...config.headers,
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+        } as any;
+        return config;
+    },
+    (error) => {
+        return Promise.reject(error);
+    }
+);
 
 let refreshingTokenInProgress = false;
 
 axiosInstance.interceptors.response.use(
     (response) => response,
     async (error) => {
-
-        /* If an error has occurred from refresh token api */
         if (error?.config?.url?.includes("refresh-token")) {
             return Promise.reject(error);
         }
-        /*If the response status is 401, and the requested api end point is not login api  */
+
         if (
             error?.response?.status === 401 &&
             !error?.config?.url?.includes("login") &&
             !refreshingTokenInProgress
         ) {
-
-            /* Refreshing the token */
             refreshingTokenInProgress = true;
-            console.log(localStorage.getItem('refreshToken')!)
+            try {
+                const refreshToken = localStorage.getItem('refreshToken');
+                if (!refreshToken) {
+                    throw new Error('No refresh token available');
+                }
 
-            const response = await authservice.refreshAccessToken(localStorage.getItem('refreshToken')!);
+                const response = await authservice.refreshAccessToken(refreshToken);
+                refreshingTokenInProgress = false;
 
-            refreshingTokenInProgress = false;
-
-            /* Refresh token success */
-            if (!(response instanceof ApiError)) {
-                /* Replay the original request */
-                return axios(error.config);
+                if (!(response instanceof ApiError)) {
+                    return axios({
+                        ...error.config,
+                        withCredentials: true
+                    });
+                }
+            } catch (refreshError) {
+                refreshingTokenInProgress = false;
+                return Promise.reject(refreshError);
             }
         }
 
-        /* Other errors */
         return Promise.reject(error);
     }
 );
-
-
-
 
 export default axiosInstance;

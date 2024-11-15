@@ -146,6 +146,7 @@ const UsersForm: React.FC<UserFormProps> = ({ initialValues, onSubmit, onClose }
                             <TextField
                                 {...field}
                                 label="Username"
+                                size='small'
                                 fullWidth
                                 margin="normal"
                                 error={!!errors.username}
@@ -163,6 +164,7 @@ const UsersForm: React.FC<UserFormProps> = ({ initialValues, onSubmit, onClose }
                             <TextField
                                 {...field}
                                 label="Full Name"
+                                size='small'
                                 fullWidth
                                 margin="normal"
                                 error={!!errors.fullname}
@@ -183,6 +185,7 @@ const UsersForm: React.FC<UserFormProps> = ({ initialValues, onSubmit, onClose }
                                     {...field}
                                     multiple
                                     label="Organizations"
+                                    size='small'
                                     renderValue={(selected) => (
                                         <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
                                             {selected.map((value) => (
@@ -207,6 +210,7 @@ const UsersForm: React.FC<UserFormProps> = ({ initialValues, onSubmit, onClose }
                 <Grid item xs={12} md={6}>
                     <Controller
                         name="email"
+                        size='small'
                         control={control}
                         rules={{
                             required: 'Email is required',
@@ -219,6 +223,7 @@ const UsersForm: React.FC<UserFormProps> = ({ initialValues, onSubmit, onClose }
                             <TextField
                                 {...field}
                                 label="Email"
+                                size='small'
                                 fullWidth
                                 margin="normal"
                                 error={!!errors.email}
@@ -242,6 +247,7 @@ const UsersForm: React.FC<UserFormProps> = ({ initialValues, onSubmit, onClose }
                             <TextField
                                 {...field}
                                 label="Age"
+                                size='small'
                                 fullWidth
                                 margin="normal"
                                 error={!!errors.age}
@@ -256,7 +262,7 @@ const UsersForm: React.FC<UserFormProps> = ({ initialValues, onSubmit, onClose }
                         control={control}
                         rules={{ required: 'Role is required' }}
                         render={({ field }) => (
-                            <FormControl fullWidth margin="normal" error={!!errors.role}>
+                            <FormControl fullWidth margin="normal" error={!!errors.role} size="small">
                                 <InputLabel>Role</InputLabel>
                                 <Select {...field} label="Role">
                                     <MenuItem value="ADMIN">Admin</MenuItem>
@@ -275,7 +281,7 @@ const UsersForm: React.FC<UserFormProps> = ({ initialValues, onSubmit, onClose }
                         control={control}
                         rules={{ required: 'Gender is required' }}
                         render={({ field }) => (
-                            <FormControl fullWidth margin="normal" error={!!errors.gender}>
+                            <FormControl fullWidth margin="normal" error={!!errors.gender} size="small">
                                 <InputLabel>Gender</InputLabel>
                                 <Select {...field} label="Gender">
                                     <MenuItem value="male">Male</MenuItem>
@@ -301,6 +307,7 @@ const UsersForm: React.FC<UserFormProps> = ({ initialValues, onSubmit, onClose }
                             <TextField
                                 {...field}
                                 label="Phone"
+                                size="small"
                                 fullWidth
                                 margin="normal"
                                 error={!!errors.phone}
@@ -317,6 +324,7 @@ const UsersForm: React.FC<UserFormProps> = ({ initialValues, onSubmit, onClose }
                             <TextField
                                 {...field}
                                 label="Avatar URL"
+                                size="small"
                                 fullWidth
                                 margin="normal"
                                 error={!!errors.avatar}
@@ -333,6 +341,7 @@ const UsersForm: React.FC<UserFormProps> = ({ initialValues, onSubmit, onClose }
                             <TextField
                                 {...field}
                                 label="Cover Image URL"
+                                size="small"
                                 fullWidth
                                 margin="normal"
                                 error={!!errors.coverImage}
@@ -352,8 +361,8 @@ const UsersForm: React.FC<UserFormProps> = ({ initialValues, onSubmit, onClose }
                                 onChange={(date: Dayjs | null) => field.onChange(date)}
                                 slotProps={{
                                     textField: {
+                                        size: 'small',
                                         fullWidth: true,
-                                        margin: "normal",
                                         error: !!errors.dateOfBirth,
                                         helperText: errors.dateOfBirth?.message,
                                     },
@@ -367,7 +376,8 @@ const UsersForm: React.FC<UserFormProps> = ({ initialValues, onSubmit, onClose }
                         name="status"
                         control={control}
                         render={({ field }) => (
-                            <FormControl fullWidth margin="normal" error={!!errors.status}>
+                            // margin: "dense",
+                            <FormControl fullWidth margin="normal" error={!!errors.status} size="small">
                                 <InputLabel>Status</InputLabel>
                                 <Select {...field} label="Status">
                                     <MenuItem value="active">Active</MenuItem>
@@ -410,6 +420,7 @@ const UsersForm: React.FC<UserFormProps> = ({ initialValues, onSubmit, onClose }
                                     label={field.charAt(0).toUpperCase() + field.slice(1)}
                                     fullWidth
                                     margin="normal"
+                                    size='small'
                                     value={value}
                                     onChange={onChange}
                                     error={!!errors.address?.[field as keyof Address]}
@@ -433,6 +444,7 @@ const UsersForm: React.FC<UserFormProps> = ({ initialValues, onSubmit, onClose }
                                     label={field.charAt(0).toUpperCase() + field.slice(1)}
                                     fullWidth
                                     margin="normal"
+                                    size='small'
                                     value={value}
                                     onChange={onChange}
                                     error={!!errors.socialLinks?.[field as keyof SocialLinks]}
@@ -474,6 +486,7 @@ const UsersForm: React.FC<UserFormProps> = ({ initialValues, onSubmit, onClose }
                                     label={field.charAt(0).toUpperCase() + field.slice(1)}
                                     fullWidth
                                     margin="normal"
+                                    size='small'
                                     value={value}
                                     onChange={onChange}
                                     error={!!errors.preferences?.[field as keyof Preferences]}

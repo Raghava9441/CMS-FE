@@ -1,4 +1,4 @@
-import { ApiResponse, ApiResponseError } from "../models/organization.modal";
+import { ApiResponse, ApiResponseError } from "@types/organization.modal";
 import { axiosInstance } from "../utils/axiosInstance";
 
 export interface User {

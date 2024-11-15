@@ -8,8 +8,8 @@ import { Parent, ParentApiResponse } from "../types/parent.models";
 export const AsyncorganizationApi = {
     getOrganizations: () => axiosInstance.get<ApiResponse<Organization[]>>('/organizations'),
     getOrganizationById: (id: string) => axiosInstance.get<ApiResponse<Organization>>(`/organizations/${id}`),
-    createOrganization: (organization: Omit<Organization, 'createdAt' | 'updatedAt'>) => axiosInstance.post<ApiResponse<Organization>>('/organizations', organization),
-    updateOrganization: (organization: Omit<Organization, 'createdAt' | 'updatedAt'>) => axiosInstance.put<ApiResponse<Organization>>('/organizations', organization),
+    createOrganization: (organization: Omit<Organization, 'createdAt' | 'updatedAt'>) => axiosInstance.post<ApiResponse<Organization>>(`/organizations`, organization),
+    updateOrganization: (organization: Omit<Organization, 'createdAt' | 'updatedAt'>, _id: string) => axiosInstance.put<ApiResponse<Organization>>(`/organizations/${_id}`, organization),
     deleteOrganization: (id: string) => axiosInstance.delete<ApiResponse<Organization>>(`/organizations/${id}`)
 }
 

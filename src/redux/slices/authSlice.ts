@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 // Define the User interface based on the API response
-interface User {
+export interface User {
     username: string;
     email: string;
     fullname: string;

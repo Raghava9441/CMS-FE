@@ -1,9 +1,10 @@
 //create organization actions to dispatch
-import { AsyncorganizationApi, organizationApi } from '../../api/organization.api';
+import {  organizationApi } from '../../api/organization.api';
 import { Organization } from '../../models/organization.modal';
 import { AppDispatch } from '../store';
 import { createOrganizationStart, createOrganizationSuccess, deleteOrganizationStart, deleteOrganizationSuccess, fetchOrganizationByIdStart, fetchOrganizationByIdSuccess, fetchOrganizationsStart, fetchOrganizationsSuccess, updateOrganizationStart, updateOrganizationSuccess } from '../slices/organization.slice';
 import { toast } from 'react-toastify';
+import { AsyncorganizationApi } from '@api/api';
 
 const fetchOrganizations = () => async (dispatch: AppDispatch) => {
     try {
@@ -46,8 +47,9 @@ const createOrganization = (organization: Omit<Organization, 'createdAt' | 'upda
 
 const updateOrganization = (organization: Omit<Organization, 'createdAt' | 'updatedAt'>) => async (dispatch: AppDispatch) => {
     try {
+        console.log(organization)
         dispatch(updateOrganizationStart()); // Set loading state to true
-        const response = await AsyncorganizationApi.updateOrganization(organization);
+        const response = await AsyncorganizationApi.updateOrganization(organization,organization.id);
         dispatch(updateOrganizationSuccess(response.data.data)); // Pass data to success action
         return response.data;
     } catch (error) {
