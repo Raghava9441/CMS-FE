@@ -8,7 +8,7 @@ export interface User {
     avatar: string;
     coverImage?: string;
     age?: string;
-    role: 'ADMIN' | 'TEACHER' | 'STUDENT' | 'PARENT';
+    roles: ('ADMIN' | 'TEACHER' | 'STUDENT' | 'PARENT')[];
     gender: 'male' | 'female' | 'other';
     organizationId: string;
     phone?: string;

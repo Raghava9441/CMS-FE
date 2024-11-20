@@ -48,3 +48,78 @@ export const parentApi = {
     updateParent: (parent: Parent) => axiosInstance.put<ParentApiResponse<Parent>>('/parents', parent),
     deleteParent: (id: string) => axiosInstance.delete<ParentApiResponse<Parent>>(`/parents/${id}`),
 }
+
+
+// TODO:types need to implimnet for each api call to be able to use them 
+
+// export const courseApi = {
+//     getCourses: () => axiosInstance.get<CourseApiResponse<Course[]>>('/courses'),
+//     getCourseById: (id: string) => axiosInstance.get<CourseApiResponse<Course>>(`/courses/${id}`),
+//     createCourse: (course: Course) => axiosInstance.post<CourseApiResponse<Course>>('/courses', course),
+//     updateCourse: (course: Course) => axiosInstance.put<CourseApiResponse<Course>>('/courses', course),
+//     deleteCourse: (id: string) => axiosInstance.delete<CourseApiResponse<Course>>(`/courses/${id}`),
+// }
+
+// export const classApi = {
+//     getClasses: () => axiosInstance.get<ClassApiResponse<Class[]>>('/classes'),
+//     getClassById: (id: string) => axiosInstance.get<ClassApiResponse<Class>>(`/classes/${id}`),
+//     createClass: (classData: Class) => axiosInstance.post<ClassApiResponse<Class>>('/classes', classData),
+//     updateClass: (classData: Class) => axiosInstance.put<ClassApiResponse<Class>>('/classes', classData),
+//     deleteClass: (id: string) => axiosInstance.delete<ClassApiResponse<Class>>(`/classes/${id}`),
+// }
+
+// export const attendanceApi = {
+//     getAttendance: () => axiosInstance.get<AttendanceApiResponse<Attendance[]>>('/attendance'),
+//     getAttendanceById: (id: string) => axiosInstance.get<AttendanceApiResponse<Attendance>>(`/attendance/${id}`),
+//     createAttendance: (attendance: Attendance) => axiosInstance.post<AttendanceApiResponse<Attendance>>('/attendance', attendance),
+//     updateAttendance: (attendance: Attendance) => axiosInstance.put<AttendanceApiResponse<Attendance>>('/attendance', attendance),
+//     deleteAttendance: (id: string) => axiosInstance.delete<AttendanceApiResponse<Attendance>>(`/attendance/${id}`),
+// }
+
+// export const examApi = {
+//     getExams: () => axiosInstance.get<ExamApiResponse<Exam[]>>('/exams'),
+//     getExamById: (id: string) => axiosInstance.get<ExamApiResponse<Exam>>(`/exams/${id}`),
+//     createExam: (exam: Exam) => axiosInstance.post<ExamApiResponse<Exam>>('/exams', exam),
+//     updateExam: (exam: Exam) => axiosInstance.put<ExamApiResponse<Exam>>('/exams', exam),
+//     deleteExam: (id: string) => axiosInstance.delete<ExamApiResponse<Exam>>(`/exams/${id}`),
+// }
+
+// export const assignmentApi = {
+//     getAssignments: () => axiosInstance.get<AssignmentApiResponse<Assignment[]>>('/assignments'),
+//     getAssignmentById: (id: string) => axiosInstance.get<AssignmentApiResponse<Assignment>>(`/assignments/${id}`),
+//     createAssignment: (assignment: Assignment) => axiosInstance.post<AssignmentApiResponse<Assignment>>('/assignments', assignment),
+//     updateAssignment: (assignment: Assignment) => axiosInstance.put<AssignmentApiResponse<Assignment>>('/assignments', assignment),
+//     deleteAssignment: (id: string) => axiosInstance.delete<AssignmentApiResponse<Assignment>>(`/assignments/${id}`),
+// }
+
+// export const eventApi = {
+//     getEvents: () => axiosInstance.get<EventApiResponse<Event[]>>('/events'),
+//     getEventById: (id: string) => axiosInstance.get<EventApiResponse<Event>>(`/events/${id}`),
+//     createEvent: (event: Event) => axiosInstance.post<EventApiResponse<Event>>('/events', event),
+//     updateEvent: (event: Event) => axiosInstance.put<EventApiResponse<Event>>('/events', event),
+//     deleteEvent: (id: string) => axiosInstance.delete<EventApiResponse<Event>>(`/events/${id}`),
+// }
+
+// export const courseScheduleApi = {
+//     getCourseSchedule: () => axiosInstance.get<CourseScheduleApiResponse<CourseSchedule[]>>('/course-schedule'),
+//     getCourseScheduleById: (id: string) => axiosInstance.get<CourseScheduleApiResponse<CourseSchedule>>(`/course-schedule/${id}`),
+//     createCourseSchedule: (courseSchedule: CourseSchedule) => axiosInstance.post<CourseScheduleApiResponse<CourseSchedule>>('/course-schedule', courseSchedule),
+//     updateCourseSchedule: (courseSchedule: CourseSchedule) => axiosInstance.put<CourseScheduleApiResponse<CourseSchedule>>('/course-schedule', courseSchedule),
+//     deleteCourseSchedule: (id: string) => axiosInstance.delete<CourseScheduleApiResponse<CourseSchedule>>(`/course-schedule/${id}`),
+// }
+
+// export const courseScheduleClassApi = { 
+//     getCourseScheduleClasses: () => axiosInstance.get<CourseScheduleClassApiResponse<CourseScheduleClass[]>>('/course-schedule-classes'),
+//     getCourseScheduleClassById: (id: string) => axiosInstance.get<CourseScheduleClassApiResponse<CourseScheduleClass>>(`/course-schedule-classes/${id}`),
+//     createCourseScheduleClass: (courseScheduleClass: CourseScheduleClass) => axiosInstance.post<CourseScheduleClassApiResponse<CourseScheduleClass>>('/course-schedule-classes', courseScheduleClass),
+//     updateCourseScheduleClass: (courseScheduleClass: CourseScheduleClass) => axiosInstance.put<CourseScheduleClassApiResponse<CourseScheduleClass>>('/course-schedule-classes', courseScheduleClass),
+//     deleteCourseScheduleClass: (id: string) => axiosInstance.delete<CourseScheduleClassApiResponse<CourseScheduleClass>>(`/course-schedule-classes/${id}`),
+// }
+
+// export const courseScheduleAttendanceApi = {
+//     getCourseScheduleAttendance: () => axiosInstance.get<CourseScheduleAttendanceApiResponse<CourseScheduleAttendance[]>>('/course-schedule-attendance'),
+//     getCourseScheduleAttendanceById: (id: string) => axiosInstance.get<CourseScheduleAttendanceApiResponse<CourseScheduleAttendance>>(`/course-schedule-attendance/${id}`),
+//     createCourseScheduleAttendance: (courseScheduleAttendance: CourseScheduleAttendance) => axiosInstance.post<CourseScheduleAttendanceApiResponse<CourseScheduleAttendance>>('/course-schedule-attendance', courseScheduleAttendance),
+//     updateCourseScheduleAttendance: (courseScheduleAttendance: CourseScheduleAttendance) => axiosInstance.put<CourseScheduleAttendanceApiResponse<CourseScheduleAttendance>>('/course-schedule-attendance', courseScheduleAttendance),
+//     deleteCourseScheduleAttendance: (id: string) => axiosInstance.delete<CourseScheduleAttendanceApiResponse<CourseScheduleAttendance>>(`/course-schedule-attendance/${id}`),
+// }
