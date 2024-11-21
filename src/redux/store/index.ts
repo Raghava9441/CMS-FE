@@ -2,6 +2,7 @@ import { configureStore } from '@reduxjs/toolkit';
 import authReducer from '../slices/authSlice';
 import usersReducer from '../slices/users.slice';
 import organizationReducer from '../slices/organization.slice';
+import teacherReducer from '../slices/Teacher.slice';
 import { thunk } from 'redux-thunk';
 
 const store = configureStore({
@@ -9,6 +10,7 @@ const store = configureStore({
         auth: authReducer,
         user: usersReducer,
         organization: organizationReducer,
+        teacher: teacherReducer,
     },
     middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(thunk), // Explicitly add thunk middleware
 });

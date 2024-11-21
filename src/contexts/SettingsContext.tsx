@@ -121,7 +121,7 @@ const initialState: {
     colorOption: Array<{ name: string; value: string }>;
 } = {
     themeMode: 'light',
-    themeDirection: 'ltr',
+    themeDirection: 'rtl',
     themeColor: 'default',
     themeStretch: false,
     onChangeMode: () => { },

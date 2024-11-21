@@ -29,7 +29,7 @@ export const teacherApi = {
     getTeachers: () => axiosInstance.get<TeacherApiResponse<Teacher[]>>('/teachers'),
     getTeacherById: (id: string) => axiosInstance.get<TeacherApiResponse<Teacher>>(`/teachers/${id}`),
     createTeacher: (teacher: Teacher) => axiosInstance.post<TeacherApiResponse<Teacher>>('/teachers', teacher),
-    updateTeacher: (teacher: Teacher) => axiosInstance.put<TeacherApiResponse<Teacher>>('/teachers', teacher),
+    updateTeacher: (teacher: Omit<Teacher, 'createdAt' | 'updatedAt'>, _id: string) => axiosInstance.put<TeacherApiResponse<Teacher>>(`/teachers/${_id}`, teacher),
     deleteTeacher: (id: string) => axiosInstance.delete<TeacherApiResponse<Teacher>>(`/teachers/${id}`),
 }
 
@@ -50,7 +50,7 @@ export const parentApi = {
 }
 
 
-// TODO:types need to implimnet for each api call to be able to use them 
+// TODO:types need to implimnet for each api call to be able to use them
 
 // export const courseApi = {
 //     getCourses: () => axiosInstance.get<CourseApiResponse<Course[]>>('/courses'),
@@ -108,7 +108,7 @@ export const parentApi = {
 //     deleteCourseSchedule: (id: string) => axiosInstance.delete<CourseScheduleApiResponse<CourseSchedule>>(`/course-schedule/${id}`),
 // }
 
-// export const courseScheduleClassApi = { 
+// export const courseScheduleClassApi = {
 //     getCourseScheduleClasses: () => axiosInstance.get<CourseScheduleClassApiResponse<CourseScheduleClass[]>>('/course-schedule-classes'),
 //     getCourseScheduleClassById: (id: string) => axiosInstance.get<CourseScheduleClassApiResponse<CourseScheduleClass>>(`/course-schedule-classes/${id}`),
 //     createCourseScheduleClass: (courseScheduleClass: CourseScheduleClass) => axiosInstance.post<CourseScheduleClassApiResponse<CourseScheduleClass>>('/course-schedule-classes', courseScheduleClass),
