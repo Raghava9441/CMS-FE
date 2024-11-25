@@ -13,18 +13,29 @@ type Props = {};
 function TeacherPage({ }: Props) {
   const dispatch = useDispatch<AppDispatch>();
   const teachers = useSelector((state: RootState) => state.teacher.data);
-  console.log(teachers)  //TODO: able to get the data form the store but not able to view in the grid check the clumns and the data and also create form for teacher 
+
+  const { data } = useSelector((state: RootState) => state.user);
+
+  console.log(data?.users?.find((user: any) => user._id === "670170925e352d755ddf3cbf"))
+
+
 
   const columns: GridColDef[] = [
-    { field: 'name', headerName: 'Name', flex: 1, editable: true, headerClassName: 'theme--header' },
-    { field: 'category', headerName: 'Category', flex: 1, editable: true, headerClassName: 'theme--header' },
-    { field: 'number', headerName: 'Number', flex: 1, editable: true, headerClassName: 'theme--header' },
-    { field: 'contactEmail', headerName: 'Contact Email', flex: 1, editable: true, headerClassName: 'theme--header' },
-    { field: 'contactPhone', headerName: 'Contact Phone', flex: 1, editable: true, headerClassName: 'theme--header' },
-    { field: 'website', headerName: 'Website', flex: 1, editable: true, headerClassName: 'theme--header' },
-    { field: 'logo', headerName: 'Logo', flex: 1, editable: true, headerClassName: 'theme--header' },
-    { field: 'establishedDate', headerName: 'Established Date', flex: 1, editable: true, headerClassName: 'theme--header' },
-    { field: 'description', headerName: 'Description', flex: 1, editable: true, headerClassName: 'theme--header' },
+    {
+      field: 'userId', headerName: 'Teacher Name', flex: 1, editable: true, headerClassName: 'theme--header', valueGetter: (value) => {
+        const user = data?.users?.find((user: any) => user._id === value);
+        return user?.fullname;
+      }
+    },
+    { field: 'subjects', headerName: 'Subjects', flex: 1, editable: true, headerClassName: 'theme--header' },
+    { field: 'qualifications', headerName: 'Qualifications', flex: 1, editable: true, headerClassName: 'theme--header' },
+    { field: 'experience', headerName: 'Experience', flex: 1, editable: true, headerClassName: 'theme--header' },
+    { field: 'officeHours', headerName: 'Office Hours', flex: 1, editable: true, headerClassName: 'theme--header' },
+    { field: 'coursesTaught', headerName: 'Courses Taught', flex: 1, editable: true, headerClassName: 'theme--header' },
+    { field: 'performanceReviews', headerName: 'Performance Reviews', flex: 1, editable: true, headerClassName: 'theme--header' },
+    { field: 'specialResponsibilities', headerName: 'Special Responsibilities', flex: 1, editable: true, headerClassName: 'theme--header' },
+    { field: 'createdAt', headerName: 'Created At', flex: 1, editable: false, headerClassName: 'theme--header' },
+    { field: 'updatedAt', headerName: 'Updated At', flex: 1, editable: false, headerClassName: 'theme--header' },
   ];
 
   const [rowModesModel, setRowModesModel] = useState<GridRowModesModel>({});
@@ -36,9 +47,8 @@ function TeacherPage({ }: Props) {
 
 
   useEffect(() => {
-    alert("hehe")
     // if (teachers?.teachers.length === 0) {
-      dispatch(TeacherActions.fetchTeachers());
+    dispatch(TeacherActions.fetchTeachers());
     // }
   }, [dispatch]);
 

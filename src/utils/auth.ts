@@ -1,4 +1,8 @@
 import { User } from "@api/auth.api";
+import { Organization } from "@models/organization.modal";
+import { Parent } from "@models/parent.models";
+import { Student } from "@models/student.models";
+import { Teacher } from "@models/teacher.modals";
 
 export type Role = 'ADMIN' | 'TEACHER' | 'STUDENT' | 'PARENT' | 'ORGADMIN';
 
@@ -17,19 +21,19 @@ type RolesWithPermissions = {
 
 type Permissions = {
     organizations: {
-        dataType: "organizations" //remove this and add actual data type
+        dataType: Organization 
         action: "view" | "create" | "update" | "delete"
     }
     teachers: {
-        dataType: 'teachers'//remove this and add actual data type
+        dataType: Teacher
         action: "view" | "create" | "update" | "delete"
     }
     students: {
-        dataType: 'students'//remove this and add actual data type
+        dataType: Student
         action: "view" | "create" | "update" | "delete"
     }
     parents: {
-        dataType: 'parents'//remove this and add actual data type
+        dataType: Parent
         action: "view" | "create" | "update" | "delete"
     }
     departments: {

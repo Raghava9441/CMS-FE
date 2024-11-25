@@ -1,17 +1,13 @@
-//create organization actions to dispatch
-// import {  organizationApi } from '../../api/organization.api';
-// import { Organization } from '../../models/organization.modal';
 import { AppDispatch } from '../store';
 import { toast } from 'react-toastify';
 import { teacherApi } from '@api/api';
-import { Teacher } from '@types/teacher.modals';
+import { Teacher } from '@models/teacher.modals';
 import { createTeacherStart, createTeacherSuccess, deleteTeacherStart, deleteTeacherSuccess, fetchTeacherByIdStart, fetchTeacherByIdSuccess, fetchTeachersStart, fetchTeachersSuccess, updateTeacherStart, updateTeacherSuccess } from '@redux/slices/Teacher.slice';
 
 const fetchTeachers = () => async (dispatch: AppDispatch) => {
     try {
         dispatch(fetchTeachersStart());
         const response = await teacherApi.getTeachers();
-        console.log(response)
         dispatch(fetchTeachersSuccess(response.data.data));
     } catch (error) {
         toast.error(error.response?.data?.data || 'Failed to fetch organizations', {
@@ -24,7 +20,6 @@ const fetchTeacherById = (id: string) => async (dispatch: AppDispatch) => {
     try {
         dispatch(fetchTeacherByIdStart()); // Set loading state to true
         const response = await teacherApi.getTeacherById(id);
-        console.log(response.data)
         dispatch(fetchTeacherByIdSuccess(response.data.data)); // Pass data to success action
     } catch (error) {
         toast.error(error.response.data.data || 'Failed to fetch organization', {
@@ -48,7 +43,6 @@ const createTeachers = (organization: Omit<Teacher, 'createdAt' | 'updatedAt'>) 
 
 const updateTeachers = (teacher: Omit<Teacher, 'createdAt' | 'updatedAt'>) => async (dispatch: AppDispatch) => {
     try {
-        console.log(teacher)
         dispatch(updateTeacherStart()); // Set loading state to true
         if (teacher._id) {
             const response = await teacherApi.updateTeacher(teacher, teacher._id);
