@@ -488,7 +488,7 @@ export function hasPermission<Resource extends keyof Permissions>(
     resource: Resource,
     action: Permissions[Resource]["action"],
     data?: Permissions[Resource]["dataType"]
-) {
+): boolean {
     return user.roles.some((role: keyof RolesWithPermissions) => {
         const permission = (ROLES as RolesWithPermissions)[role][resource]?.[action]
         if (permission == null) return false

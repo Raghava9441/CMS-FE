@@ -4,6 +4,9 @@ interface Teacher {
     __v: number;
     _id: string;
     userId: string;
+    name: string;
+    phone: string;
+    email: string;
     organizationId: string;
     departments?: string[];
     subjects?: string[];

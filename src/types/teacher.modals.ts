@@ -30,6 +30,9 @@ interface PerformanceReview {
 export interface Teacher {
     _id?: string; // Use string for ObjectId, _id is optional when creating a new teacher
     userId: string; // Use string for ObjectId
+    name: string;
+    phone: string;
+    email: string;
     organizationId: string; // Use string for ObjectId
     departments?: string[]; // Use string[] for ObjectId array
     subjects?: string[]; // Use string[] for ObjectId array

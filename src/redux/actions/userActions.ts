@@ -1,5 +1,4 @@
 //create user actions to dispatch
-import { authservice, User } from '../../api/auth.api';
 import { AppDispatch } from '../store';
 import { createUserStart, createUserSuccess, deleteUserStart, deleteUserSuccess, fetchUserByIdStart, fetchUserByIdSuccess, fetchUsersFailure, fetchUsersStart, fetchUsersSuccess, updateUserStart, updateUserSuccess } from '../slices/users.slice';
 import { toast } from 'react-toastify';
@@ -22,7 +21,7 @@ export const fetchUsers = () => async (dispatch: AppDispatch) => {
 export const fetchUserById = (id: string) => async (dispatch: AppDispatch) => {
     try {
         dispatch(fetchUserByIdStart()); // Set loading state to true
-        const response = await authservice.getUserById(id);
+        const response = await userApi.getUserById(id);
         console.log(response.data)
         dispatch(fetchUserByIdSuccess(response.data)); // Pass data to success action
     } catch (error) {

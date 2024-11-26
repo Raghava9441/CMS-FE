@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { authservice } from '../api/auth.api';
+import { userApi } from '@api/api';
 
 export interface ApiErrorResponse {
     statusCode: number;
@@ -21,7 +22,7 @@ export class ApiError extends Error {
 }
 
 export const axiosInstance = axios.create({
-    baseURL: "https://cmsbe-1hzzygsm.b4a.run/api/v1/",  // Make sure this matches your backend URL exactly
+    baseURL: "http://localhost:8000/api/v1",  // Make sure this matches your backend URL exactly
     withCredentials: true,
     headers: {
         "Content-Type": "application/json",
@@ -67,7 +68,7 @@ axiosInstance.interceptors.response.use(
                     throw new Error('No refresh token available');
                 }
 
-                const response = await authservice.refreshAccessToken(refreshToken);
+                const response = await userApi.refreshAccessToken(refreshToken);
                 refreshingTokenInProgress = false;
 
                 if (!(response instanceof ApiError)) {
