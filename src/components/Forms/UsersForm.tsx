@@ -38,6 +38,7 @@ interface Organization {
 interface UserFormValues {
     _id: string;
     organizations: Organization | Organization[];
+    organizationId: string;
     username: string;
     email: string;
     fullname: string;
@@ -71,6 +72,7 @@ const UsersForm: React.FC<UserFormProps> = ({ initialValues, onSubmit, onClose }
     const defaultValues: UserFormValues = {
         _id: '',
         organizations: organizations || [],
+        organizationId: organizations ? organizations[0].id : '',
         username: '',
         email: '',
         fullname: '',
@@ -130,6 +132,8 @@ const UsersForm: React.FC<UserFormProps> = ({ initialValues, onSubmit, onClose }
             dateOfBirth: data.dateOfBirth ? data.dateOfBirth.format('YYYY-MM-DD') : null,
             createdAt: data.createdAt ? data.createdAt.format('YYYY-MM-DD') : null,
             updatedAt: data.updatedAt ? data.updatedAt.format('YYYY-MM-DD') : null,
+            organizations: data.organizations,
+            organizationId: data.organizations ? data.organizations[0].id : '',
         };
         onSubmit(formattedData);
     };

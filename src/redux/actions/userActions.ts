@@ -33,7 +33,8 @@ export const fetchUserById = (id: string) => async (dispatch: AppDispatch) => {
 
 export const createUser = (user: Omit<User, 'password' | 'accessToken' | 'refreshToken'>) => async (dispatch: AppDispatch) => {
     try {
-        dispatch(createUserStart()); // Set loading state to true
+        dispatch(createUserStart());
+        console.log(user) // Set loading state to true
         const response = await userApi.createUser(user);
         console.log(response)
         dispatch(createUserSuccess(response.data.data)); // Pass data to success action
