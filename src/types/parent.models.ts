@@ -16,13 +16,15 @@ interface EmergencyContact {
 // Define the Parent interface
 export interface Parent {
     _id?: string; // Optional _id for ObjectId
+    name: string;
+    phone: string;
+    email: string;
     userId: string; // Use string for ObjectId reference to User
     childrenIds?: string[]; // Use string[] for ObjectId references to Student
     organizationId: string; // Use string for ObjectId reference to Organization
     dateOfBirth: Date;
     address: Address;
     phoneNumber: string;
-    email: string;
     occupation?: string; // Optional field
     relationshipToStudent: string;
     emergencyContacts: EmergencyContact[];

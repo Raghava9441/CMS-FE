@@ -1,8 +1,8 @@
-import { User } from "@api/auth.api";
 import { Organization } from "@models/organization.modal";
 import { Parent } from "@models/parent.models";
 import { Student } from "@models/student.models";
 import { Teacher } from "@models/teacher.modals";
+import { User } from "@models/user.modals";
 
 export type Role = 'ADMIN' | 'TEACHER' | 'STUDENT' | 'PARENT' | 'ORGADMIN';
 
@@ -162,8 +162,7 @@ const ROLES = {
             create: false,
             update: false,
             delete: false
-        }
-        ,
+        },
         teachers: {
             view: (user: any, teacher: any) => user.organizationId === teacher.organizationId,
             create: false,
@@ -489,11 +488,10 @@ export function hasPermission<Resource extends keyof Permissions>(
     action: Permissions[Resource]["action"],
     data?: Permissions[Resource]["dataType"]
 ): boolean {
-    return user.roles.some((role: keyof RolesWithPermissions) => {
-        const permission = (ROLES as RolesWithPermissions)[role][resource]?.[action]
-        if (permission == null) return false
+    const role = user.role as keyof RolesWithPermissions;
+    const permission = (ROLES as RolesWithPermissions)[role][resource]?.[action];
+    if (permission == null) return false;
 
-        if (typeof permission === "boolean") return permission
-        return data != null && permission(user, data)
-    })
+    if (typeof permission === "boolean") return permission;
+    return data != null && permission(user, data);
 }
