@@ -1,61 +1,79 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Controller, useForm, SubmitHandler } from 'react-hook-form';
 import { TextField, Grid, Button, Box, Select, MenuItem, FormControl, InputLabel, FormHelperText, Typography } from '@mui/material';
 import dayjs, { Dayjs } from 'dayjs';
 import { RootState } from '../../redux/store';
 import { useSelector } from 'react-redux';
-interface TeacherFormValues {
+import { DatePicker } from '@mui/x-date-pickers';
+
+interface Address {
+    street?: string;
+    city?: string;
+    state?: string;
+    zip?: string;
+    country?: string;
+}
+
+export interface EmergencyContact {
+    name: string;
+    relationship: string;
+    phone: string;
+}
+
+interface StudentFormValues {
     _id: string;
     userId: string;
     name: string;
     phone: string;
-    email: string;
+    email?: string;
     organizationId: string;
-    organizations?: string[];
-    departments?: string[];
-    subjects?: string[];
-    qualifications?: string;
-    experience?: number;
-    officeHours?: string;
-    coursesTaught?: string[];
-    performanceReviews?: string[];
-    specialResponsibilities?: string;
+    enrolledCoursesIds?: string[];
+    currentClassId?: string;
+    dateOfBirth: Dayjs | null;
+    address: Address;
+    emergencyContacts: EmergencyContact[];
+    enrollmentDate: Dayjs | null;
+    graduationDate?: Dayjs | null;
     createdAt?: Dayjs | null;
     updatedAt?: Dayjs | null;
 }
 
-interface TeacherFormProps {
-    initialValues?: Partial<TeacherFormValues>;
-    onSubmit: SubmitHandler<TeacherFormValues>;
+interface StudentFormProps {
+    initialValues?: Partial<StudentFormValues>;
+    onSubmit: SubmitHandler<StudentFormValues>;
     onClose: () => void;
 }
 
-const TeacherForm: React.FC<TeacherFormProps> = ({ initialValues, onSubmit, onClose }) => {
+const StudentForm: React.FC<StudentFormProps> = ({ initialValues, onSubmit, onClose }) => {
     const { data } = useSelector((state: RootState) => state.user);
     const { data: orgdata } = useSelector((state: RootState) => state.organization);
-    const users = data?.users?.filter(x => x.role === 'TEACHER');
+    const users = data?.users?.filter(x => x.role === 'STUDENT');
     const organizations = orgdata?.organizations;
-    const defaultValues: TeacherFormValues = {
+    const defaultValues: StudentFormValues = {
         _id: '',
         userId: '',
         name: '',
         phone: '',
         email: '',
         organizationId: '',
-        organizations: [],
-        departments: [],
-        subjects: [],
-        qualifications: '',
-        experience: 0,
-        officeHours: '',
-        coursesTaught: [],
-        performanceReviews: [],
-        specialResponsibilities: '',
+        enrolledCoursesIds: [],
+        currentClassId: '',
+        dateOfBirth: null,
+        address: {
+            street: '',
+            city: '',
+            state: '',
+            zip: '',
+            country: '',
+        },
+        emergencyContacts: [],
+        enrollmentDate: null,
+        graduationDate: null,
         createdAt: null,
         updatedAt: null,
     };
 
-    const { control, handleSubmit, formState: { errors }, reset } = useForm<TeacherFormValues>({
+    const { control, handleSubmit, formState: { errors }, reset } = useForm<StudentFormValues>({
         defaultValues: defaultValues,
     });
 
@@ -63,15 +81,17 @@ const TeacherForm: React.FC<TeacherFormProps> = ({ initialValues, onSubmit, onCl
         if (initialValues) {
             reset({
                 ...initialValues,
+                dateOfBirth: initialValues.dateOfBirth ? dayjs(initialValues.dateOfBirth) : null,
                 createdAt: initialValues.createdAt ? dayjs(initialValues.createdAt) : null,
                 updatedAt: initialValues.updatedAt ? dayjs(initialValues.updatedAt) : null,
             });
         }
     }, [initialValues, reset]);
 
-    const onSubmitForm: SubmitHandler<TeacherFormValues> = (data) => {
+    const onSubmitForm: SubmitHandler<StudentFormValues> = (data) => {
         const formattedData = {
             ...data,
+            dateOfBirth: data.dateOfBirth ? data.dateOfBirth.format('YYYY-MM-DD') : null,
             createdAt: data.createdAt ? data.createdAt.format('YYYY-MM-DD') : null,
             updatedAt: data.updatedAt ? data.updatedAt.format('YYYY-MM-DD') : null,
         };
@@ -226,202 +246,149 @@ const TeacherForm: React.FC<TeacherFormProps> = ({ initialValues, onSubmit, onCl
                         )}
                     />
                 </Grid>
-                {/* <Grid item xs={12} md={6}>
-                    <Controller
-                        name="departments"
-                        control={control}
-                        rules={{ required: 'Departments is required' }}
-                        render={({ field }) => (
-                            <FormControl fullWidth margin="normal" error={!!errors.departments}>
-                                <InputLabel>Departments</InputLabel>
-                                <Select
-                                    {...field}
-                                    label="Departments"
-                                    multiple
-                                    renderValue={(selected) => (
-                                        <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
-                                            {selected.map((value) => (
-                                                <Typography key={value} component="span" variant="body2">
-                                                    {departments?.find(dep => dep.id === value)?.name}
-                                                </Typography>
-                                            ))}
-                                        </Box>
-                                    )}
-                                >
-                                    {departments?.map((dep: { id: string; name: string }) => (
-                                        <MenuItem key={dep.id} value={dep.id}>
-                                            {dep.name}
-                                        </MenuItem>
-                                    ))}
-                                </Select>
-                                <FormHelperText>{errors.departments?.message}</FormHelperText>
-                            </FormControl>
-                        )}
-                    />
-                </Grid> */}
-                {/* <Grid item xs={12} md={6}>
-                    <Controller
-                        name="subjects"
-                        control={control}
-                        rules={{ required: 'Subjects is required' }}
-                        render={({ field }) => (
-                            <FormControl fullWidth margin="normal" error={!!errors.subjects}>
-                                <InputLabel>Subjects</InputLabel>
-                                <Select
-                                    {...field}
-                                    label="Subjects"
-                                    multiple
-                                    renderValue={(selected) => (
-                                        <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
-                                            {selected.map((value) => (
-                                                <Typography key={value} component="span" variant="body2">
-                                                    {subjects?.find(sub => sub.id === value)?.name}
-                                                </Typography>
-                                            ))}
-                                        </Box>
-                                    )}
-                                >
-                                    {subjects?.map((sub) => (
-                                        <MenuItem key={sub.id} value={sub.id}>
-                                            {sub.name}
-                                        </MenuItem>
-                                    ))}
-                                </Select>
-                                <FormHelperText>{errors.subjects?.message}</FormHelperText>
-                            </FormControl>
-                        )}
-                    />
-                </Grid> */}
                 <Grid item xs={12} md={6}>
                     <Controller
-                        name="qualifications"
+                        name="currentClassId"
                         control={control}
-                        rules={{ required: 'Qualifications is required' }}
+                        rules={{ required: 'Current Class is required' }}
                         render={({ field }) => (
                             <TextField
                                 {...field}
-                                label="Qualifications"
+                                label="Current Class"
                                 fullWidth
                                 margin="normal"
-                                error={!!errors.qualifications}
-                                helperText={errors.qualifications?.message}
+                                error={!!errors.currentClassId}
+                                helperText={errors.currentClassId?.message}
                             />
                         )}
                     />
                 </Grid>
                 <Grid item xs={12} md={6}>
                     <Controller
-                        name="experience"
+                        name="dateOfBirth"
                         control={control}
-                        rules={{ required: 'Experience is required' }}
                         render={({ field }) => (
-                            <TextField
-                                {...field}
-                                label="Experience"
-                                fullWidth
-                                margin="normal"
-                                error={!!errors.experience}
-                                helperText={errors.experience?.message}
+                            <DatePicker
+                                label="Date of Birth"
+                                value={field.value}
+                                onChange={(date: Dayjs | null) => field.onChange(date)}
+                                slotProps={{
+                                    textField: {
+                                        fullWidth: true,
+                                        margin: "normal",
+                                        error: !!errors.dateOfBirth,
+                                        helperText: errors.dateOfBirth?.message,
+                                    },
+                                }}
                             />
                         )}
                     />
                 </Grid>
                 <Grid item xs={12} md={6}>
                     <Controller
-                        name="officeHours"
+                        name="address"
                         control={control}
-                        rules={{ required: 'Office Hours is required' }}
-                        render={({ field }) => (
+                        render={({ field: { onChange, value } }) => (
                             <TextField
-                                {...field}
-                                label="Office Hours"
+                                label="Address"
                                 fullWidth
                                 margin="normal"
-                                error={!!errors.officeHours}
-                                helperText={errors.officeHours?.message}
+                                value={value}
+                                onChange={onChange}
+                                error={!!errors.address}
+                                helperText={errors.address?.message}
+                            />
+                        )}
+                    />
+                </Grid>
+                <Grid item xs={12} md={6}>
+                    <Controller
+                        name="email"
+                        control={control}
+                        render={({ field: { onChange, value } }) => (
+                            <TextField
+                                label="Email"
+                                fullWidth
+                                margin="normal"
+                                value={value}
+                                onChange={onChange}
+                                error={!!errors.email}
+                                helperText={errors.email?.message}
                             />
                         )}
                     />
                 </Grid>
                 {/* <Grid item xs={12} md={6}>
                     <Controller
-                        name="coursesTaught"
+                        name="emergencyContacts"
                         control={control}
-                        rules={{ required: 'Courses Taught is required' }}
+                        rules={{ required: 'Emergency Contacts is required' }}
                         render={({ field }) => (
-                            <FormControl fullWidth margin="normal" error={!!errors.coursesTaught}>
-                                <InputLabel>Courses Taught</InputLabel>
+                            <FormControl fullWidth margin="normal" error={!!errors.emergencyContacts}>
+                                <InputLabel>Emergency Contacts</InputLabel>
                                 <Select
                                     {...field}
-                                    label="Courses Taught"
+                                    label="Emergency Contacts"
                                     multiple
                                     renderValue={(selected) => (
                                         <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
                                             {selected.map((value) => (
                                                 <Typography key={value} component="span" variant="body2">
-                                                    {coursesTaught?.find(course => course.id === value)?.name}
+                                                    {emergencyContacts?.find(contact => contact.id === value)?.name}
                                                 </Typography>
                                             ))}
                                         </Box>
                                     )}
                                 >
-                                    {coursesTaught?.map((course) => (
-                                        <MenuItem key={course.id} value={course.id}>
-                                            {course.name}
+                                    {emergencyContacts?.map((contact) => (
+                                        <MenuItem key={contact.id} value={contact.id}>
+                                            {contact.name}
                                         </MenuItem>
                                     ))}
                                 </Select>
-                                <FormHelperText>{errors.coursesTaught?.message}</FormHelperText>
-                            </FormControl>
-                        )}
-                    />
-                </Grid> */}
-                {/* <Grid item xs={12} md={6}>
-                    <Controller
-                        name="performanceReviews"
-                        control={control}
-                        rules={{ required: 'Performance Reviews is required' }}
-                        render={({ field }) => (
-                            <FormControl fullWidth margin="normal" error={!!errors.performanceReviews}>
-                                <InputLabel>Performance Reviews</InputLabel>
-                                <Select
-                                    {...field}
-                                    label="Performance Reviews"
-                                    multiple
-                                    renderValue={(selected) => (
-                                        <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
-                                            {selected.map((value) => (
-                                                <Typography key={value} component="span" variant="body2">
-                                                    {performanceReviews?.find(review => review.id === value)?.name}
-                                                </Typography>
-                                            ))}
-                                        </Box>
-                                    )}
-                                >
-                                    {performanceReviews?.map((review) => (
-                                        <MenuItem key={review.id} value={review.id}>
-                                            {review.name}
-                                        </MenuItem>
-                                    ))}
-                                </Select>
-                                <FormHelperText>{errors.performanceReviews?.message}</FormHelperText>
+                                <FormHelperText>{errors.emergencyContacts?.message}</FormHelperText>
                             </FormControl>
                         )}
                     />
                 </Grid> */}
                 <Grid item xs={12} md={6}>
                     <Controller
-                        name="specialResponsibilities"
+                        name="enrollmentDate"
                         control={control}
-                        rules={{ required: 'Special Responsibilities is required' }}
                         render={({ field }) => (
-                            <TextField
-                                {...field}
-                                label="Special Responsibilities"
-                                fullWidth
-                                margin="normal"
-                                error={!!errors.specialResponsibilities}
-                                helperText={errors.specialResponsibilities?.message}
+                            <DatePicker
+                                label="Enrollment Date"
+                                value={field.value}
+                                onChange={(date: Dayjs | null) => field.onChange(date)}
+                                slotProps={{
+                                    textField: {
+                                        fullWidth: true,
+                                        margin: "normal",
+                                        error: !!errors.enrollmentDate,
+                                        helperText: errors.enrollmentDate?.message,
+                                    },
+                                }}
+                            />
+                        )}
+                    />
+                </Grid>
+                <Grid item xs={12} md={6}>
+                    <Controller
+                        name="graduationDate"
+                        control={control}
+                        render={({ field }) => (
+                            <DatePicker
+                                label="Graduation Date"
+                                value={field.value}
+                                onChange={(date: Dayjs | null) => field.onChange(date)}
+                                slotProps={{
+                                    textField: {
+                                        fullWidth: true,
+                                        margin: "normal",
+                                        error: !!errors.graduationDate,
+                                        helperText: errors.graduationDate?.message,
+                                    },
+                                }}
                             />
                         )}
                     />
@@ -441,4 +408,4 @@ const TeacherForm: React.FC<TeacherFormProps> = ({ initialValues, onSubmit, onCl
     );
 };
 
-export default TeacherForm;
+export default StudentForm;
