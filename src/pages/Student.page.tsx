@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux"
 import { AppDispatch, RootState } from "@redux/store"
 import { useEffect, useState } from "react"
 import { StudentActions } from "@redux/actions/student.actions"
+import StudentForm from "@components/Forms/Student.Form"
 
 type Props = {};
 
@@ -89,17 +90,17 @@ function StudentPage({ }: Props) {
         loading={loading}
         reloadData={handleReloadData}
       />
-      {/* <GenericModal
+      <GenericModal
         open={open}
         onClose={handleClose}
         title={modalTitle}
       >
-        <OrganizationForm
+        <StudentForm
           initialValues={selectedRow}
           onSubmit={handleSave}
           onClose={handleClose}
         />
-      </GenericModal> */}
+      </GenericModal>
     </Box>
   )
 }

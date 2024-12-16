@@ -6,19 +6,15 @@ import {
     TextField,
     Button,
     Box,
-    // Link,
     Grid,
     CircularProgress,
     useTheme,
 } from '@mui/material';
-import { useNotifications } from '@toolpad/core/useNotifications';
 import appRoutes from '../routes/routePaths';
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { AppDispatch, RootState } from '../redux/store';
-import { authservice } from '../api/auth.api';
+import { AppDispatch, RootState } from '@redux/store';
 import { authActions } from '../redux/actions/auth.actions';
-import { Icon } from '@iconify-icon/react';
 import SchoolIcon from '@mui/icons-material/School';
 import { LoginIcon } from '@assets/icons';
 
@@ -47,7 +43,71 @@ const LoginPage: React.FC = () => {
         email: '',
         password: '',
     });
-    const notifications = useNotifications();
+
+    // Define styles at the top
+    const styles = {
+        container: {
+            maxWidth: { xs: '90%', sm: '80%', md: 'md' },
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            height: '100vh',
+            position: 'relative',
+        },
+        paper: {
+            p: { xs: 2, sm: 3, md: 4 },
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            flexDirection: { xs: 'column', sm: 'row' },
+            width: '100%',
+            zIndex: 10,
+            opacity: 0.95,
+            position: 'absolute',
+            top: '50%',
+            left: '50%',
+            transform: 'translate(-50%, -50%)',
+        },
+        schoolIcon: {
+            fontSize: 496,
+            color: theme.palette.primary.main,
+            position: 'absolute',
+            top: '50%',
+            left: '50%',
+            transform: 'translate(-50%, -50%)',
+        },
+        loginIcon: {
+            width: '100%',
+            height: 'auto',
+            fill: theme.palette.primary.main,
+        },
+        formBox: {
+            mt: 1,
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+        },
+        textField: {
+            margin: 'normal',
+            required: true,
+            size: 'small',
+            fullWidth: true,
+        },
+        button: {
+            mt: 3,
+            mb: 2,
+            fullWidth: true,
+            variant: 'contained',
+        },
+        forgotPasswordLink: {
+            fontSize: 'small',
+            width: '100%',
+            textAlign: 'right',
+        },
+        signUpLink: {
+            fontSize: 'small',
+        },
+    };
 
     /**
      * 
@@ -79,13 +139,14 @@ const LoginPage: React.FC = () => {
             //     severity: 'warning',
             // });
         } catch (error: unknown) {
+            console.error(error);
         }
     };
 
     return (
-        <Container component="main" maxWidth="xl" sx={{ maxWidth: { xs: '90%', sm: '80%', md: 'md' }, display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100vh', position: 'relative' }}>
-            <SchoolIcon sx={{ fontSize: 496, color: theme.palette.primary.main, position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)' }} />
-            <Paper elevation={3} sx={{ p: { xs: 2, sm: 3, md: 4 }, display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: { xs: 'column', sm: 'row' }, width: '100%', zIndex: 10, opacity: 0.95, position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)' }}>
+        <Container component="main" maxWidth="xl" sx={styles.container}>
+            <SchoolIcon sx={styles.schoolIcon} />
+            <Paper elevation={3} sx={styles.paper}>
                 <Box sx={{ width: { xs: '100%', sm: '50%' }, display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
                     <LoginIcon width="100%" height="auto" fill={theme.palette.primary.main} />
                 </Box>
@@ -94,7 +155,7 @@ const LoginPage: React.FC = () => {
                         <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginBottom: '1rem' }}>
                             <Typography variant="h5" sx={{ color: theme.palette.primary.main }}>ScholarSync</Typography>  <SchoolIcon sx={{ fontSize: 48, color: theme.palette.primary.main }} />
                         </Box>
-                        <Box component="form" onSubmit={handleSubmit} sx={{ mt: 1, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                        <Box component="form" onSubmit={handleSubmit} sx={styles.formBox}>
                             <TextField
                                 margin="normal"
                                 required
@@ -107,6 +168,7 @@ const LoginPage: React.FC = () => {
                                 autoFocus
                                 value={credentials.email}
                                 onChange={handleChange}
+                                sx={styles.textField}
                             />
                             <TextField
                                 margin="normal"
@@ -120,8 +182,9 @@ const LoginPage: React.FC = () => {
                                 autoComplete="current-password"
                                 value={credentials.password}
                                 onChange={handleChange}
+                                sx={styles.textField}
                             />
-                            <Grid item sx={{ fontSize: 'small', width: '100%', textAlign: "right", }}>
+                            <Grid item sx={styles.forgotPasswordLink}>
                                 <Link to={appRoutes.FORGOT_PASSWORD}>
                                     Forgot password?
                                 </Link>
@@ -130,7 +193,7 @@ const LoginPage: React.FC = () => {
                                 type="submit"
                                 fullWidth
                                 variant="contained"
-                                sx={{ mt: 3, mb: 2 }}
+                                sx={styles.button}
                                 disabled={loading}
                             >
                                 {loading ? (
@@ -140,7 +203,7 @@ const LoginPage: React.FC = () => {
                                 )}
                             </Button>
                             <Grid container sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                                <Grid item sx={{ fontSize: 'small' }}>
+                                <Grid item sx={styles.signUpLink}>
                                     <Link to={appRoutes.REGISTER}>
                                         {"Don't have an account? Sign Up"}
                                     </Link>

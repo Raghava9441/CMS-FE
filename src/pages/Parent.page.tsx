@@ -5,6 +5,8 @@ import { Box } from "@mui/material";
 import { ParentActions } from "@redux/actions/parent.actions";
 import { useEffect, useState } from "react";
 import { GridColDef, GridRowModesModel } from "@mui/x-data-grid";
+import GenericModal from "@components/GenericModal";
+import ParentForm from "@components/Forms/Parent.Form";
 
 type Props = {}
 
@@ -87,17 +89,17 @@ function ParentPage({ }: Props) {
         loading={loading}
         reloadData={handleReloadData}
       />
-      {/* <GenericModal
+      <GenericModal
         open={open}
         onClose={handleClose}
         title={modalTitle}
       >
-        <OrganizationForm
+        <ParentForm
           initialValues={selectedRow}
           onSubmit={handleSave}
           onClose={handleClose}
         />
-      </GenericModal> */}
+      </GenericModal>
     </Box>
   )
 }

@@ -1,40 +1,9 @@
 import React, { useEffect } from 'react';
 import { Controller, useForm, SubmitHandler } from 'react-hook-form';
-import { TextField, Grid, Button, Box, Select, MenuItem, FormControl, InputLabel, FormHelperText, Switch, FormControlLabel, Typography } from '@mui/material';
-import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import { TextField, Grid, Button, Box, Select, MenuItem, FormControl, InputLabel, FormHelperText, Typography } from '@mui/material';
 import dayjs, { Dayjs } from 'dayjs';
 import { RootState } from '../../redux/store';
 import { useSelector } from 'react-redux';
-
-interface Address {
-    street?: string;
-    city?: string;
-    state?: string;
-    zip?: string;
-    country?: string;
-}
-
-interface SocialLinks {
-    facebook?: string;
-    twitter?: string;
-    linkedin?: string;
-    instagram?: string;
-}
-
-interface Preferences {
-    notifications?: boolean;
-    language?: string;
-    theme?: string;
-    timezone?: string;
-    currency?: string;
-    dateFormat?: string;
-}
-
-interface Organization {
-    id: string;
-    name: string;
-}
-
 interface TeacherFormValues {
     _id: string;
     userId: string;
@@ -42,6 +11,7 @@ interface TeacherFormValues {
     phone: string;
     email: string;
     organizationId: string;
+    organizations?: string[];
     departments?: string[];
     subjects?: string[];
     qualifications?: string;
@@ -62,9 +32,9 @@ interface TeacherFormProps {
 
 const TeacherForm: React.FC<TeacherFormProps> = ({ initialValues, onSubmit, onClose }) => {
     const { data } = useSelector((state: RootState) => state.user);
-    const organizations = data?.organizations?.map(org => ({ id: org._id, name: org.name }));
-    const users = data?.users
-    console.log(users)
+    const { data: orgdata } = useSelector((state: RootState) => state.organization);
+    const users = data?.users?.filter(x => x.role === 'TEACHER');
+    const organizations = orgdata?.organizations;
     const defaultValues: TeacherFormValues = {
         _id: '',
         userId: '',
@@ -72,6 +42,7 @@ const TeacherForm: React.FC<TeacherFormProps> = ({ initialValues, onSubmit, onCl
         phone: '',
         email: '',
         organizationId: '',
+        organizations: [],
         departments: [],
         subjects: [],
         qualifications: '',
@@ -92,7 +63,6 @@ const TeacherForm: React.FC<TeacherFormProps> = ({ initialValues, onSubmit, onCl
         if (initialValues) {
             reset({
                 ...initialValues,
-                dateOfBirth: initialValues.dateOfBirth ? dayjs(initialValues.dateOfBirth) : null,
                 createdAt: initialValues.createdAt ? dayjs(initialValues.createdAt) : null,
                 updatedAt: initialValues.updatedAt ? dayjs(initialValues.updatedAt) : null,
             });
@@ -102,7 +72,6 @@ const TeacherForm: React.FC<TeacherFormProps> = ({ initialValues, onSubmit, onCl
     const onSubmitForm: SubmitHandler<TeacherFormValues> = (data) => {
         const formattedData = {
             ...data,
-            dateOfBirth: data.dateOfBirth ? data.dateOfBirth.format('YYYY-MM-DD') : null,
             createdAt: data.createdAt ? data.createdAt.format('YYYY-MM-DD') : null,
             updatedAt: data.updatedAt ? data.updatedAt.format('YYYY-MM-DD') : null,
         };
