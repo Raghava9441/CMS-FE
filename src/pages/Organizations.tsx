@@ -1,40 +1,52 @@
-import { GridColDef, GridRowId, GridRowModel, GridRowModesModel } from '@mui/x-data-grid'
-import React, { useEffect, useState } from 'react'
-import { ReusableDataGrid } from '../components/ReusableDataGrid'
-import { Box } from '@mui/material'
-import { AppDispatch, RootState } from '../redux/store'
-import { useDispatch, useSelector } from 'react-redux'
-import { organizationActions } from '../redux/actions/organization.actions'
+import {GridColDef, GridRowId, GridRowModesModel} from '@mui/x-data-grid'
+import {useEffect, useMemo, useState} from 'react'
+import {ReusableDataGrid} from '../components/ReusableDataGrid'
+import {Box} from '@mui/material'
+import {AppDispatch, RootState} from '@redux/store'
+import {useDispatch, useSelector} from 'react-redux'
+import {organizationActions} from '../redux/actions/organization.actions'
 import GenericModal from '../components/GenericModal';
 import OrganizationForm from '../components/Forms/OrganizationForm';
+import {hasPermission} from "@utils/auth.ts";
+import {Organization} from "@models/organization.modal.ts";
 
-
-type Props = {}
-
-function Organizations({ }: Props) {
+function Organizations() {
 
     const dispatch = useDispatch<AppDispatch>()
 
-    const columns: GridColDef[] = [
-        { field: 'name', headerName: 'Name', flex: 1, editable: true, headerClassName: 'theme--header' },
-        { field: 'category', headerName: 'Category', flex: 1, editable: true, headerClassName: 'theme--header' },
-        { field: 'number', headerName: 'Number', flex: 1, editable: true, headerClassName: 'theme--header' },
-        { field: 'contactEmail', headerName: 'Contact Email', flex: 1, editable: true, headerClassName: 'theme--header' },
-        { field: 'contactPhone', headerName: 'Contact Phone', flex: 1, editable: true, headerClassName: 'theme--header' },
-        { field: 'website', headerName: 'Website', flex: 1, editable: true, headerClassName: 'theme--header' },
-        { field: 'logo', headerName: 'Logo', flex: 1, editable: true, headerClassName: 'theme--header' },
-        { field: 'establishedDate', headerName: 'Established Date', flex: 1, editable: true, headerClassName: 'theme--header' },
-        { field: 'description', headerName: 'Description', flex: 1, editable: true, headerClassName: 'theme--header' },
-    ];
+    const columns: GridColDef[] = useMemo(() => [
+        {field: 'name', headerName: 'Name', flex: 1, editable: true, headerClassName: 'theme--header'},
+        {field: 'category', headerName: 'Category', flex: 1, editable: true, headerClassName: 'theme--header'},
+        {field: 'number', headerName: 'Number', flex: 1, editable: true, headerClassName: 'theme--header'},
+        {field: 'contactEmail', headerName: 'Contact Email', flex: 1, editable: true, headerClassName: 'theme--header'},
+        {field: 'contactPhone', headerName: 'Contact Phone', flex: 1, editable: true, headerClassName: 'theme--header'},
+        {field: 'website', headerName: 'Website', flex: 1, editable: true, headerClassName: 'theme--header'},
+        {field: 'logo', headerName: 'Logo', flex: 1, editable: true, headerClassName: 'theme--header'},
+        {
+            field: 'establishedDate',
+            headerName: 'Established Date',
+            flex: 1,
+            editable: true,
+            headerClassName: 'theme--header'
+        },
+        {field: 'description', headerName: 'Description', flex: 1, editable: true, headerClassName: 'theme--header'},
+    ], []);
 
     const [rowModesModel, setRowModesModel] = useState<GridRowModesModel>({});
     const [open, setOpen] = useState(false);
     const [modalTitle, setModalTitle] = useState<string | undefined>(undefined);
     const [selectedRow, setSelectedRow] = useState<any>(null);
-    const { data: organizations, loading } = useSelector((state: RootState) => state.organization);
+    const {data: organizations, loading} = useSelector((state: RootState) => state.organization);
+    const user = useSelector((state: RootState) => state.auth.user);
+
+    const accessibleOrganizations = useMemo(() => {
+        if (!user || !organizations?.organizations) return [];
+        return organizations.organizations.filter((org) =>
+            hasPermission(user, "organizations", "view", org)
+        );
+    }, [user, organizations]);
 
     useEffect(() => {
-        console.log("object")
         organizations?.organizations?.length === undefined && dispatch(organizationActions.fetchOrganizations());
     }, [dispatch]);
 
@@ -58,7 +70,7 @@ function Organizations({ }: Props) {
 
     const handleSave = async (data: any) => {
         if (selectedRow) {
-            dispatch(organizationActions.updateOrganization({ id: selectedRow._id, ...data }));
+            dispatch(organizationActions.updateOrganization({id: selectedRow._id, ...data}));
         } else {
             dispatch(organizationActions.createOrganization(data));
         }
@@ -73,13 +85,13 @@ function Organizations({ }: Props) {
     const handleClose = () => setOpen(false);
 
     return (
-        <Box sx={{ width: '100%', height: '100%' }}>
+        <Box sx={{width: '100%', height: '100%'}}>
             <ReusableDataGrid
                 columns={columns}
                 onAdd={handleAdd}
                 onDelete={handleDelete}
                 onEdit={handleEdit}
-                rows={organizations?.organizations ?? []}
+                rows={accessibleOrganizations ?? []}
                 rowModesModel={rowModesModel}
                 setRowModesModel={setRowModesModel}
                 loading={loading}

@@ -9,7 +9,7 @@ export const loginUser = (user: { email: string, password: string }, navigate: N
     try {
         dispatch(loginUserStart()); // Set loading state to true
         const response = await userApi.login(user);
-        console.log(response.data)
+        // console.log(response.data)
         dispatch(loginUserSuccess(response.data));
         navigate(appRoutes.DASHBOARD);
         return response.data;

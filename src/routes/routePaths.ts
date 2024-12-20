@@ -17,6 +17,8 @@ const appRoutes = {
     NOTIFICATIONS: '/notifications',
     SETTINGS: '/settings',
     LOGOUT: '/logout',
+    REGISTER_USER: '/register-user',
+
 
     LOGIN: '/user/auth/login',
     LOGIN_SESSION: '/user/auth/session',

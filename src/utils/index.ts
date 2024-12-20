@@ -46,7 +46,7 @@ class CustomError extends Error {
     }
 }
 
-const callapiWithCustomError = async () => {
+export const callapiWithCustomError = async () => {
     const [error, data] = await CatchErrorTyped(axios.get('https://jsonplaceholder.typicod.com/todos/1'), [CustomError])
 
     if (error) {

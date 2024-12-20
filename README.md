@@ -118,3 +118,16 @@ Focus on managing classes, assignments, student records.
 - **Teacher**: Comprehensive control over course management, class schedules, assignments, exams, attendance, and event announcements.
 
 This UI-based role setup ensures that each user only sees the features necessary for their role, enhancing user experience and data security.
+
+
+
+logins 
+teacher logins
+--------------
+teachert@gamil.com
+Teacher@1234
+
+admin logins
+--------------
+newnew@gmail.lcom
+Raghava@9441

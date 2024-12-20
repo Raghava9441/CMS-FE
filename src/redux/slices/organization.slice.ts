@@ -1,53 +1,8 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-
-interface Organization {
-    __v: number;
-    _id: string;
-    name: string;
-    category: string;
-    number: string;
-    address: Address;
-    logo: string;
-    website: string;
-    contactEmail: string;
-    contactPhone: string;
-    establishedDate: string;
-    description: string;
-    socialLinks: SocialLinks;
-    createdAt: string;
-    updatedAt: string;
-}
-
-interface NewApiResponseData {
-    organizations: Organization[];
-    hasNextPage: boolean;
-    hasPrevPage: boolean;
-    limit: number;
-    nextPage: number | null;
-    page: number;
-    prevPage: number | null;
-    serialNumberStartFrom: number;
-    totalPages: number;
-    totalOrganizations: number;
-}
-
-interface Address {
-    street: string;
-    city: string;
-    state: string;
-    zip: string;
-    country: string;
-}
-
-interface SocialLinks {
-    facebook: string;
-    twitter: string;
-    linkedin: string;
-    instagram: string;
-}
+import {createSlice, PayloadAction} from '@reduxjs/toolkit';
+import {ApiResponseData, Organization} from "@models/organization.modal.ts";
 
 interface OrganizationState {
-    data: NewApiResponseData | null;
+    data: ApiResponseData<Organization[]> | null;
     loading: boolean;
     error: string | null;
 }
@@ -66,7 +21,7 @@ const organizationSlice = createSlice({
             state.loading = true;
             state.error = null;
         },
-        fetchOrganizationsSuccess(state, action: PayloadAction<NewApiResponseData>) {
+        fetchOrganizationsSuccess(state, action: PayloadAction<ApiResponseData<Organization[]>>) {
             state.loading = false;
             // console.log(action.payload)
             state.data = action.payload;
@@ -77,7 +32,7 @@ const organizationSlice = createSlice({
             state.loading = true;
             state.error = null;
         },
-        fetchOrganizationByIdSuccess(state, action: PayloadAction<NewApiResponseData>) {
+        fetchOrganizationByIdSuccess(state, action: PayloadAction<ApiResponseData<Organization>>) {
             state.loading = false;
             // console.log(action.payload)
             state.data = action.payload;
@@ -88,7 +43,7 @@ const organizationSlice = createSlice({
             state.loading = true;
             state.error = null;
         },
-        createOrganizationSuccess(state, action: PayloadAction<NewApiResponseData>) {
+        createOrganizationSuccess(state, action: PayloadAction<ApiResponseData<Organization>>) {
             state.loading = false;
             // console.log(action.payload)
             state.data = action.payload;
@@ -99,12 +54,12 @@ const organizationSlice = createSlice({
             state.loading = true;
             state.error = null;
         },
-        updateOrganizationSuccess(state, action: PayloadAction<NewApiResponseData>) {
+        updateOrganizationSuccess(state, action: PayloadAction<ApiResponseData<Organization>>) {
             state.loading = false;
             if (state.data) {
                 state.data.organizations = [...(state.data.organizations || []), action.payload as Organization];
             } else {
-                state.data = { ...action.payload as Organization, organizations: [action.payload as Organization] };
+                state.data = {...action.payload as Organization, organizations: [action.payload as Organization]};
             }
             state.error = null;
         },
@@ -123,5 +78,16 @@ const organizationSlice = createSlice({
     },
 });
 
-export const { fetchOrganizationsStart, fetchOrganizationsSuccess, fetchOrganizationByIdStart, fetchOrganizationByIdSuccess, createOrganizationStart, createOrganizationSuccess, updateOrganizationStart, updateOrganizationSuccess, deleteOrganizationStart, deleteOrganizationSuccess } = organizationSlice.actions;
+export const {
+    fetchOrganizationsStart,
+    fetchOrganizationsSuccess,
+    fetchOrganizationByIdStart,
+    fetchOrganizationByIdSuccess,
+    createOrganizationStart,
+    createOrganizationSuccess,
+    updateOrganizationStart,
+    updateOrganizationSuccess,
+    deleteOrganizationStart,
+    deleteOrganizationSuccess
+} = organizationSlice.actions;
 export default organizationSlice.reducer;

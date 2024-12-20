@@ -23,7 +23,7 @@ const fetchOrganizationById = (id: string) => async (dispatch: AppDispatch) => {
     try {
         dispatch(fetchOrganizationByIdStart()); // Set loading state to true
         const response = await AsyncorganizationApi.getOrganizationById(id);
-        console.log(response.data)
+        // console.log(response.data)
         dispatch(fetchOrganizationByIdSuccess(response.data.data)); // Pass data to success action
     } catch (error) {
         toast.error(error.response.data.data || 'Failed to fetch organization', {
@@ -47,7 +47,7 @@ const createOrganization = (organization: Omit<Organization, 'createdAt' | 'upda
 
 const updateOrganization = (organization: Omit<Organization, 'createdAt' | 'updatedAt'>) => async (dispatch: AppDispatch) => {
     try {
-        console.log(organization)
+        // console.log(organization)
         dispatch(updateOrganizationStart()); // Set loading state to true
         const response = await AsyncorganizationApi.updateOrganization(organization,organization.id);
         dispatch(updateOrganizationSuccess(response.data.data)); // Pass data to success action
@@ -68,7 +68,7 @@ const deleteOrganization = (id: string) => async (dispatch: AppDispatch) => {
             autoClose: 3000,
         });
     } catch (error) {
-        console.log(error)
+        // console.log(error)
         toast.error(error.response.data.data || 'Failed to fetch organization', {
             autoClose: 3000,
         });

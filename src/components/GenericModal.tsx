@@ -1,7 +1,7 @@
 import React from 'react';
-import { Box, Button, IconButton, Typography, Slide, Dialog, DialogContent, DialogActions } from '@mui/material';
+import {Box, Button, IconButton, Typography, Slide, Dialog, DialogContent, DialogActions} from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
-import { TransitionProps } from '@mui/material/transitions';
+import {TransitionProps} from '@mui/material/transitions';
 
 const Transition = React.forwardRef(function Transition(
     props: TransitionProps & { children: React.ReactElement<unknown, any> },
@@ -18,7 +18,7 @@ interface GenericModalProps {
     children: React.ReactNode;
 }
 
-const GenericModal: React.FC<GenericModalProps> = ({ open, onClose, title, onSave, children }) => {
+const GenericModal: React.FC<GenericModalProps> = ({open, onClose, title, onSave, children}) => {
     return (
         <Dialog
             open={open}
@@ -27,7 +27,7 @@ const GenericModal: React.FC<GenericModalProps> = ({ open, onClose, title, onSav
             keepMounted
             PaperProps={{
                 sx: {
-                    width: { sm: '100%', md: '30%' },
+                    width: {sm: '100%', md: '30%'},
                     maxWidth: 'none',
                     height: '100%',
                     margin: 0,
@@ -38,22 +38,22 @@ const GenericModal: React.FC<GenericModalProps> = ({ open, onClose, title, onSav
                 },
             }}
         >
-            <Box sx={{ position: 'relative', height: '100%' }}>
+            <Box sx={{position: 'relative', height: '100%'}}>
                 <IconButton
                     edge="start"
                     color="inherit"
                     onClick={onClose}
                     aria-label="close"
-                    sx={{ position: 'absolute', top: 8, right: 8 }}
+                    sx={{position: 'absolute', top: 8, right: 8}}
                 >
-                    <CloseIcon />
+                    <CloseIcon/>
                 </IconButton>
                 {title && (
-                    <Box sx={{ padding: 2 }}>
+                    <Box sx={{padding: 2}}>
                         <Typography variant="h6">{title}</Typography>
                     </Box>
                 )}
-                <DialogContent sx={{ height: 'calc(100% - 64px)', overflow: 'auto' }}>
+                <DialogContent sx={{height: 'calc(100% - 64px)', overflow: 'auto'}}>
                     {children}
                 </DialogContent>
                 {onSave && (

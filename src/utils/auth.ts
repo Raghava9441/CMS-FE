@@ -1,8 +1,8 @@
-import { Organization } from "@models/organization.modal";
-import { Parent } from "@models/parent.models";
-import { Student } from "@models/student.models";
-import { Teacher } from "@models/teacher.modals";
-import { User } from "@models/user.modals";
+import {Organization} from "@models/organization.modal";
+import {Parent} from "@models/parent.models";
+import {Student} from "@models/student.models";
+import {Teacher} from "@models/teacher.modals";
+import {User} from "@models/user.modals";
 
 export type Role = 'ADMIN' | 'TEACHER' | 'STUDENT' | 'PARENT' | 'ORGADMIN';
 
@@ -21,7 +21,7 @@ type RolesWithPermissions = {
 
 type Permissions = {
     organizations: {
-        dataType: Organization 
+        dataType: Organization
         action: "view" | "create" | "update" | "delete"
     }
     teachers: {
@@ -158,7 +158,7 @@ const ROLES = {
     },
     TEACHER: {
         organizations: {
-            view: (user: any, org: any) => user.organizationId === org.id,
+            view: (user: any, org: any) => user.organizationId === org._id,
             create: false,
             update: false,
             delete: false
@@ -488,10 +488,15 @@ export function hasPermission<Resource extends keyof Permissions>(
     action: Permissions[Resource]["action"],
     data?: Permissions[Resource]["dataType"]
 ): boolean {
+    // console.log(user)
+    // console.log(resource)
     const role = user.role as keyof RolesWithPermissions;
+    // console.log(role)
     const permission = (ROLES as RolesWithPermissions)[role][resource]?.[action];
-    if (permission == null) return false;
+    // console.log(permission)
 
+    if (permission == null) return false;
+    // console.log(data)
     if (typeof permission === "boolean") return permission;
     return data != null && permission(user, data);
 }

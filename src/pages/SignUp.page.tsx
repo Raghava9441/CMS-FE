@@ -15,8 +15,9 @@ import {
     Step,
     StepLabel,
     SelectChangeEvent,
+    Input,
 } from '@mui/material';
-
+import { userApi } from '@api/api';
 
 // Define types for the User interface
 type Role = 'ADMIN' | 'TEACHER' | 'STUDENT' | 'PARENT';
@@ -152,6 +153,30 @@ const SignUpPage: React.FC = () => {
         }));
     };
 
+    const handleAvatarChange = (event: ChangeEvent<HTMLInputElement>) => {
+        if (event.target.files) {
+            const file = event.target.files[0];
+            const reader = new FileReader();
+            reader.onload = (e) => setUser((prevUser) => ({
+                ...prevUser,
+                avatar: e.target.result as string,
+            }));
+            reader.readAsDataURL(file);
+        }
+    };
+
+    const handleCoverImageChange = (event: ChangeEvent<HTMLInputElement>) => {
+        if (event.target.files) {
+            const file = event.target.files[0];
+            const reader = new FileReader();
+            reader.onload = (e) => setUser((prevUser) => ({
+                ...prevUser,
+                coverImage: e.target.result as string,
+            }));
+            reader.readAsDataURL(file);
+        }
+    };
+
     const handleNext = () => {
         setActiveStep((prevActiveStep) => prevActiveStep + 1);
     };
@@ -162,8 +187,11 @@ const SignUpPage: React.FC = () => {
 
     const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        console.log(user);
-        // Here you would typically send the user data to your backend
+        const { avatar, coverImage, ...userDataWithoutImages } = user;
+        console.log(userDataWithoutImages);
+        userApi.register(userDataWithoutImages).then((res) => {
+            console.log(res);
+        });
     };
 
     const renderStepContent = (step: number) => {
@@ -240,23 +268,23 @@ const SignUpPage: React.FC = () => {
             case 1:
                 return (
                     <>
-                        <TextField
+                        <Input
                             fullWidth
                             margin="normal"
                             name="avatar"
                             label="Avatar URL"
                             size='small'
-                            value={user.avatar}
-                            onChange={handleChange}
+                            type="file"
+                            onChange={handleAvatarChange}
                         />
-                        <TextField
+                        <Input
                             fullWidth
                             margin="normal"
                             name="coverImage"
                             label="Cover Image URL"
                             size='small'
-                            value={user.coverImage}
-                            onChange={handleChange}
+                            type="file"
+                            onChange={handleCoverImageChange}
                         />
                         <TextField
                             fullWidth

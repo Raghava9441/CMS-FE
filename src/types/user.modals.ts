@@ -30,6 +30,6 @@ export interface User {
         language?: string;
     };
     password?: string;
-    accessToken: string;
-    refreshToken: string;
+    accessToken?: string;
+    refreshToken?: string;
 }

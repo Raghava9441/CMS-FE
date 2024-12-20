@@ -1,32 +1,14 @@
-
 import appRoutes from "./routePaths";
-import DashbaordPage from "../pages/Dashbaord.page";
-import Organizations from "../pages/Organizations";
-import ParentPage from "../pages/Parent.page";
-import StudentPage from "../pages/Student.page";
-import ProfilePage from "../pages/Profile.page";
-import LoginPage from "../pages/Login.page";
-import SignUpPage from "../pages/SignUp.page";
-import UsersPage from "../pages/Users.page";
-import SettingsPage from "../pages/Settings.page";
-import TeacherPage from "../pages/Teacher.page";
-import NotificationsPage from "../pages/Notifications.page";
-import ExamPage from "../pages/Exam.page";
-import AttendancePage from "../pages/Attendance.page";
-import CoursesPage from "../pages/Courses.page";
-import ClassesPage from "../pages/Classes.page";
-import AssignmentPage from "../pages/Assignment.page";
-import EventsPage from "../pages/Events.page";
-import ForgotPasswordPage from "@pages/ForgotPassword.page";
+import {lazy} from "react";
 
 interface RouteModel {
     id: number;
     path: string;
-    component: React.FunctionComponent;
+    component: React.LazyExoticComponent<React.ComponentType> | React.ComponentType;
     exact?: boolean;
     label?: string;
     icon?: React.ReactNode;
-    roles?: string[];
+    roles: string[];
     authenticationRequired: boolean;
     isSideMenu?: boolean;
 }
@@ -35,7 +17,7 @@ const routes: RouteModel[] = [
     {
         id: 1,
         path: appRoutes.DASHBOARD,
-        component: DashbaordPage,
+        component: lazy(() => import("../pages/Dashbaord.page")),
         exact: true,
         label: 'Dashboard',
         roles: ['ADMIN', 'TEACHER', 'STUDENT', 'PARENT'],
@@ -45,7 +27,7 @@ const routes: RouteModel[] = [
     {
         id: 2,
         path: appRoutes.ORGANIZATIONS,
-        component: Organizations,
+        component: lazy(() => import('../pages/Organizations')),
         exact: true,
         label: 'Organizations',
         roles: ['ADMIN'],
@@ -55,7 +37,7 @@ const routes: RouteModel[] = [
     {
         id: 3,
         path: appRoutes.USERS,
-        component: UsersPage,
+        component: lazy(() => import("../pages/Users.page")),
         exact: true,
         label: 'Users',
         roles: ['ADMIN'],
@@ -65,7 +47,7 @@ const routes: RouteModel[] = [
     {
         id: 4,
         path: appRoutes.TEACHER,
-        component: TeacherPage,
+        component: lazy(() => import('../pages/Teacher.page')),
         exact: true,
         label: 'Teachers',
         roles: ['ADMIN', 'TEACHER', 'STUDENT', 'PARENT'],
@@ -75,7 +57,7 @@ const routes: RouteModel[] = [
     {
         id: 5,
         path: appRoutes.STUDENTS,
-        component: StudentPage,
+        component: lazy(() => import('../pages/Student.page')),
         exact: true,
         label: 'StudentPage',
         roles: ['ADMIN', 'TEACHER', 'STUDENT', 'PARENT'],
@@ -85,7 +67,7 @@ const routes: RouteModel[] = [
     {
         id: 6,
         path: appRoutes.PARENTS,
-        component: ParentPage,
+        component: lazy(() => import('../pages/Parent.page')),
         exact: true,
         label: 'ParentPage',
         roles: ['ADMIN', 'TEACHER', 'STUDENT', 'PARENT'],
@@ -95,7 +77,7 @@ const routes: RouteModel[] = [
     {
         id: 7,
         path: appRoutes.PROFILE,
-        component: ProfilePage,
+        component: lazy(() => import('../pages/Profile.page')),
         exact: true,
         label: 'ProfilePage',
         roles: ['ADMIN', 'TEACHER', 'STUDENT', 'PARENT'],
@@ -105,7 +87,7 @@ const routes: RouteModel[] = [
     {
         id: 8,
         path: appRoutes.LOGIN,
-        component: LoginPage,
+        component: lazy(() => import('../pages/Login.page')),
         exact: true,
         label: 'LoginPage',
         roles: ['ADMIN', 'TEACHER', 'STUDENT', 'PARENT'],
@@ -115,7 +97,7 @@ const routes: RouteModel[] = [
     {
         id: 9,
         path: appRoutes.REGISTER,
-        component: SignUpPage,
+        component: lazy(() => import('../pages/SignUp.page')),
         exact: true,
         label: 'SignUp Page',
         roles: ['ADMIN', 'TEACHER', 'STUDENT', 'PARENT'],
@@ -125,7 +107,7 @@ const routes: RouteModel[] = [
     {
         id: 10,
         path: appRoutes.SETTINGS,
-        component: SettingsPage,
+        component: lazy(() => import('../pages/Settings.page')),
         exact: true,
         label: 'SignUp Page',
         roles: ['ADMIN', 'TEACHER', 'STUDENT', 'PARENT'],
@@ -135,7 +117,7 @@ const routes: RouteModel[] = [
     {
         id: 11,
         path: appRoutes.NOTIFICATIONS,
-        component: NotificationsPage,
+        component: lazy(() => import('../pages/Notifications.page')),
         exact: true,
         label: 'Notifications',
         roles: ['ADMIN', 'TEACHER', 'STUDENT', 'PARENT'],
@@ -145,7 +127,7 @@ const routes: RouteModel[] = [
     {
         id: 12,
         path: appRoutes.EXAM,
-        component: ExamPage,
+        component: lazy(() => import('../pages/Exam.page')),
         exact: true,
         label: 'Exam',
         roles: ['ADMIN', 'TEACHER', 'STUDENT', 'PARENT'],
@@ -155,7 +137,7 @@ const routes: RouteModel[] = [
     {
         id: 13,
         path: appRoutes.ATTENDANCE,
-        component: AttendancePage,
+        component: lazy(()=>import('../pages/Attendance.page')),
         exact: true,
         label: 'Attendance',
         roles: ['ADMIN', 'TEACHER', 'STUDENT', 'PARENT'],
@@ -165,7 +147,7 @@ const routes: RouteModel[] = [
     {
         id: 14,
         path: appRoutes.COURSES,
-        component: CoursesPage,
+        component: lazy(() => import('../pages/Courses.page')),
         exact: true,
         label: 'Courses',
         roles: ['ADMIN', 'TEACHER', 'STUDENT', 'PARENT'],
@@ -175,7 +157,7 @@ const routes: RouteModel[] = [
     {
         id: 15,
         path: appRoutes.CLASSES,
-        component: ClassesPage,
+        component: lazy(() => import('../pages/Classes.page')),
         exact: true,
         label: 'Classes',
         roles: ['ADMIN', 'TEACHER', 'STUDENT', 'PARENT'],
@@ -185,7 +167,7 @@ const routes: RouteModel[] = [
     {
         id: 16,
         path: appRoutes.ASSIGNMENT,
-        component: AssignmentPage,
+        component: lazy(() => import('../pages/Assignment.page')),
         exact: true,
         label: 'Assignment',
         roles: ['ADMIN', 'TEACHER', 'STUDENT', 'PARENT'],
@@ -195,7 +177,7 @@ const routes: RouteModel[] = [
     {
         id: 17,
         path: appRoutes.EVENTS,
-        component: EventsPage,
+        component: lazy(() => import('../pages/Events.page')),
         exact: true,
         label: 'Events',
         roles: ['ADMIN', 'TEACHER', 'STUDENT', 'PARENT'],
@@ -205,17 +187,33 @@ const routes: RouteModel[] = [
     {
         id: 18,
         path: appRoutes.FORGOT_PASSWORD,
-        component: ForgotPasswordPage,
+        component: lazy(() => import('../pages/ForgotPassword.page')),
         exact: true,
         label: 'Forgot Password',
         roles: ['ADMIN', 'TEACHER', 'STUDENT', 'PARENT'],
         authenticationRequired: false,
         isSideMenu: false,
     },
+    {
+        id: 19,
+        path: appRoutes.REGISTER_USER,
+        component: lazy(() => import('../pages/Users.page')),
+        exact: true,
+        label: 'Add User',
+        roles: ['ADMIN'],
+        authenticationRequired: true,
+        isSideMenu: true,
+    },
 ]
 
 export const routesWithoutAuth = routes.filter(route => !route.authenticationRequired)
-export const routesWithAuth = routes.filter(route => route.authenticationRequired)
-export const routesWithSideMenu = routes.filter(route => route.isSideMenu)
+
+export const routesWithAuth = (role: 'ADMIN' | 'TEACHER' | 'STUDENT' | 'PARENT') => {
+    return routes.filter(route => route.authenticationRequired && route?.roles.includes(role))
+}
+
+export const routesWithSideMenu = (role: 'ADMIN' | 'TEACHER' | 'STUDENT' | "PARENT") => {
+    return routes.filter(route => route.authenticationRequired && route?.roles.includes(role))
+}
 
 export default routes
