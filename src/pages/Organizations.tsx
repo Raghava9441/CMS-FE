@@ -1,14 +1,13 @@
 import {GridColDef, GridRowId, GridRowModesModel} from '@mui/x-data-grid'
 import {useEffect, useMemo, useState} from 'react'
-import {ReusableDataGrid} from '../components/ReusableDataGrid'
 import {Box} from '@mui/material'
 import {AppDispatch, RootState} from '@redux/store'
 import {useDispatch, useSelector} from 'react-redux'
-import {organizationActions} from '../redux/actions/organization.actions'
-import GenericModal from '../components/GenericModal';
-import OrganizationForm from '../components/Forms/OrganizationForm';
 import {hasPermission} from "@utils/auth.ts";
-import {Organization} from "@models/organization.modal.ts";
+import OrganizationForm from "@components/Forms/OrganizationForm.tsx";
+import GenericModal from "@components/GenericModal.tsx";
+import {organizationActions} from "@redux/actions/organization.actions.ts";
+import {ReusableDataGrid} from "@components/ReusableDataGrid.tsx";
 
 function Organizations() {
 

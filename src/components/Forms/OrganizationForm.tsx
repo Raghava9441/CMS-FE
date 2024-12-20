@@ -52,7 +52,7 @@ const OrganizationForm: React.FC<OrganizationFormProps> = ({ initialValues, onSu
 
 
     const onSubmitForm: SubmitHandler<OrganizationFormValues> = (data) => {
-        console.log(data)
+        // console.log(data)
         const formattedData = {
             ...data,
             establishedDate: data.establishedDate ? data.establishedDate.format('YYYY-MM-DD') : null,
