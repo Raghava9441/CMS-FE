@@ -20,7 +20,7 @@ import {
 import { userApi } from '@api/api';
 
 // Define types for the User interface
-type Role = 'ADMIN' | 'TEACHER' | 'STUDENT' | 'PARENT';
+type Role = 'ADMIN' | 'TEACHER' | 'STUDENT' | 'PARENT'|'ORGADMIN';
 type Gender = 'male' | 'female' | 'other';
 type Status = 'active' | 'inactive';
 
@@ -245,6 +245,7 @@ const SignUpPage: React.FC = () => {
                                 onChange={handleSelectChange}
                             >
                                 <MenuItem value="ADMIN">Admin</MenuItem>
+                                <MenuItem value="ORGADMIN">Organization Admin</MenuItem>
                                 <MenuItem value="TEACHER">Teacher</MenuItem>
                                 <MenuItem value="STUDENT">Student</MenuItem>
                                 <MenuItem value="PARENT">Parent</MenuItem>

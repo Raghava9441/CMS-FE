@@ -4,6 +4,7 @@ import { User } from "../types/user.modals";
 import { Teacher, TeacherApiResponse } from "../types/teacher.modals";
 import { Student, StudentApiResponse } from "../types/student.models";
 import { Parent, ParentApiResponse } from "../types/parent.models";
+import { Course, CourseApiResponse } from "@models/course.modals";
 
 export const AsyncorganizationApi = {
     getOrganizations: () => axiosInstance.get<ApiResponse<Organization[]>>('/organizations'),
@@ -49,17 +50,15 @@ export const parentApi = {
     deleteParent: (id: string) => axiosInstance.delete<ParentApiResponse<Parent>>(`/parents/${id}`),
 }
 
+export const courseApi = {
+    getCourses: () => axiosInstance.get<CourseApiResponse<Course[]>>('/courses'),
+    getCourseById: (id: string) => axiosInstance.get<CourseApiResponse<Course>>(`/courses/${id}`),
+    createCourse: (course: Course) => axiosInstance.post<CourseApiResponse<Course>>('/courses', course),
+    updateCourse: (course: Course) => axiosInstance.put<CourseApiResponse<Course>>('/courses', course),
+    deleteCourse: (id: string) => axiosInstance.delete<CourseApiResponse<Course>>(`/courses/${id}`),
+}
 
 // TODO:types need to implimnet for each api call to be able to use them
-
-// export const courseApi = {
-//     getCourses: () => axiosInstance.get<CourseApiResponse<Course[]>>('/courses'),
-//     getCourseById: (id: string) => axiosInstance.get<CourseApiResponse<Course>>(`/courses/${id}`),
-//     createCourse: (course: Course) => axiosInstance.post<CourseApiResponse<Course>>('/courses', course),
-//     updateCourse: (course: Course) => axiosInstance.put<CourseApiResponse<Course>>('/courses', course),
-//     deleteCourse: (id: string) => axiosInstance.delete<CourseApiResponse<Course>>(`/courses/${id}`),
-// }
-
 // export const classApi = {
 //     getClasses: () => axiosInstance.get<ClassApiResponse<Class[]>>('/classes'),
 //     getClassById: (id: string) => axiosInstance.get<ClassApiResponse<Class>>(`/classes/${id}`),

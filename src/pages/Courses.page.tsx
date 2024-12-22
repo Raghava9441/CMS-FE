@@ -1,7 +1,15 @@
+import { courseActions } from "@redux/actions/course.actions";
+import { AppDispatch } from "@redux/store";
+import { useEffect } from "react";
+import { useDispatch } from "react-redux";
 
-type Props = {}
+function CoursesPage() {
+    const dispatch = useDispatch<AppDispatch>()
+    
+    useEffect(() => {
+        dispatch(courseActions.fetchCourses())
+    }, [])
 
-function CoursesPage({ }: Props) {
     return (
         <div>CoursesPage</div>
     )
