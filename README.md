@@ -131,3 +131,19 @@ admin logins
 --------------
 newnew@gmail.lcom
 Raghava@9441
+
+
+
+Exampleorgadmin@gmail.com  orgId: 66976aa3b8ebf8df5217e255
+pass:Exampleorgadmin@gmail.com
+
+Exampleteacher@gmail.com   id: 6766dc8b1067ef015c7bdb78
+pass: Exampleteacher@gmail.com
+
+
+Examplestudent@gmail.com
+pass: Examplestudent@gmail.com
+
+
+Exampleparent@gmail.com
+pass:Exampleparent@gmail.com
