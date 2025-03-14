@@ -1,7 +1,6 @@
 
-type Props = {}
 
-function ExamPage({ }: Props) {
+function ExamPage() {
     return (
         <div>ExamPage</div>
     )

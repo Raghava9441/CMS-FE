@@ -1,8 +1,7 @@
 import SignUpPage from "./SignUp.page"
 
-type Props = {}
 
-function AddUserPage({ }: Props) {
+function AddUserPage() {
     return (
         <SignUpPage />
     )

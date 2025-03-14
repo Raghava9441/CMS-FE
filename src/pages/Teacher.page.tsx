@@ -1,24 +1,23 @@
 import GenericModal from "@components/GenericModal"
-import {ReusableDataGrid} from "@components/ReusableDataGrid"
-import {Box} from "@mui/material"
-import {GridColDef, GridRowModesModel} from "@mui/x-data-grid"
-import {useDispatch, useSelector} from "react-redux"
-import {AppDispatch, RootState} from "@redux/store"
-import {useEffect, useMemo, useState} from "react"
-import {TeacherActions} from "@redux/actions/teacherActions"
+import { ReusableDataGrid } from "@components/ReusableDataGrid"
+import { Box } from "@mui/material"
+import { GridColDef, GridRowModesModel } from "@mui/x-data-grid"
+import { useDispatch, useSelector } from "react-redux"
+import { AppDispatch, RootState } from "@redux/store"
+import { useEffect, useMemo, useState } from "react"
+import { TeacherActions } from "@redux/actions/teacherActions"
 import TeacherForm from "@components/Forms/Teacher.Form"
 
-type Props = {};
 
 
-function TeacherPage({}: Props) {
+function TeacherPage() {
     const dispatch = useDispatch<AppDispatch>();
     const teachers = useSelector((state: RootState) => state.teacher.data);
 
     const columns: GridColDef[] = useMemo(() => [
-        {field: 'name', headerName: 'Teacher Name', flex: 1, editable: true, headerClassName: 'theme--header'},
-        {field: 'phone', headerName: 'Contact Phone', flex: 1, editable: true, headerClassName: 'theme--header'},
-        {field: 'subjects', headerName: 'Subjects', flex: 1, editable: true, headerClassName: 'theme--header'},
+        { field: 'name', headerName: 'Teacher Name', flex: 1, editable: true, headerClassName: 'theme--header' },
+        { field: 'phone', headerName: 'Contact Phone', flex: 1, editable: true, headerClassName: 'theme--header' },
+        { field: 'subjects', headerName: 'Subjects', flex: 1, editable: true, headerClassName: 'theme--header' },
         {
             field: 'qualifications',
             headerName: 'Qualifications',
@@ -26,8 +25,8 @@ function TeacherPage({}: Props) {
             editable: true,
             headerClassName: 'theme--header'
         },
-        {field: 'experience', headerName: 'Experience', flex: 1, editable: true, headerClassName: 'theme--header'},
-        {field: 'officeHours', headerName: 'Office Hours', flex: 1, editable: true, headerClassName: 'theme--header'},
+        { field: 'experience', headerName: 'Experience', flex: 1, editable: true, headerClassName: 'theme--header' },
+        { field: 'officeHours', headerName: 'Office Hours', flex: 1, editable: true, headerClassName: 'theme--header' },
         {
             field: 'coursesTaught',
             headerName: 'Courses Taught',
@@ -43,8 +42,8 @@ function TeacherPage({}: Props) {
             headerClassName: 'theme--header'
         },
         // { field: 'specialResponsibilities', headerName: 'Special Responsibilities', flex: 1, editable: true, headerClassName: 'theme--header' },
-        {field: 'createdAt', headerName: 'Created At', flex: 1, editable: false, headerClassName: 'theme--header'},
-        {field: 'updatedAt', headerName: 'Updated At', flex: 1, editable: false, headerClassName: 'theme--header'},
+        { field: 'createdAt', headerName: 'Created At', flex: 1, editable: false, headerClassName: 'theme--header' },
+        { field: 'updatedAt', headerName: 'Updated At', flex: 1, editable: false, headerClassName: 'theme--header' },
     ], []);
 
     const [rowModesModel, setRowModesModel] = useState<GridRowModesModel>({});
@@ -52,7 +51,7 @@ function TeacherPage({}: Props) {
     const [selectedRow, setSelectedRow] = useState<any>(null);
     const [open, setOpen] = useState(false);
 
-    const {loading} = useSelector((state: RootState) => state.teacher);
+    const { loading } = useSelector((state: RootState) => state.teacher);
 
 
     useEffect(() => {
@@ -80,7 +79,7 @@ function TeacherPage({}: Props) {
 
     const handleSave = async (data: any) => {
         if (selectedRow) {
-            dispatch(TeacherActions.updateTeachers({...data, _id: selectedRow._id}));
+            dispatch(TeacherActions.updateTeachers({ ...data, _id: selectedRow._id }));
         } else {
             dispatch(TeacherActions.createTeachers(data));
         }
@@ -96,7 +95,7 @@ function TeacherPage({}: Props) {
     const handleClose = () => setOpen(false);
 
     return (
-        <Box sx={{width: '100%', height: '100%'}}>
+        <Box sx={{ width: '100%', height: '100%' }}>
             <ReusableDataGrid
                 columns={columns}
                 onAdd={handleAdd}

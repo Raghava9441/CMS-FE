@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useState } from 'react';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import palette from '../theme/palette';
+import { zhCN } from '@mui/material/locale';
 
 type CustomThemeOptions = {
     mode: 'light' | 'dark';
@@ -42,7 +43,7 @@ const ThemeContextProvider: React.FC<{ children: React.ReactNode }> = ({ childre
                 main: themeOptions.secondary,
             },
         },
-    });
+    }, zhCN);
 
     const toggleThemeMode = () => {
         setThemeOptions(prevOptions => ({

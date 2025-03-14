@@ -38,33 +38,6 @@ interface Address {
     zip: string;
     country: string;
 }
-
-interface SocialLinks {
-    facebook: string;
-    twitter: string;
-    linkedin: string;
-    instagram: string;
-}
-
-interface Preferences {
-    notifications?: boolean;
-    language?: string;
-    theme?: string;
-    timezone?: string;
-    currency?: string;
-    dateFormat?: string;
-}
-
-interface Organization {
-    id: string;
-    name: string;
-}
-
-interface Student {
-    id: string;
-    name: string;
-}
-
 interface EmergencyContact {
     name: string;
     relationship: string;
@@ -103,7 +76,6 @@ const parentSlice = createSlice({
         },
         fetchParentByIdSuccess(state, action: PayloadAction<NewApiResponseData>) {
             state.loading = false;
-            // console.log(action.payload)
             state.data = action.payload;
             state.error = null;
         },
@@ -113,7 +85,6 @@ const parentSlice = createSlice({
         },
         createParentSuccess(state, action: PayloadAction<NewApiResponseData>) {
             state.loading = false;
-            // console.log(action.payload)
             state.data = action.payload;
             state.error = null;
         },
@@ -123,7 +94,6 @@ const parentSlice = createSlice({
         },
         updateParentSuccess(state, action: PayloadAction<NewApiResponseData>) {
             state.loading = false;
-            // console.log(action.payload)
             state.data = action.payload;
             state.error = null;
         },
@@ -136,7 +106,6 @@ const parentSlice = createSlice({
             if (state.data) {
                 state.data.parents = state.data.parents.filter((parent) => parent._id !== action.payload);
             }
-            // console.log(state.data)
             state.error = null;
         },
     },

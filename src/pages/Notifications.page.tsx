@@ -1,7 +1,6 @@
 
-type Props = {}
 
-function NotificationsPage({ }: Props) {
+function NotificationsPage() {
     return (
         <div>NotificationsPage</div>
     )

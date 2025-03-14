@@ -1,5 +1,4 @@
 import { Button, Grid, Divider, TextField, Typography } from "@mui/material";
-// import Grid from '@mui/material/Grid2';
 import { FormEvent, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
@@ -7,7 +6,6 @@ import { AppDispatch } from "@redux/store";
 
 import { ForgotPassword } from "@assets/icons"
 
-type Props = {}
 
 const useStyles = {
     container: {
@@ -59,9 +57,7 @@ const useStyles = {
     },
 };
 
-function ForgotPasswordPage({ }: Props) {
-    const dispatch = useDispatch<AppDispatch>();
-    const navigate = useNavigate();
+function ForgotPasswordPage() {
 
     const [credentials, setCredentials] = useState<{ email: string }>({
         email: '',

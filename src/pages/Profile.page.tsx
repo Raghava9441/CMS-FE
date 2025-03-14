@@ -5,9 +5,8 @@ import { useState } from "react";
 import { useSelector } from "react-redux";
 import muiUtils from "@styles/MuiUtils";
 
-type Props = {}
 
-function ProfilePage({ }: Props) {
+function ProfilePage() {
     const storeUser: User | null = useSelector((state: RootState) => state.auth.user);
 
     const [user, setUser] = useState<User | null>(storeUser);
@@ -28,9 +27,6 @@ function ProfilePage({ }: Props) {
 
     const saveProfile = async () => {
         try {
-            // alert("hd")
-            // Assuming there's a function to make the API call
-            // await updateUserProfile(user);
             setIsEditing(false);
         } catch (error) {
             console.error("Failed to save profile:", error);

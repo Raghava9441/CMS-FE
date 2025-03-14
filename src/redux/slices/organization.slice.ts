@@ -23,9 +23,7 @@ const organizationSlice = createSlice({
         },
         fetchOrganizationsSuccess(state, action: PayloadAction<ApiResponseData<Organization[]>>) {
             state.loading = false;
-            // console.log(action.payload)
             state.data = action.payload;
-            // console.log(state.data)
             state.error = null;
         },
         fetchOrganizationByIdStart(state) {
@@ -34,9 +32,7 @@ const organizationSlice = createSlice({
         },
         fetchOrganizationByIdSuccess(state, action: PayloadAction<ApiResponseData<Organization>>) {
             state.loading = false;
-            // console.log(action.payload)
             state.data = action.payload;
-            // console.log(state.data)
             state.error = null;
         },
         createOrganizationStart(state) {
@@ -45,9 +41,7 @@ const organizationSlice = createSlice({
         },
         createOrganizationSuccess(state, action: PayloadAction<ApiResponseData<Organization>>) {
             state.loading = false;
-            // console.log(action.payload)
             state.data = action.payload;
-            // console.log(state.data)
             state.error = null;
         },
         updateOrganizationStart(state) {
@@ -72,7 +66,6 @@ const organizationSlice = createSlice({
             if (state.data) {
                 state.data.organizations = state.data.organizations.filter((org) => org._id !== action.payload);
             }
-            // console.log(state.data)
             state.error = null;
         },
     },

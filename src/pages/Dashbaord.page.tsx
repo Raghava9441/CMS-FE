@@ -1,7 +1,6 @@
 
-type Props = {}
 
-function DashbaordPage({ }: Props) {
+function DashbaordPage() {
     return (
         <div>Dashbaord.page</div>
     )

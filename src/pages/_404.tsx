@@ -4,9 +4,8 @@ import { useNavigate } from 'react-router-dom'
 import appRoutes from '@routes/routePaths'
 import lottie from '@lottie files/404.json';
 
-type Props = {}
 
-function _404({ }: Props) {
+function _404() {
     const navigate = useNavigate()
     return (
         <Box sx={{ width: '100%', height: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column' }}>

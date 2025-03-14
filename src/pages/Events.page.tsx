@@ -1,7 +1,6 @@
 
-type Props = {}
 
-function EventsPage({ }: Props) {
+function EventsPage() {
     return (
         <div>EventsPage</div>
     )

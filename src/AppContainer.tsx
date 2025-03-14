@@ -1,11 +1,10 @@
 import './App.css'
 import ThemeConfig from './theme'
 import { SettingsProvider } from './contexts/SettingsContext'
-import { Box, Button } from '@mui/material'
+import { Box } from '@mui/material'
 import SettingsPanel from './components/SettingsPanel'
 import ThemeLocalization from './components/ThemeLocalization'
 import { NotificationsProvider } from '@toolpad/core/useNotifications';
-import { AuthProvider } from './contexts/AuthContext'
 import App from './App'
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -15,7 +14,6 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 function AppContainer() {
     return (
         <>
-            {/* <AuthProvider> */}
             <LocalizationProvider dateAdapter={AdapterDayjs}>
                 <SettingsProvider>
                     <ThemeConfig>
@@ -31,7 +29,6 @@ function AppContainer() {
                     </ThemeConfig>
                 </SettingsProvider>
             </LocalizationProvider>
-            {/* </AuthProvider> */}
         </>
     )
 }

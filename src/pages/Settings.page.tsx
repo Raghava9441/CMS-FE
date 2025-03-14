@@ -1,7 +1,6 @@
 
-type Props = {}
 
-function SettingsPage({ }: Props) {
+function SettingsPage() {
     return (
         <div>SettingsPage</div>
     )

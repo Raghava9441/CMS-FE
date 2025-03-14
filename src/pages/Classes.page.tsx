@@ -1,7 +1,6 @@
 
-type Props = {}
 
-function ClassesPage({ }: Props) {
+function ClassesPage() {
     return (
         <div>ClassesPage</div>
     )
