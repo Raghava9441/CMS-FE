@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from 'react';
-import { Box, Button, Divider, useTheme } from '@mui/material';
+import { Box, Button, Divider, IconButton, useTheme } from '@mui/material';
 import { SettingsContext } from '../contexts/SettingsContext';
 import useOutsideClick from '../hooks/useOutsideClick';
 import './SettingsPanel.css';

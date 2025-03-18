@@ -119,10 +119,12 @@ const usersSlice = createSlice({
         updateUserSuccess(state, action: PayloadAction<User>) {
             console.log(action.payload)
             state.loading = false;
-            state.data = {
-                ...state.data,
-                users: state.data.users.map(user => user._id === action.payload._id ? action.payload : user)
-            };
+            if (state.data) {
+                state.data = {
+                    ...state.data,
+                    users: state.data.users.map(user => user._id === action.payload._id ? action.payload : user)
+                };
+            }
             state.error = null;
         },
         updateUserFailure(state, action: PayloadAction<string>) {

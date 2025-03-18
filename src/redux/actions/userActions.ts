@@ -12,7 +12,7 @@ export const fetchUsers = () => async (dispatch: AppDispatch) => {
         // console.log(response.data.data)
         dispatch(fetchUsersSuccess(response.data.data)); // Pass data to success action
     } catch (error) {
-        toast.error(error.message || 'Failed to fetch users', {
+        toast.error((error as Error)?.message || 'Failed to fetch users', {
             autoClose: 3000, // Auto close after 3 seconds
         });
     }
@@ -25,7 +25,7 @@ export const fetchUserById = (id: string) => async (dispatch: AppDispatch) => {
         console.log(response.data)
         dispatch(fetchUserByIdSuccess(response.data)); // Pass data to success action
     } catch (error) {
-        toast.error(error.message || 'Failed to fetch user', {
+        toast.error((error as Error)?.message || 'Failed to fetch user', {
             autoClose: 3000, // Auto close after 3 seconds
         });
     }
@@ -39,8 +39,8 @@ export const createUser = (user: Omit<User, 'password' | 'accessToken' | 'refres
         console.log(response)
         dispatch(createUserSuccess(response.data.data)); // Pass data to success action
         return response.data;
-    } catch (error) {
-        toast.error(error.message || 'Failed to fetch user', {
+    } catch (error: unknown) {
+        toast.error((error as Error)?.message || 'Failed to fetch user', {
             autoClose: 3000,
         });
     }
@@ -63,7 +63,7 @@ export const updateUser = (user: Omit<User, 'password' | 'accessToken' | 'refres
 export const deleteUser = (id: string) => async (dispatch: AppDispatch) => {
     try {
         dispatch(deleteUserStart()); // Set loading state to true
-        const response = await authservice.deleteUser(id);
+        const response = await userApi.deleteUser(id);
         dispatch(deleteUserSuccess(response.data)); // Pass data to success action
         return response.data;
     } catch (error) {

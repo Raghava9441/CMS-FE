@@ -1,11 +1,10 @@
 import axios from 'axios';
-import { authservice } from '../api/auth.api';
 import { userApi } from '@api/api';
 
 export interface ApiErrorResponse {
     statusCode: number;
     message: string;
-    errors: any[];
+    errors: unknown[];
     stack: string;
 }
 
@@ -13,7 +12,7 @@ export class ApiError extends Error {
     constructor(
         public statusCode: number,
         message: string,
-        public errors: any[] = [],
+        public errors: unknown[] = [],
         public stack: string = ''
     ) {
         super(message);
@@ -39,7 +38,7 @@ axiosInstance.interceptors.request.use(
             ...config.headers,
             'Accept': 'application/json',
             'Content-Type': 'application/json',
-        } as any;
+        };
         return config;
     },
     (error) => {

@@ -1,5 +1,5 @@
 //create organization actions to dispatch
-import {  organizationApi } from '../../api/organization.api';
+import { organizationApi } from '../../api/organization.api';
 import { Organization } from '../../models/organization.modal';
 import { AppDispatch } from '../store';
 import { createOrganizationStart, createOrganizationSuccess, deleteOrganizationStart, deleteOrganizationSuccess, fetchOrganizationByIdStart, fetchOrganizationByIdSuccess, fetchOrganizationsStart, fetchOrganizationsSuccess, updateOrganizationStart, updateOrganizationSuccess } from '../slices/organization.slice';
@@ -49,7 +49,7 @@ const updateOrganization = (organization: Omit<Organization, 'createdAt' | 'upda
     try {
         // console.log(organization)
         dispatch(updateOrganizationStart()); // Set loading state to true
-        const response = await AsyncorganizationApi.updateOrganization(organization,organization.id);
+        const response = await AsyncorganizationApi.updateOrganization(organization, organization.id);
         dispatch(updateOrganizationSuccess(response.data.data)); // Pass data to success action
         return response.data;
     } catch (error) {
@@ -64,12 +64,11 @@ const deleteOrganization = (id: string) => async (dispatch: AppDispatch) => {
         dispatch(deleteOrganizationStart());
         const response = await AsyncorganizationApi.deleteOrganization(id);
         dispatch(deleteOrganizationSuccess(id));
-        toast.info(response.message || 'Organization deleted successfully', {
+        toast.info('Organization deleted successfully', {
             autoClose: 3000,
         });
     } catch (error) {
-        // console.log(error)
-        toast.error(error.response.data.data || 'Failed to fetch organization', {
+        toast.error((error as { response?: { data?: { data?: string } } })?.response?.data?.data || 'Failed to fetch organization', {
             autoClose: 3000,
         });
     }

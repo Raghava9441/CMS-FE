@@ -52,11 +52,11 @@ export default defineConfig({
           plugins: [
             {
               name: 'removeViewBox',
-              active: false
+              // active: false
             },
             {
               name: 'removeDimensions',
-              active: true
+              // active: true
             }
           ]
         }

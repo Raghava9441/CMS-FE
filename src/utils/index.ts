@@ -28,15 +28,15 @@ export default function CatchErrorTyped<T, E extends new (message: string) => Er
 }
 
 // Example usage
-const callapi = async () => {
-    const [error, data] = await CatchErrorTyped(axios.get('https://jsonplaceholder.typicod.com/todos/1'))
+// const callapi = async () => {
+//     const [error, data] = await CatchErrorTyped(axios.get('https://jsonplaceholder.typicod.com/todos/1'))
 
-    if (error) {
-        console.log(error)
-    } else {
-        console.log(data)
-    }
-}
+//     if (error) {
+//         console.log(error)
+//     } else {
+//         console.log(data)
+//     }
+// }
 
 // Example usage with custom errors
 class CustomError extends Error {
