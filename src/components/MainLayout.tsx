@@ -43,7 +43,6 @@ export default function MainLayout() {
     const isauthenticated = useSelector((state: RootState) => state.auth.isAuthenticated);
     const user = useSelector((state: RootState) => state.auth.user);
     const { accessToken } = useSelector((state: RootState) => state.auth);
-    console.log(" accessToken:", accessToken)
 
 
     useEffect(() => {
@@ -60,6 +59,9 @@ export default function MainLayout() {
 
         // socket listeners
         if (socket) {
+
+            socket.emit("message_from_client", {hey:"server"});
+
             // socket server error handling
             socket.on("connect_error", (error) => {
                 // dispatch(
@@ -81,6 +83,7 @@ export default function MainLayout() {
             });
 
             socket.on("message_received", (message) => {
+                console.log(message)
                 // dispatch(updateMsgConvo(message));
             });
 
