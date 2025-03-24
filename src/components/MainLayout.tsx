@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {useEffect} from 'react';
+import { useEffect } from 'react';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -16,15 +16,16 @@ import MailIcon from '@mui/icons-material/Mail';
 import MenuIcon from '@mui/icons-material/Menu';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
-import {Outlet, useNavigate, useLocation} from 'react-router-dom';
-import {Avatar, Menu, MenuItem, Theme, useTheme} from '@mui/material';
-import {routesWithSideMenu} from '../routes';
-import {AppDispatch, RootState} from '../redux/store';
-import {useDispatch, useSelector} from 'react-redux';
+import { Outlet, useNavigate, useLocation } from 'react-router-dom';
+import { Avatar, Menu, MenuItem, Theme, useTheme } from '@mui/material';
+import { routesWithSideMenu } from '../routes';
+import { AppDispatch, RootState } from '../redux/store';
+import { useDispatch, useSelector } from 'react-redux';
 import appRoutes from '../routes/routePaths';
-import {authActions} from '../redux/actions/auth.actions';
+import { authActions } from '../redux/actions/auth.actions';
 import SchoolIcon from '@mui/icons-material/School';
 import NotificationsIcon from '@mui/icons-material/Notifications';
+import { connectSocket, socket } from '@utils/socket';
 
 const drawerWidth = 240;
 
@@ -41,6 +42,84 @@ export default function MainLayout() {
     const open = Boolean(anchorEl);
     const isauthenticated = useSelector((state: RootState) => state.auth.isAuthenticated);
     const user = useSelector((state: RootState) => state.auth.user);
+    const { accessToken } = useSelector((state: RootState) => state.auth);
+    console.log(" accessToken:", accessToken)
+
+
+    useEffect(() => {
+        // start server
+        // dispatch(StartServer());
+
+        // toggle approach between Optimistic & Pessimistic (true means use optimistic)
+        // dispatch(setIsOptimistic({ isOptimistic: true }));
+
+        // socket connection
+        if ((!socket || !socket.connected)) {
+            connectSocket(accessToken);
+        }
+
+        // socket listeners
+        if (socket) {
+            // socket server error handling
+            socket.on("connect_error", (error) => {
+                // dispatch(
+                //   ShowSnackbar({
+                //     severity: "error",
+                //     message: `Socket: ${error.message}`,
+                //   })
+                // );
+            });
+
+            // socket other error handling
+            socket.on("error", (error) => {
+                // dispatch(
+                //   ShowSnackbar({
+                //     severity: error.status,
+                //     message: `Socket: ${error.message}`,
+                //   })
+                // );
+            });
+
+            socket.on("message_received", (message) => {
+                // dispatch(updateMsgConvo(message));
+            });
+
+            socket.on("online_friends", (friend) => {
+                // dispatch(updateOnlineUsers(friend));
+            });
+
+            socket.on("start_typing", (typingData) => {
+                // dispatch(updateTypingConvo(typingData));
+            });
+
+            socket.on("stop_typing", (typingData) => {
+                // dispatch(updateTypingConvo(typingData));
+            });
+
+            return () => {
+                if (socket) {
+                    socket.off("connect_error");
+                    socket.off("error");
+                    socket.off("message_received");
+                    socket.off("online_friends");
+                    socket.off("start_typing");
+                    socket.off("stop_typing");
+                }
+            };
+        }
+    }, [ accessToken]);
+
+    // get conversations and friends
+    // useEffect(() => {
+    //     if (user.token) {
+    //         // get all conversations
+    //         dispatch(GetConversations());
+
+    //         // get online friends
+    //         dispatch(GetOnlineFriends());
+    //     }
+    // }, [user._id]);
+
 
     useEffect(() => {
         const checkAuthentication = () => {
@@ -97,12 +176,12 @@ export default function MainLayout() {
     const drawer = (
         <div>
             <Toolbar>
-                <Box sx={{display: 'flex', alignItems: 'center', width: '100%', justifyContent: 'center'}}>
-                    <Typography variant="h5" sx={{color: theme.palette.primary.main}}>ScholarSync</Typography>
-                    <SchoolIcon sx={{fontSize: 48, color: theme.palette.primary.main}}/>
+                <Box sx={{ display: 'flex', alignItems: 'center', width: '100%', justifyContent: 'center' }}>
+                    <Typography variant="h5" sx={{ color: theme.palette.primary.main }}>ScholarSync</Typography>
+                    <SchoolIcon sx={{ fontSize: 48, color: theme.palette.primary.main }} />
                 </Box>
             </Toolbar>
-            <Divider/>
+            <Divider />
             <List>
                 {routesWithSideMenu(user?.role).filter(route => route.authenticationRequired && route.isSideMenu).map((route) => (
                     <ListItem
@@ -114,62 +193,62 @@ export default function MainLayout() {
                     >
                         <ListItemButton onClick={() => route.path !== '/' && navigate(route.path)}>
                             <ListItemIcon>
-                                {route.id % 2 === 0 ? <InboxIcon/> : <MailIcon/>}
+                                {route.id % 2 === 0 ? <InboxIcon /> : <MailIcon />}
                             </ListItemIcon>
-                            <ListItemText primary={route.label}/>
+                            <ListItemText primary={route.label} />
                         </ListItemButton>
                     </ListItem>
                 ))}
             </List>
-            <Divider/>
+            <Divider />
         </div>
     );
 
     return (
-        <Box sx={{display: 'flex', height: '100vh'}}>
-            <CssBaseline/>
+        <Box sx={{ display: 'flex', height: '100vh' }}>
+            <CssBaseline />
             <AppBar
                 position="absolute"
                 sx={{
-                    width: {md: `calc(100% - ${drawerWidth}px)`},
-                    ml: {md: `${drawerWidth}px`},
+                    width: { md: `calc(100% - ${drawerWidth}px)` },
+                    ml: { md: `${drawerWidth}px` },
                 }}
             >
-                <Toolbar sx={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
-                    <Box sx={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
+                <Toolbar sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                         <IconButton
                             color="inherit"
                             aria-label="open drawer"
                             edge="start"
                             onClick={handleDrawerToggle}
-                            sx={{mr: 2, display: {md: 'none'}}}
+                            sx={{ mr: 2, display: { md: 'none' } }}
                         >
-                            <MenuIcon/>
+                            <MenuIcon />
                         </IconButton>
                         <Typography variant="h6" noWrap component="div">
                             ScholarSync
                         </Typography>
                     </Box>
 
-                    <Box sx={{display: 'flex', justifyContent: 'flex-end', alignItems: 'center'}}>
-                        <Box sx={{display: 'flex', justifyContent: 'flex-end', alignItems: 'center'}}>
+                    <Box sx={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center' }}>
+                        <Box sx={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center' }}>
                             <IconButton
                                 color="inherit"
                                 aria-label="user menu"
                                 edge="start"
                                 onClick={handleNotificationsClick}
-                                sx={{paddingRight: '2rem'}}
+                                sx={{ paddingRight: '2rem' }}
                             >
-                                <NotificationsIcon/>
+                                <NotificationsIcon />
                             </IconButton>
                             <IconButton
                                 color="inherit"
                                 aria-label="user menu"
                                 edge="start"
                                 onClick={handleAvatarClick}
-                                sx={{padding: '0px'}}
+                                sx={{ padding: '0px' }}
                             >
-                                <Avatar/>
+                                <Avatar />
                             </IconButton>
                         </Box>
                         {/* Avatar dropdown menu */}
@@ -219,7 +298,7 @@ export default function MainLayout() {
             </AppBar>
             <Box
                 component="nav"
-                sx={{width: {md: drawerWidth}, flexShrink: {md: 0}}}
+                sx={{ width: { md: drawerWidth }, flexShrink: { md: 0 } }}
                 aria-label="mailbox folders"
             >
                 <Drawer
@@ -231,10 +310,10 @@ export default function MainLayout() {
                         keepMounted: true,
                     }}
                     anchor={theme.direction === 'rtl' ? 'left' : 'right'}
-                    SlideProps={{direction: getSlideDirection(theme)}}
+                    SlideProps={{ direction: getSlideDirection(theme) }}
                     sx={{
-                        display: {xs: 'block', md: 'none'},
-                        '& .MuiDrawer-paper': {boxSizing: 'border-box', width: drawerWidth},
+                        display: { xs: 'block', md: 'none' },
+                        '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth },
                     }}
                 >
                     {drawer}
@@ -243,8 +322,8 @@ export default function MainLayout() {
                     variant="permanent"
                     sx={{
                         zIndex: -1,
-                        display: {xs: 'none', md: 'block'},
-                        '& .MuiDrawer-paper': {boxSizing: 'border-box', width: drawerWidth},
+                        display: { xs: 'none', md: 'block' },
+                        '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth },
                     }}
                     open
                 >
@@ -253,10 +332,10 @@ export default function MainLayout() {
             </Box>
             <Box
                 component="main"
-                sx={{width: `calc(100% - ${drawerWidth}px)`, height: '90vh', flexGrow: 1}}
+                sx={{ width: `calc(100% - ${drawerWidth}px)`, height: '90vh', flexGrow: 1 }}
             >
-                <Toolbar/>
-                <Outlet/>
+                <Toolbar />
+                <Outlet />
             </Box>
         </Box>
     );
