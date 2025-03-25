@@ -5,6 +5,7 @@ import organizationReducer from '../slices/organization.slice';
 import teacherReducer from '../slices/Teacher.slice';
 import studentReducer from '../slices/student.slice';
 import parentReducer from '../slices/parent.slice';
+import chatreducer from '../slices/chat.slice';
 import { thunk } from 'redux-thunk';
 
 const store = configureStore({
@@ -15,6 +16,7 @@ const store = configureStore({
         teacher: teacherReducer,
         student: studentReducer,
         parent: parentReducer,
+        chat: chatreducer,
     },
     middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(thunk), // Explicitly add thunk middleware
 });
