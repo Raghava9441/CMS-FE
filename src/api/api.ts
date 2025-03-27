@@ -58,6 +58,28 @@ export const courseApi = {
     deleteCourse: (id: string) => axiosInstance.delete<CourseApiResponse<Course>>(`/courses/${id}`),
 }
 
+export const MessageApi = {
+    sendMessage: (payload) => axiosInstance.post('/message/send-message', payload),
+    getMessages: (convo_id: string) => axiosInstance.get(`/conversation/get-messages/${convo_id}`),
+}
+
+export const ConversationApi = {
+    createOrOpenConversation: (payload: any) => axiosInstance.post('/conversation/create-open-conversation', payload),
+    getConversation: () => axiosInstance.get(`/conversation/get-conversations`),
+}
+
+export const FriendRequest = {
+    sendRequest: (payload: any) => axiosInstance.post('/friend-request/send-request', payload),
+    getConversation: () => axiosInstance.post(`/friend-request/cancel-request`),
+    acceptRejectRequest: () => axiosInstance.post(`/friend-request/accept-reject-request`),
+    cancelRequest: () => axiosInstance.post(`/friend-request/remove-friend`),
+    getFriends: () => axiosInstance.get(`/friend-request/get-friends`),
+    getOnlineFriends: () => axiosInstance.get(`/friend-request/online-friends`),
+    getSentRequests: () => axiosInstance.get(`/friend-request/get-sent-requests`),
+    removeFriend: () => axiosInstance.get(`/friend-request/search`),
+    searchFriends: (query: string) => axiosInstance.get(`/friend-request/get-requests${query}`),
+}
+
 // TODO:types need to implimnet for each api call to be able to use them
 // export const classApi = {
 //     getClasses: () => axiosInstance.get<ClassApiResponse<Class[]>>('/classes'),

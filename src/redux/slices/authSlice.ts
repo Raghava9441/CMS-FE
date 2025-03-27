@@ -1,3 +1,4 @@
+import { SearchFriends } from '@redux/actions/userActions';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 // Define the User interface based on the API response
@@ -20,6 +21,7 @@ export interface User {
         country?: string;
     };
     status?: 'active' | 'inactive';
+    activityStatus: "",
     dateOfBirth?: Date;
     biography?: string;
     permissions?: string[];
@@ -40,7 +42,18 @@ interface AuthState {
     accessToken: string | null;
     refreshToken: string | null;
     loading: boolean;
-    error: string;
+    error: string | boolean;
+    snackbar: {
+        open: boolean,
+        message: string | null,
+        severity: string | null,
+    },
+    friends: [],
+    onlineFriends: { _id: string; firstName: string; lastName: string; avatar: string; onlineStatus: string }[],
+    showFriendsMenu: boolean,
+    searchResults: [] | null,
+    searchCount: null | number | boolean,
+    isLoading: boolean,
 }
 
 const initialState: AuthState = {
@@ -50,6 +63,17 @@ const initialState: AuthState = {
     refreshToken: localStorage.getItem('refreshToken') || null,
     loading: false,
     error: '',
+    snackbar: {
+        open: false,
+        message: null,
+        severity: null,
+    },
+    friends: [],
+    onlineFriends: [],
+    searchResults: [],
+    showFriendsMenu: false,
+    searchCount: null,
+    isLoading: false
 };
 
 // Create the auth slice
@@ -102,9 +126,106 @@ const authSlice = createSlice({
             state.loading = false;
             state.error = action.payload;
         },
+        openSnackbar(state, action) {
+            state.snackbar.open = true;
+            state.snackbar.severity = action.payload.severity;
+            state.snackbar.message = action.payload.message;
+        },
+        closeSnackbar(state, action) {
+            state.snackbar.open = false;
+        },
+        setShowFriendsMenu(state) {
+            state.showFriendsMenu = !state.showFriendsMenu;
+        },
+        updateOnlineUsers: (state, action) => {
+            const { _id, firstName, lastName, avatar, onlineStatus } = action.payload;
+            const index = state.onlineFriends.findIndex(
+                (friend) => friend._id === _id
+            );
+
+            if (index !== -1) {
+                // If user is already in onlineFriends array, update onlineStatus
+                state.onlineFriends[index].onlineStatus = onlineStatus;
+            } else {
+                // If user is not in onlineFriends array, add the whole object to the array
+                state.onlineFriends.push({
+                    _id,
+                    firstName,
+                    lastName,
+                    avatar,
+                    onlineStatus,
+                });
+            }
+        },
+        removeFriend: (state, action) => {
+            const { friend_id } = action.payload;
+
+            // Find index of friend to remove
+            const index = state.friends.findIndex(
+                (friend) => friend._id === friend_id
+            );
+            if (index !== -1) {
+                // Remove friend from friends array
+                state.friends.splice(index, 1);
+            }
+        },
+        setLoading: (state, action) => {
+            state.isLoading = action.payload;
+        },
+        clearSearch: (state, action) => {
+            state.searchResults = [];
+            state.searchCount = null;
+        },
     },
+    extraReducers(builder) {
+        builder
+            // --------- Search Friends Builder ---------
+            .addCase(SearchFriends.pending, handlePending)
+            .addCase(SearchFriends.fulfilled, (state, action) => {
+                if (action.payload.usersFound === 0) {
+                    state.searchResults = null;
+                    state.searchCount = null;
+                } else {
+                    state.searchResults = action.payload.friends;
+                    state.searchCount = action.payload.usersFound;
+                }
+                state.isLoading = false;
+                state.error = false;
+            })
+            .addCase(SearchFriends.rejected, handleRejected)
+    }
 });
 
-export const { loginUserStart, loginUserSuccess, loginUserFailure, logoutUserStart, logoutUserSuccess, logoutUserFailure } = authSlice.actions;
+function handleRejected(state, action) {
+    state.isLoading = false;
+    state.error = true;
+}
+
+// function for pending and rejected handling
+function handlePending(state, action) {
+    state.isLoading = true;
+    state.error = false;
+}
+
+export function ShowSnackbar({ message, severity }) {
+    return async (dispatch, getState) => {
+        dispatch(authSlice.actions.openSnackbar({ message, severity }));
+    };
+}
+
+export function HideSnackbar() {
+    return async (dispatch, getState) => {
+        dispatch(authSlice.actions.closeSnackbar());
+    };
+}
+
+
+export function ClearSearch() {
+    return async (dispatch, getState) => {
+        dispatch(authSlice.actions.clearSearch());
+    };
+}
+
+export const { loginUserStart, loginUserSuccess, loginUserFailure, logoutUserStart, logoutUserSuccess, logoutUserFailure, setShowFriendsMenu, updateOnlineUsers, removeFriend } = authSlice.actions;
 
 export default authSlice.reducer;

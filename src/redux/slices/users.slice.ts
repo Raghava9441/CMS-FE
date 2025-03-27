@@ -21,6 +21,7 @@ interface User {
         country?: string;
     };
     status?: 'active' | 'inactive';
+    activityStatus: "",
     dateOfBirth?: string;
     biography?: string;
     permissions?: string[];
@@ -145,7 +146,7 @@ const usersSlice = createSlice({
             state.error = action.payload;
         },
     }
-});
+})
 
 export const { fetchUsersStart, fetchUsersSuccess, fetchUsersFailure, fetchUserByIdStart, fetchUserByIdSuccess, fetchUserByIdFailure, createUserStart, createUserSuccess, createUserFailure, updateUserStart, updateUserSuccess, updateUserFailure, deleteUserStart, deleteUserSuccess, deleteUserFailure } = usersSlice.actions;
 

@@ -2,7 +2,8 @@
 import { AppDispatch } from '../store';
 import { createUserStart, createUserSuccess, deleteUserStart, deleteUserSuccess, fetchUserByIdStart, fetchUserByIdSuccess, fetchUsersStart, fetchUsersSuccess, updateUserStart, updateUserSuccess } from '../slices/users.slice';
 import { toast } from 'react-toastify';
-import { userApi } from '../../api/api';
+import { FriendRequest, userApi } from '../../api/api';
+import { createAsyncThunk } from '@reduxjs/toolkit';
 
 export const fetchUsers = () => async (dispatch: AppDispatch) => {
     try {
@@ -73,6 +74,66 @@ export const deleteUser = (id: string) => async (dispatch: AppDispatch) => {
     }
 };
 
+// ------------- Get Friends Thunk -------------
+export const GetFriends = createAsyncThunk(
+    "friends/get-friends",
+    async (arg, { rejectWithValue, dispatch }) => {
+        try {
+            const { data } = await FriendRequest.getFriends();
+
+            return data;
+        } catch (error) {
+            // dispatch(
+            //   ShowSnackbar({
+            //     severity: error.error.status,
+            //     message: error.error.message,
+            //   })
+            // );
+            return rejectWithValue(error.error);
+        }
+    }
+);
+
+// ------------- Get Online Friends Thunk -------------
+export const GetOnlineFriends = createAsyncThunk(
+    "friends/online-friends",
+    async (arg, { rejectWithValue, dispatch }) => {
+        try {
+            const { data } = await FriendRequest.getOnlineFriends()
+
+            return data;
+        } catch (error) {
+            // dispatch(
+            //   ShowSnackbar({
+            //     severity: error.error.status,
+            //     message: error.error.message,
+            //   })
+            // );
+            return rejectWithValue(error.error);
+        }
+    }
+);
+
+export const SearchFriends = createAsyncThunk(
+    "friends/search",
+    async (searchData, { rejectWithValue, dispatch }) => {
+        try {
+
+            const { data } = FriendRequest.searchFriends(`/friends/search/?search=${searchData.keyword}&page=${searchData.page || 0}`)
+
+            return data;
+        } catch (error) {
+            // dispatch(
+            //   ShowSnackbar({
+            //     severity: error.error.status,
+            //     message: error.error.message,
+            //   })
+            // );
+            return rejectWithValue(error.error);
+        }
+    }
+);
+
 
 export const userActions = {
     fetchUsers,
@@ -80,4 +141,6 @@ export const userActions = {
     createUser,
     updateUser,
     deleteUser,
+    GetOnlineFriends,
+    GetFriends
 }

@@ -1,20 +1,23 @@
+import { ConversationApi, MessageApi } from "@api/api";
 import { closeActiveConversation, setLoading } from "@redux/slices/chat.slice";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { socket } from "@utils/socket";
-import axios from "axios";
+// import axios from "axios";
 
 export const GetConversations = createAsyncThunk("conversations/get-conversation", async (arg, { rejectWithValue, dispatch }) => {
     try {
         // set user loading to true
         dispatch(setLoading(true));
         //TODO: need to fix this
-        const { data } = await axios.get("/conversation/get-conversations/");
+        // const { data } = await axios.get("/conversation/get-conversations/");
+        const { data } = ConversationApi.getConversation()
 
         // set user loading to false
         dispatch(setLoading(false));
 
         return data;
     } catch (error) {
+        console.log(" error:", error)
         // dispatch(SetLoading(false));
         // dispatch(
         //     ShowSnackbar({
@@ -33,12 +36,13 @@ export const CreateOpenConversation = createAsyncThunk(
     "conversation/create-open-conversation",
     async (value, { rejectWithValue, dispatch }) => {
         try {
-            const { data } = await axios.post(
-                "/conversation/create-open-conversation",
-                {
-                    receiver_id: value,
-                }
-            );
+            // const { data } = await axios.post(
+            //     "/conversation/create-open-conversation",
+            //     {
+            //         receiver_id: value,
+            //     }
+            // );
+            const { data } = ConversationApi.createOrOpenConversation({ receiver_id: value })
 
             dispatch(closeActiveConversation());
 
@@ -47,6 +51,7 @@ export const CreateOpenConversation = createAsyncThunk(
 
             return data;
         } catch (error) {
+            console.log(" error:", error)
             // show snackbar
             // dispatch(
             //     ShowSnackbar({
@@ -62,12 +67,15 @@ export const CreateOpenConversation = createAsyncThunk(
 // ------------- Get Messages -------------
 export const GetMessages = createAsyncThunk(
     "message/get-messages",
-    async (convoId, { rejectWithValue, dispatch }) => {
+    async (convoId: string, { rejectWithValue, dispatch }) => {
         try {
-            const { data } = await axios.get(`/message/get-messages/${convoId}`);
+            // const { data } = await axios.get(`/message/get-messages/${convoId}`);
+
+            const { data } = MessageApi.getMessages(convoId)
 
             return data;
         } catch (error) {
+            console.log(" error:", error)
             // show snackbar
             // dispatch(
             //     ShowSnackbar({
@@ -85,7 +93,10 @@ export const SendMessage = createAsyncThunk(
     "message/send-message",
     async (messageData, { rejectWithValue, dispatch, getState }) => {
         try {
-            const { data } = await axios.post("/message/send-message", messageData);
+            // const { data } = await axios.post("/message/send-message", messageData);
+
+            const { data } = MessageApi.sendMessage(messageData)
+
 
             // Approach check
             if (!getState().chat.isOptimistic) {
@@ -94,6 +105,7 @@ export const SendMessage = createAsyncThunk(
             }
             return data;
         } catch (error) {
+            console.log(" error:", error)
             // show snackbar
             // dispatch(
             //     ShowSnackbar({
