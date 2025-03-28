@@ -157,6 +157,7 @@ const authSlice = createSlice({
                 });
             }
         },
+        //cancel friend
         removeFriend: (state, action) => {
             const { friend_id } = action.payload;
 

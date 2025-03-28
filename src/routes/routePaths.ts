@@ -19,6 +19,7 @@ const appRoutes = {
     LOGOUT: '/logout',
     REGISTER_USER: '/register-user',
     CONVERSATIONS: '/conversations',
+    FRIENDS: '/friends',
 
 
     LOGIN: '/user/auth/login',

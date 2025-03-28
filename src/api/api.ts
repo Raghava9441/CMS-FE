@@ -72,12 +72,13 @@ export const FriendRequest = {
     sendRequest: (payload: any) => axiosInstance.post('/friend-request/send-request', payload),
     getConversation: () => axiosInstance.post(`/friend-request/cancel-request`),
     acceptRejectRequest: () => axiosInstance.post(`/friend-request/accept-reject-request`),
-    cancelRequest: () => axiosInstance.post(`/friend-request/remove-friend`),
+    cancelRequest: (data:any) => axiosInstance.post(`/friend-request/remove-friend`,data),
     getFriends: () => axiosInstance.get(`/friend-request/get-friends`),
     getOnlineFriends: () => axiosInstance.get(`/friend-request/online-friends`),
     getSentRequests: () => axiosInstance.get(`/friend-request/get-sent-requests`),
     removeFriend: () => axiosInstance.get(`/friend-request/search`),
     searchFriends: (query: string) => axiosInstance.get(`/friend-request/get-requests${query}`),
+    GetFriendRequests: () => axiosInstance.get(`/friends/get-requests`),
 }
 
 // TODO:types need to implimnet for each api call to be able to use them

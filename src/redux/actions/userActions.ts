@@ -4,6 +4,7 @@ import { createUserStart, createUserSuccess, deleteUserStart, deleteUserSuccess,
 import { toast } from 'react-toastify';
 import { FriendRequest, userApi } from '../../api/api';
 import { createAsyncThunk } from '@reduxjs/toolkit';
+import { ShowSnackbar } from '@redux/slices/authSlice';
 
 export const fetchUsers = () => async (dispatch: AppDispatch) => {
     try {
@@ -123,12 +124,12 @@ export const SearchFriends = createAsyncThunk(
 
             return data;
         } catch (error) {
-            // dispatch(
-            //   ShowSnackbar({
-            //     severity: error.error.status,
-            //     message: error.error.message,
-            //   })
-            // );
+            dispatch(
+              ShowSnackbar({
+                severity: error.error.status,
+                message: error.error.message,
+              })
+            );
             return rejectWithValue(error.error);
         }
     }
