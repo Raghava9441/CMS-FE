@@ -33,10 +33,8 @@ export const RemoveFriend = createAsyncThunk(
     "friends/remove-friend",
     async (friend_id, { rejectWithValue, dispatch }) => {
         try {
-            const { data } = await axios.post("/friends/remove-friend", {
-                friend_id,
-            });
-            const { data } = FriendRequest.cancelRequest({ friend_id })
+
+            const { data } = await FriendRequest.cancelRequest({ friend_id })
 
 
             // remove friend from friends list
@@ -70,9 +68,10 @@ export const GetFriendRequests = createAsyncThunk(
     "friends/get-requests",
     async (arg, { rejectWithValue, dispatch }) => {
         try {
-            const { data } = FriendRequest.GetFriendRequests()
+            const response = await FriendRequest.GetFriendRequests()
 
-            return data;
+            // console.log(" data:", response)
+            return response.data;
         } catch (error) {
             // show snackbar
             dispatch(
@@ -113,10 +112,7 @@ export const SearchForUsers = createAsyncThunk(
     "user/search",
     async (searchData, { rejectWithValue, dispatch }) => {
         try {
-            const { data } = await axios.get(
-                `/user/search/?search=${searchData.keyword}&page=${searchData.page || 0
-                }`
-            );
+
 
             const { data } = FriendRequest.searchFriends(`/user/search/?search=${searchData.keyword}&page=${searchData.page || 0}`)
 

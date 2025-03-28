@@ -14,6 +14,7 @@ const FriendRequests = () => {
     // from redux
     const dispatch = useDispatch();
     const { friendRequests, isRequestsLoading } = useSelector((state: RootState) => state.Friends);
+    console.log(" friendRequests:", friendRequests)
     const { showFriendsMenu } = useSelector((state: RootState) => state.auth);
 
     useEffect(() => {
@@ -47,17 +48,15 @@ const FriendRequests = () => {
                                 alignItems={"center"}
                                 justifyContent={"center"}
                             >
+                                {console.log(isRequestsLoading)}
                                 <Box sx={{ width: { xs: "25em", md: "40em" } }}>
                                     <Lottie
-                                        options={{
-                                            loop: true,
-                                            autoplay: true,
-                                            animationData: NoResultsFound,
-                                            rendererSettings: {
-                                                preserveAspectRatio: "xMidYMid slice",
-                                            },
+                                        loop={true}
+                                        autoplay={true}
+                                        animationData={NoResultsFound}
+                                        rendererSettings={{
+                                            preserveAspectRatio: "xMidYMid slice",
                                         }}
-                                        isClickToPauseDisabled={true}
                                     />
                                 </Box>
                                 <Typography variant="subtitle2">No Requests Found</Typography>

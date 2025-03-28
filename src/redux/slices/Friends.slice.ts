@@ -80,6 +80,7 @@ const Friendslice = createSlice({
             // --------- Frined Requests Builder ---------
             .addCase(GetFriendRequests.pending, handlePending("isRequestsLoading"))
             .addCase(GetFriendRequests.fulfilled, (state, action) => {
+                console.log(" action:", action)
                 state.friendRequests = action.payload.friendRequests;
                 state.isRequestsLoading = false;
                 state.error = false;

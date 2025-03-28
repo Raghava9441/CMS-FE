@@ -4,7 +4,7 @@
 const FriendList = () => {
     return (
         <div>
-            <h1>Friends</h1>
+            Friends list
         </div>
     )
 }
