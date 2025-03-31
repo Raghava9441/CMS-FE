@@ -69,15 +69,15 @@ export const ConversationApi = {
 }
 
 export const FriendRequest = {
-    sendRequest: (payload: any) => axiosInstance.post('/friend-request/send-request', payload),
-    getConversation: () => axiosInstance.post(`/friend-request/cancel-request`),
-    acceptRejectRequest: () => axiosInstance.post(`/friend-request/accept-reject-request`),
-    cancelRequest: (data:any) => axiosInstance.post(`/friend-request/remove-friend`,data),
-    getFriends: () => axiosInstance.get(`/friend-request/get-friends`),
-    getOnlineFriends: () => axiosInstance.get(`/friend-request/online-friends`),
-    getSentRequests: () => axiosInstance.get(`/friend-request/get-sent-requests`),
-    removeFriend: () => axiosInstance.get(`/friend-request/search`),
-    searchFriends: (query: string) => axiosInstance.get(`/friend-request/get-requests${query}`),
+    sendRequest: (payload: any) => axiosInstance.post('/friends/send-request', payload),
+    getConversation: () => axiosInstance.post(`/friends/cancel-request`),
+    acceptRejectRequest: () => axiosInstance.post(`/friends/accept-reject-request`),
+    cancelRequest: (data:any) => axiosInstance.post(`/friends/remove-friend`,data),
+    getFriends: () => axiosInstance.get(`/friends/get-friends`),
+    getOnlineFriends: () => axiosInstance.get(`/friends/online-friends`),
+    getSentRequests: () => axiosInstance.get(`/friends/get-sent-requests`),
+    removeFriend: () => axiosInstance.get(`/friends/search`),
+    searchFriends: (query: string) => axiosInstance.get(`/friends/get-requests${query}`),
     GetFriendRequests: () => axiosInstance.get(`/friends/get-requests`),
 }
 

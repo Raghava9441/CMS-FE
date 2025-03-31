@@ -1,8 +1,7 @@
-import { Box, Grid2, Typography, useTheme } from "@mui/material";
+import { Box, Grid, Grid2, Stack, Typography, useTheme } from "@mui/material";
 import { RootState } from "@redux/store";
 import { Friend_Requests } from "../../data/index";
 import Lottie from "lottie-react";
-import { Stack } from "phosphor-react";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import NoResultsFound from '../../assets/animations/NoResultsFound.json'
@@ -14,7 +13,6 @@ const FriendRequests = () => {
     // from redux
     const dispatch = useDispatch();
     const { friendRequests, isRequestsLoading } = useSelector((state: RootState) => state.Friends);
-    console.log(" friendRequests:", friendRequests)
     const { showFriendsMenu } = useSelector((state: RootState) => state.auth);
 
     useEffect(() => {
@@ -31,16 +29,19 @@ const FriendRequests = () => {
                 >
                     Below is the list of received friend requests | Click on a card to
                     visit user
+
                 </Typography>
-                <Grid2 container spacing={3}>
+                <Grid container spacing={3}>
                     {!isRequestsLoading ? (
-                        friendRequests?.length !== 0 ? (
+                        false ? (
                             friendRequests?.map((sender) => (
-                                <UserCard
-                                    thisUser={sender?.sender}
-                                    fromSection={"FriendRequests"}
-                                    key={sender?.sender?._id}
-                                />
+                                <>
+                                    <UserCard
+                                        thisUser={sender?.sender}
+                                        fromSection={"FriendRequests"}
+                                        key={sender?.sender?._id}
+                                    />
+                                </>
                             ))
                         ) : (
                             <Stack
@@ -48,7 +49,6 @@ const FriendRequests = () => {
                                 alignItems={"center"}
                                 justifyContent={"center"}
                             >
-                                {console.log(isRequestsLoading)}
                                 <Box sx={{ width: { xs: "25em", md: "40em" } }}>
                                     <Lottie
                                         loop={true}
@@ -73,7 +73,7 @@ const FriendRequests = () => {
                             />
                         ))
                     )}
-                </Grid2>
+                </Grid>
             </Stack>
         </Box>
     );
