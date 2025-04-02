@@ -1,4 +1,5 @@
 import { ConversationApi, MessageApi } from "@api/api";
+import { ShowSnackbar } from "@redux/slices/authSlice";
 import { closeActiveConversation, setLoading } from "@redux/slices/chat.slice";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { socket } from "@utils/socket";
@@ -9,7 +10,6 @@ export const GetConversations = createAsyncThunk("conversations/get-conversation
         // set user loading to true
         dispatch(setLoading(true));
         //TODO: need to fix this
-        // const { data } = await axios.get("/conversation/get-conversations/");
         const { data } = ConversationApi.getConversation()
 
         // set user loading to false
@@ -18,30 +18,22 @@ export const GetConversations = createAsyncThunk("conversations/get-conversation
         return data;
     } catch (error) {
         console.log(" error:", error)
-        // dispatch(SetLoading(false));
-        // dispatch(
-        //     ShowSnackbar({
-        //         severity: error.error.status,
-        //         message: error.error.message,
-        //     })
-        // );
+        dispatch(
+            ShowSnackbar({
+                severity:'error',
+                message: error.response.data.data,
+            })
+        );
         return rejectWithValue(error.error);
     }
 })
-
-
 
 // ------------- Create or Open Conversation -------------
 export const CreateOpenConversation = createAsyncThunk(
     "conversation/create-open-conversation",
     async (value, { rejectWithValue, dispatch }) => {
         try {
-            // const { data } = await axios.post(
-            //     "/conversation/create-open-conversation",
-            //     {
-            //         receiver_id: value,
-            //     }
-            // );
+           
             const { data } = ConversationApi.createOrOpenConversation({ receiver_id: value })
 
             dispatch(closeActiveConversation());
@@ -51,14 +43,12 @@ export const CreateOpenConversation = createAsyncThunk(
 
             return data;
         } catch (error) {
-            console.log(" error:", error)
-            // show snackbar
-            // dispatch(
-            //     ShowSnackbar({
-            //         severity: error.error.status,
-            //         message: error.error.message,
-            //     })
-            // );
+            dispatch(
+                ShowSnackbar({
+                    severity:'error',
+                    message: error.response.data.data,
+                })
+            );
             return rejectWithValue(error.error);
         }
     }
@@ -69,7 +59,6 @@ export const GetMessages = createAsyncThunk(
     "message/get-messages",
     async (convoId: string, { rejectWithValue, dispatch }) => {
         try {
-            // const { data } = await axios.get(`/message/get-messages/${convoId}`);
 
             const { data } = MessageApi.getMessages(convoId)
 
@@ -77,12 +66,12 @@ export const GetMessages = createAsyncThunk(
         } catch (error) {
             console.log(" error:", error)
             // show snackbar
-            // dispatch(
-            //     ShowSnackbar({
-            //         severity: error.error.status,
-            //         message: error.error.message,
-            //     })
-            // );
+            dispatch(
+                ShowSnackbar({
+                    severity:'error',
+                    message: error.response.data.data,
+                })
+            );
             return rejectWithValue(error.error);
         }
     }
@@ -93,10 +82,7 @@ export const SendMessage = createAsyncThunk(
     "message/send-message",
     async (messageData, { rejectWithValue, dispatch, getState }) => {
         try {
-            // const { data } = await axios.post("/message/send-message", messageData);
-
             const { data } = MessageApi.sendMessage(messageData)
-
 
             // Approach check
             if (!getState().chat.isOptimistic) {
@@ -107,12 +93,12 @@ export const SendMessage = createAsyncThunk(
         } catch (error) {
             console.log(" error:", error)
             // show snackbar
-            // dispatch(
-            //     ShowSnackbar({
-            //         severity: error.error.status,
-            //         message: error.error.message,
-            //     })
-            // );
+            dispatch(
+                ShowSnackbar({
+                    severity: 'error',
+                    message: error.response.data.data,
+                })
+            );
             return rejectWithValue(error.error);
         }
     }

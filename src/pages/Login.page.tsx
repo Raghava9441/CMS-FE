@@ -37,7 +37,7 @@ const LoginPage: React.FC = () => {
     const theme = useTheme();
     const navigate = useNavigate();
     const dispatch = useDispatch<AppDispatch>();
-    const { loading } = useSelector((state: RootState) => state.auth);
+    const { loading, error } = useSelector((state: RootState) => state.auth);
 
     const [credentials, setCredentials] = useState<LoginCredentials>({
         email: '',
@@ -202,6 +202,7 @@ const LoginPage: React.FC = () => {
                                     'Sign In'
                                 )}
                             </Button>
+                            {error && <Typography color='error'>{error}</Typography>}
                             <Grid container sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                                 <Grid item sx={styles.signUpLink}>
                                     <Link to={appRoutes.REGISTER}>

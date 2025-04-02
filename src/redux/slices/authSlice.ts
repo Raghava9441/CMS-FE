@@ -46,7 +46,7 @@ interface AuthState {
     snackbar: {
         open: boolean,
         message: string | null,
-        severity: string | null,
+        severity: 'error' | 'success' | 'warning' | 'info',
     },
     friends: [],
     onlineFriends: { _id: string; firstName: string; lastName: string; avatar: string; onlineStatus: string }[],
@@ -127,6 +127,8 @@ const authSlice = createSlice({
             state.error = action.payload;
         },
         openSnackbar(state, action) {
+            console.log("action", action)
+            console.log("action.payload.severity", action.payload.severity)
             state.snackbar.open = true;
             state.snackbar.severity = action.payload.severity;
             state.snackbar.message = action.payload.message;
@@ -208,7 +210,9 @@ function handlePending(state, action) {
     state.error = false;
 }
 
-export function ShowSnackbar({ message, severity }) {
+export function ShowSnackbar({ message, severity }: { message: string, severity: 'error' | 'success' | 'warning' | 'info' }) {
+    console.log(" severity:", severity)
+    console.log(message)
     return async (dispatch, getState) => {
         dispatch(authSlice.actions.openSnackbar({ message, severity }));
     };

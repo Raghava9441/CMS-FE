@@ -140,6 +140,12 @@ pass:Exampleorgadmin@gmail.com
 Exampleteacher@gmail.com   id: 6766dc8b1067ef015c7bdb78
 pass: Exampleteacher@gmail.com
 
+Examplestudent2@gmail.com   id: 6766dc8b1067ef015c7bdb78
+pass: Examplestudent2@gmail.com
+
+Examplestudent3@gmail.com   id: 6766dc8b1067ef015c7bdb78
+pass: Examplestudent3@gmail.com
+
 
 Examplestudent@gmail.com
 pass: Examplestudent@gmail.com

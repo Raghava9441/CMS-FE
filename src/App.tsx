@@ -3,10 +3,11 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import MainLayout from './components/MainLayout';
 import { routesWithAuth, routesWithoutAuth } from './routes';
 import _404 from './pages/_404';
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@redux/store";
-import { Suspense } from "react";
-import { CircularProgress } from "@mui/material";
+import { Suspense, useEffect, useState } from "react";
+import { Alert, CircularProgress, Slide, Snackbar, useMediaQuery, useTheme } from "@mui/material";
+import { HideSnackbar } from '@redux/slices/authSlice';
 
 const AppRouter = () => {
     const user = useSelector((state: RootState) => state.auth.user);
@@ -30,10 +31,70 @@ const AppRouter = () => {
     );
 };
 
+const vertical = "top";
+const horizontal = "right";
+
+
+function SlideTransition(props) {
+    // breakpoint
+    const theme = useTheme();
+    const isSmallScreen = useMediaQuery(theme.breakpoints.down("md"));
+
+    return <Slide {...props} direction={isSmallScreen ? "down" : "left"} />;
+}
+
+
 function App() {
+    const theme = useTheme();
+
+    const isSmallScreen = useMediaQuery(theme.breakpoints.down("md"));
+
+    // from redux
+    const { open, message, severity } = useSelector(
+        (state: RootState) => state.auth.snackbar
+    );
+
+    // use dispatch
+    const dispatch = useDispatch();
+
+    // Local state to manage Snackbar visibility
+    const [localOpen, setLocalOpen] = useState(false);
+
+    // Effect to synchronize localOpen with the global open state
+    useEffect(() => {
+        setLocalOpen(open);
+    }, [open]);
+
+    // Handler for Snackbar close
+    const handleCloseSnackbar = () => {
+        setLocalOpen(false); // Hide Snackbar with local state
+        setTimeout(() => {
+            dispatch(HideSnackbar()); // Dispatch action after delay
+        }, 300);
+    };
+
     return (
         <>
             <AppRouter />
+            <Snackbar
+                anchorOrigin={{
+                    vertical: "top",
+                    horizontal: isSmallScreen ? "center" : "right",
+                }}
+                open={localOpen}
+                autoHideDuration={5000}
+                key={vertical + horizontal}
+                onClose={handleCloseSnackbar}
+                TransitionComponent={SlideTransition}
+            >
+                <Alert
+                    onClose={handleCloseSnackbar}
+                    severity={}
+                    sx={{ width: "100%" }}
+                >
+                    {message}
+                </Alert>
+            </Snackbar>
         </>
     )
 }
