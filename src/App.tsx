@@ -89,7 +89,7 @@ function App() {
             >
                 <Alert
                     onClose={handleCloseSnackbar}
-                    severity={}
+                    severity={severity}
                     sx={{ width: "100%" }}
                 >
                     {message}
