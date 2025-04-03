@@ -1,4 +1,4 @@
-import { AcceptRejectRequest, GetFriendRequests, GetSentRequests, GetUserData, RemoveFriend, SearchForUsers, SendRequest, UnsendRequest } from "@redux/actions/Friend.actions";
+import { AcceptRejectRequest, GetFriendRequests, GetOrganizationUsers, GetSentRequests, GetUserData, RemoveFriend, SearchForUsers, SendRequest, UnsendRequest } from "@redux/actions/Friend.actions";
 import { createSlice } from "@reduxjs/toolkit";
 
 interface initialState {
@@ -10,6 +10,7 @@ interface initialState {
     isSendRequestLoading: boolean;
     isAcptRejtLoading: boolean;
     isSentRequestsLoading: boolean;
+    isOrgUsersLoading: boolean;
     error: boolean
     searchedUsersList: [];
     searchedUsersCount: number | null
@@ -17,6 +18,7 @@ interface initialState {
     sentRequests: []
     friendRequests: []
     userData: {};
+    orgUsers: []
 }
 
 const initialState: initialState = {
@@ -28,6 +30,7 @@ const initialState: initialState = {
     isSendRequestLoading: false,
     isAcptRejtLoading: false,
     isSentRequestsLoading: false,
+    isOrgUsersLoading: false,
 
     error: false,
 
@@ -41,6 +44,7 @@ const initialState: initialState = {
     friendRequests: [],
 
     userData: {},
+    orgUsers: []
 };
 
 const Friendslice = createSlice({
@@ -57,7 +61,7 @@ const Friendslice = createSlice({
             state.searchedUsersList = [];
             state.searchedUsersCount = null;
         },
-    },
+    }, 
     extraReducers(builder) {
         builder
             // --------- User Data Builder ---------
@@ -80,8 +84,8 @@ const Friendslice = createSlice({
             // --------- Frined Requests Builder ---------
             .addCase(GetFriendRequests.pending, handlePending("isRequestsLoading"))
             .addCase(GetFriendRequests.fulfilled, (state, action) => {
-                console.log(" action:", action)
-                state.friendRequests = action.payload.friendRequests;
+                // console.log(" action:", action)
+                state.friendRequests = action.payload.data.friendRequests;
                 state.isRequestsLoading = false;
                 state.error = false;
             })
@@ -170,6 +174,18 @@ const Friendslice = createSlice({
             .addCase(
                 GetSentRequests.rejected,
                 handleRejected("isSentRequestsLoading")
+            )
+            // --------- Get Org Users Builder ---------
+            .addCase(GetOrganizationUsers.pending, handlePending("isOrgUsersLoading"))
+            .addCase(GetOrganizationUsers.fulfilled, (state, action) => {
+                state.orgUsers =  action.payload.data;
+                state.isOrgUsersLoading = false;
+                state.error = false;
+            })
+
+            .addCase(
+                GetOrganizationUsers.rejected,
+                handleRejected("isOrgUsersLoading")
             );
     }
 })
@@ -189,7 +205,7 @@ function handleRejected(actionName) {
     };
 }
 
-export const { setShowFriendsMenu, clearSearchUsers } = Friendslice.actions;
+export const { setShowFriendsMenu, clearSearchUsers, clearOrgUsers } = Friendslice.actions;
 
 
 export default Friendslice.reducer;

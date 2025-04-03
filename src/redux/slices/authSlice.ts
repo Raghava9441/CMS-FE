@@ -1,4 +1,4 @@
-import { SearchFriends } from '@redux/actions/userActions';
+import { GetFriends, SearchFriends } from '@redux/actions/userActions';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 // Define the User interface based on the API response
@@ -49,7 +49,7 @@ interface AuthState {
         severity: 'error' | 'success' | 'warning' | 'info',
     },
     friends: [],
-    onlineFriends: { _id: string; firstName: string; lastName: string; avatar: string; onlineStatus: string }[],
+    onlineFriends: { _id: string; email: string; avatar: string; activityStatus: string; onlineStatus: string }[],
     showFriendsMenu: boolean,
     searchResults: [] | null,
     searchCount: null | number | boolean,
@@ -196,6 +196,15 @@ const authSlice = createSlice({
                 state.error = false;
             })
             .addCase(SearchFriends.rejected, handleRejected)
+
+            .addCase(GetFriends.pending, handlePending)
+            .addCase(GetFriends.fulfilled, (state, action) => {
+                console.log( action.payload.data)
+                state.friends = action.payload.data.friends;
+                state.isLoading = false;
+                state.error = false;
+            })
+            .addCase(GetFriends.rejected, handleRejected)
     }
 });
 

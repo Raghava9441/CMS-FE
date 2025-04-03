@@ -81,7 +81,7 @@ export const GetFriends = createAsyncThunk(
     async (arg, { rejectWithValue, dispatch }) => {
         try {
             const { data } = await FriendRequest.getFriends();
-
+            console.log(data)
             return data;
         } catch (error) {
             // dispatch(

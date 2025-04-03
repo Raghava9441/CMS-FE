@@ -90,7 +90,7 @@ export const GetSentRequests = createAsyncThunk(
     "friends/get-sent-requests",
     async (arg, { rejectWithValue, dispatch }) => {
         try {
-            const { data } = FriendRequest.getSentRequests()
+            const { data } = await FriendRequest.getSentRequests()
 
             return data;
         } catch (error) {
@@ -114,7 +114,7 @@ export const SearchForUsers = createAsyncThunk(
         try {
 
 
-            const { data } = FriendRequest.searchFriends(`/user/search/?search=${searchData.keyword}&page=${searchData.page || 0}`)
+            const { data } = await FriendRequest.searchFriends(`/user/search/?search=${searchData.keyword}&page=${searchData.page || 0}`)
 
             return data;
         } catch (error) {
@@ -136,7 +136,7 @@ export const SendRequest = createAsyncThunk(
     async (receiver_id, { rejectWithValue, dispatch }) => {
         try {
 
-            const { data } = FriendRequest.sendRequest({ receiver_id })
+            const { data } = await FriendRequest.sendRequest({ receiver_id })
 
             // show snackbar
             dispatch(
@@ -166,7 +166,7 @@ export const UnsendRequest = createAsyncThunk(
     async (receiver_id, { rejectWithValue, dispatch }) => {
         try {
 
-            const { data } = FriendRequest.cancelRequest({ receiver_id })
+            const { data } = await FriendRequest.cancelRequest({ receiver_id })
 
             // show snackbar
             dispatch(
@@ -196,7 +196,7 @@ export const AcceptRejectRequest = createAsyncThunk(
     async (values, { rejectWithValue, dispatch }) => {
         try {
 
-            const { data } = FriendRequest.cancelRequest({
+            const { data } = await FriendRequest.acceptRejectRequest({
                 sender_id: values.sender_id,
                 action_type: values.type,
             })
@@ -220,6 +220,27 @@ export const AcceptRejectRequest = createAsyncThunk(
                 ShowSnackbar({
                     severity: error.error.status,
                     message: error.error.message,
+                })
+            );
+            return rejectWithValue(error.error);
+        }
+    }
+);
+
+// ------------- Accept/Reject Request Thunk -------------
+export const GetOrganizationUsers = createAsyncThunk(
+    "friends/get-org users",
+    async (values, { rejectWithValue, dispatch }) => {
+        try {
+
+            const { data } = await FriendRequest.GetOrganizationUsers()
+
+            return data;
+        } catch (error) {
+            dispatch(
+                ShowSnackbar({
+                    severity: "error",
+                    message: error.response.data.data,
                 })
             );
             return rejectWithValue(error.error);

@@ -8,12 +8,13 @@ import { RootState } from "@redux/store";
 import { Suspense, useEffect, useState } from "react";
 import { Alert, CircularProgress, Slide, Snackbar, useMediaQuery, useTheme } from "@mui/material";
 import { HideSnackbar } from '@redux/slices/authSlice';
+import LoadingScreen from '@components/LoadingScreen';
 
 const AppRouter = () => {
     const user = useSelector((state: RootState) => state.auth.user);
     return (
         <Router>
-            <Suspense fallback={<CircularProgress />}>
+            <Suspense fallback={<LoadingScreen />}>
                 <Routes>
                     <Route path="/" element={<MainLayout />}>
                         {routesWithAuth(user?.role).map((route, index) => (

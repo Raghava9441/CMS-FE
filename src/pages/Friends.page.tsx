@@ -2,7 +2,9 @@ import FriendList from "@components/Friends/FriendList";
 import FriendsMenu from "@components/Friends/FriendsMenu"
 import LoadingScreen from "@components/LoadingScreen"
 import { Box, Stack, useMediaQuery, useTheme } from "@mui/material"
+import { GetFriends } from "@redux/actions/userActions";
 import { RootState } from "@redux/store";
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 
@@ -12,6 +14,11 @@ const Friends = () => {
     const dispatch = useDispatch();
 
     const { user, showFriendsMenu, isLoading } = useSelector((state: RootState) => state.auth);
+
+      
+    useEffect(() => {
+        dispatch(GetFriends())
+    }, [])
 
 
     const isSmallScreen = useMediaQuery((theme) => theme.breakpoints.down("md"));

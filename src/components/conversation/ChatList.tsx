@@ -6,6 +6,7 @@ import { MembersList } from "../../data/index";
 import { Fragment, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { SearchFriends } from "@redux/actions/userActions";
+import AllChatElement from "./chat elements/AllChatElements";
 
 
 function ChatsList() {
@@ -86,11 +87,11 @@ function ChatsList() {
     // Sort MembersList alphabetically by firstName
     const sortedMembersList = friends
         ?.slice()
-        .sort((a, b) => a.firstName.localeCompare(b.firstName));
+        .sort((a, b) => a.fullname.localeCompare(b.fullname));
 
     // Group contacts by first letter of firstName
     const groupedContacts = sortedMembersList.reduce((acc, contact) => {
-        const firstLetter = contact.firstName[0].toUpperCase();
+        const firstLetter = contact.fullname[0].toUpperCase();
         if (!acc[firstLetter]) {
             acc[firstLetter] = [];
         }

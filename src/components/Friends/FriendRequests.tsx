@@ -14,7 +14,7 @@ const FriendRequests = () => {
     const dispatch = useDispatch();
     const { friendRequests, isRequestsLoading } = useSelector((state: RootState) => state.Friends);
     const { showFriendsMenu } = useSelector((state: RootState) => state.auth);
-
+    console.log(friendRequests)
     useEffect(() => {
         dispatch(GetFriendRequests());
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -31,9 +31,9 @@ const FriendRequests = () => {
                     visit user
 
                 </Typography>
-                <Grid container spacing={3}>
+                <Grid container spacing={3} gap={1}>
                     {!isRequestsLoading ? (
-                        false ? (
+                        friendRequests.length!==0 ? (
                             friendRequests?.map((sender) => (
                                 <>
                                     <UserCard

@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import LoadingButton from "@mui/lab/LoadingButton";
 import { RootState } from "@redux/store";
 import getAvatar from "@utils/createAvatar";
+import UserProfileDrawer from "../FriendProfileDrawer/UserProfileDrawer";
 
 
 const UserCard = ({ thisUser, fromSection, isLoading }) => {
@@ -15,12 +16,10 @@ const UserCard = ({ thisUser, fromSection, isLoading }) => {
 
     const dispatch = useDispatch();
     const { sentRequests } = useSelector((state: RootState) => state.Friends);
-
     const sentRequest = sentRequests?.find((request) => request.receiverId === thisUser?._id);
     const isRequestSent = sentRequest
         ? sentRequest.isSent
         : thisUser?.requestSent;
-
     const handleButtonClick = async (e, type) => {
         e.stopPropagation();
 
@@ -40,6 +39,8 @@ const UserCard = ({ thisUser, fromSection, isLoading }) => {
 
         // Unsend Request Handler
         else if (type === "unsendRequest" && isRequestSent) {
+            console.log(thisUser?._id)
+
             setIsActionsLoading(true);
             await dispatch(UnsendRequest(thisUser?._id));
             setIsActionsLoading(false);
@@ -148,6 +149,7 @@ const UserCard = ({ thisUser, fromSection, isLoading }) => {
                                     )
                                 }
                             >
+                                {isRequestSent}
                                 {!isRequestSent ? "Send Request" : "Unsend Request"}
                             </LoadingButton>
                         ) : (
@@ -165,13 +167,13 @@ const UserCard = ({ thisUser, fromSection, isLoading }) => {
             </Card>
 
             {/* Drawer */}
-            {/* <UserProfileDrawer
-          isFrom={fromSection}
-          openDrawer={openDrawer}
-          toggleDrawer={toggleDrawer}
-          selectedUserData={thisUser}
-          isRequestSent={isRequestSent}
-        /> */}
+            <UserProfileDrawer
+                isFrom={fromSection}
+                openDrawer={openDrawer}
+                toggleDrawer={toggleDrawer}
+                selectedUserData={thisUser}
+                isRequestSent={isRequestSent}
+            />
         </Grid2>
     );
 };
