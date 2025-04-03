@@ -15,7 +15,7 @@
     "includeVersion": true,
     "hideGenerator": true,
     "plugin": [
-        "typedoc-plugin-react-doc-constructor"
+        // "typedoc-plugin-react-doc-constructor"
     ],
     "skipErrorChecking": true
 }

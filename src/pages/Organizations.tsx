@@ -9,10 +9,20 @@ import GenericModal from "@components/GenericModal.tsx";
 import {organizationActions} from "@redux/actions/organization.actions.ts";
 import {ReusableDataGrid} from "@components/ReusableDataGrid.tsx";
 
+/**
+ * Organizations component displays a data grid of organizations with CRUD operations.
+ * 
+ * @returns The Organizations component.
+ */
 function Organizations() {
 
     const dispatch = useDispatch<AppDispatch>()
 
+    /**
+     * Defines the columns for the data grid.
+     * 
+     * @returns An array of column definitions.
+     */
     const columns: GridColDef[] = useMemo(() => [
         {field: 'name', headerName: 'Name', flex: 1, editable: true, headerClassName: 'theme--header'},
         {field: 'category', headerName: 'Category', flex: 1, editable: true, headerClassName: 'theme--header'},
@@ -38,6 +48,11 @@ function Organizations() {
     const {data: organizations, loading} = useSelector((state: RootState) => state.organization);
     const user = useSelector((state: RootState) => state.auth.user);
 
+    /**
+     * Filters organizations based on user permissions.
+     * 
+     * @returns An array of accessible organizations.
+     */
     const accessibleOrganizations = useMemo(() => {
         if (!user || !organizations?.organizations) return [];
         return organizations.organizations.filter((org) =>
@@ -49,12 +64,20 @@ function Organizations() {
         organizations?.organizations?.length === undefined && dispatch(organizationActions.fetchOrganizations());
     }, [dispatch]);
 
+    /**
+     * Handles the add organization action.
+     */
     const handleAdd = () => {
         setSelectedRow(null);
         setModalTitle('Add Organization');
         handleOpen();
     };
 
+    /**
+     * Handles the edit organization action.
+     * 
+     * @param {GridRowId} id - The ID of the organization to edit.
+     */
     const handleEdit = (id: GridRowId) => {
         const selectedOrganization = organizations?.organizations.find((org: any) => org._id === id); // Find the row by ID
         console.log("selectedOrganization", selectedOrganization)
@@ -63,10 +86,20 @@ function Organizations() {
         handleOpen()
     };
 
+    /**
+     * Handles the delete organization action.
+     * 
+     * @param {string} id - The ID of the organization to delete.
+     */
     const handleDelete = async (id: string) => {
         dispatch(organizationActions.deleteOrganization(id));
     };
 
+    /**
+     * Handles the save organization action.
+     * 
+     * @param {any} data - The data to save.
+     */
     const handleSave = async (data: any) => {
         if (selectedRow) {
             dispatch(organizationActions.updateOrganization({id: selectedRow._id, ...data}));
@@ -76,11 +109,20 @@ function Organizations() {
         handleClose();
     };
 
+    /**
+     * Handles the reload data action.
+     */
     const handleReloadData = () => {
         dispatch(organizationActions.fetchOrganizations());
     };
 
+    /**
+     * Opens the modal.
+     */
     const handleOpen = () => setOpen(true);
+    /**
+     * Closes the modal.
+     */
     const handleClose = () => setOpen(false);
 
     return (

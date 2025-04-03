@@ -10,8 +10,8 @@ export const GetConversations = createAsyncThunk("conversations/get-conversation
         // set user loading to true
         dispatch(setLoading(true));
         //TODO: need to fix this
-        const { data } = ConversationApi.getConversation()
-
+        const { data } = await ConversationApi.getConversation()
+        console.log(data)
         // set user loading to false
         dispatch(setLoading(false));
 
@@ -20,7 +20,7 @@ export const GetConversations = createAsyncThunk("conversations/get-conversation
         console.log(" error:", error)
         dispatch(
             ShowSnackbar({
-                severity:'error',
+                severity: 'error',
                 message: error.response.data.data,
             })
         );
@@ -33,7 +33,7 @@ export const CreateOpenConversation = createAsyncThunk(
     "conversation/create-open-conversation",
     async (value, { rejectWithValue, dispatch }) => {
         try {
-           
+
             const { data } = ConversationApi.createOrOpenConversation({ receiver_id: value })
 
             dispatch(closeActiveConversation());
@@ -45,7 +45,7 @@ export const CreateOpenConversation = createAsyncThunk(
         } catch (error) {
             dispatch(
                 ShowSnackbar({
-                    severity:'error',
+                    severity: 'error',
                     message: error.response.data.data,
                 })
             );
@@ -68,7 +68,7 @@ export const GetMessages = createAsyncThunk(
             // show snackbar
             dispatch(
                 ShowSnackbar({
-                    severity:'error',
+                    severity: 'error',
                     message: error.response.data.data,
                 })
             );

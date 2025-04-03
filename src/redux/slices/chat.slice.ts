@@ -91,7 +91,8 @@ const slice = createSlice({
                 state.error = false;
             })
             .addCase(GetConversations.fulfilled, (state, action) => {
-                state.conversations = action.payload.conversations;
+                console.log(action.payload.data)
+                state.conversations = action.payload.data;
                 state.isLoading = false;
                 state.error = false;
             })

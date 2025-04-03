@@ -16,17 +16,17 @@ function ParentPage() {
     const columns: GridColDef[] = useMemo(() => [
         {field: 'name', headerName: 'Parent Name', flex: 1, editable: true, headerClassName: 'theme--header'},
         {field: 'phone', headerName: 'Contact Phone', flex: 1, editable: true, headerClassName: 'theme--header'},
-        {field: 'userId', headerName: 'User', flex: 1, editable: true, headerClassName: 'theme--header'},
-        {field: 'childrenIds', headerName: 'Children', flex: 1, editable: true, headerClassName: 'theme--header'},
-        {
-            field: 'organizationId',
-            headerName: 'Organization',
-            flex: 1,
-            editable: true,
-            headerClassName: 'theme--header'
-        },
+        // {field: 'userId', headerName: 'User', flex: 1, editable: true, headerClassName: 'theme--header'},
+        // {field: 'childrenIds', headerName: 'Children', flex: 1, editable: true, headerClassName: 'theme--header'},
+        // {
+        //     field: 'organizationId',
+        //     headerName: 'Organization',
+        //     flex: 1,
+        //     editable: true,
+        //     headerClassName: 'theme--header'
+        // },
         {field: 'dateOfBirth', headerName: 'Date of Birth', flex: 1, editable: true, headerClassName: 'theme--header'},
-        {field: 'address', headerName: 'Address', flex: 1, editable: true, headerClassName: 'theme--header'},
+        // {field: 'address', headerName: 'Address', flex: 1, editable: true, headerClassName: 'theme--header'},
         {field: 'email', headerName: 'Email', flex: 1, editable: true, headerClassName: 'theme--header'},
         {field: 'occupation', headerName: 'Occupation', flex: 1, editable: true, headerClassName: 'theme--header'},
         {
@@ -36,13 +36,13 @@ function ParentPage() {
             editable: true,
             headerClassName: 'theme--header'
         },
-        {
-            field: 'emergencyContacts',
-            headerName: 'Emergency Contacts',
-            flex: 1,
-            editable: true,
-            headerClassName: 'theme--header'
-        },
+        // {
+        //     field: 'emergencyContacts',
+        //     headerName: 'Emergency Contacts',
+        //     flex: 1,
+        //     editable: true,
+        //     headerClassName: 'theme--header'
+        // },
         {field: 'createdAt', headerName: 'Created At', flex: 1, editable: false, headerClassName: 'theme--header'},
         {field: 'updatedAt', headerName: 'Updated At', flex: 1, editable: false, headerClassName: 'theme--header'},
     ], []);

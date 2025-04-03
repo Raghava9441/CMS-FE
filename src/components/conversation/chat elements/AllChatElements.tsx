@@ -82,13 +82,13 @@ const AllChatElement = ({
         if (!isActiveConvo && !isLoading) {
         console.log("object")
 
-            if (fromContact) {
-                toggleDrawer(_id);
-            } else {
+            // if (fromContact) {
+            //     toggleDrawer(_id);
+            // } else {
                 console.log("object")
 
                 dispatch(CreateOpenConversation(_id));
-            }
+            // }
         }
     };
 
