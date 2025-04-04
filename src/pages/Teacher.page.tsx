@@ -25,8 +25,8 @@ function TeacherPage() {
             editable: true,
             headerClassName: 'theme--header'
         },
-        { field: 'experience', headerName: 'Experience', flex: 1, editable: true, headerClassName: 'theme--header' },
-        { field: 'officeHours', headerName: 'Office Hours', flex: 1, editable: true, headerClassName: 'theme--header' },
+        // { field: 'experience', headerName: 'Experience', flex: 1, editable: true, headerClassName: 'theme--header' },
+        // { field: 'officeHours', headerName: 'Office Hours', flex: 1, editable: true, headerClassName: 'theme--header' },
         {
             field: 'coursesTaught',
             headerName: 'Courses Taught',
@@ -34,13 +34,13 @@ function TeacherPage() {
             editable: true,
             headerClassName: 'theme--header'
         },
-        {
-            field: 'performanceReviews',
-            headerName: 'Performance Reviews',
-            flex: 1,
-            editable: true,
-            headerClassName: 'theme--header'
-        },
+        // {
+        //     field: 'performanceReviews',
+        //     headerName: 'Performance Reviews',
+        //     flex: 1,
+        //     editable: true,
+        //     headerClassName: 'theme--header'
+        // },
         // { field: 'specialResponsibilities', headerName: 'Special Responsibilities', flex: 1, editable: true, headerClassName: 'theme--header' },
         { field: 'createdAt', headerName: 'Created At', flex: 1, editable: false, headerClassName: 'theme--header' },
         { field: 'updatedAt', headerName: 'Updated At', flex: 1, editable: false, headerClassName: 'theme--header' },

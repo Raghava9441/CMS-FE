@@ -16,13 +16,13 @@ function StudentPage() {
     const columns: GridColDef[] = useMemo(() => [
         {field: 'name', headerName: 'Student Name', flex: 1, editable: true, headerClassName: 'theme--header'},
         {field: 'phone', headerName: 'Contact Phone', flex: 1, editable: true, headerClassName: 'theme--header'},
-        {
-            field: 'organizationId',
-            headerName: 'Organization',
-            flex: 1,
-            editable: true,
-            headerClassName: 'theme--header'
-        },
+        // {
+        //     field: 'organizationId',
+        //     headerName: 'Organization',
+        //     flex: 1,
+        //     editable: true,
+        //     headerClassName: 'theme--header'
+        // },
         {
             field: 'enrolledCoursesIds',
             headerName: 'Enrolled Courses',
@@ -30,15 +30,15 @@ function StudentPage() {
             editable: true,
             headerClassName: 'theme--header'
         },
-        {
-            field: 'currentClassId',
-            headerName: 'Current Class',
-            flex: 1,
-            editable: true,
-            headerClassName: 'theme--header'
-        },
-        {field: 'dateOfBirth', headerName: 'Date of Birth', flex: 1, editable: true, headerClassName: 'theme--header'},
-        {field: 'address', headerName: 'Address', flex: 1, editable: true, headerClassName: 'theme--header'},
+        // {
+        //     field: 'currentClassId',
+        //     headerName: 'Current Class',
+        //     flex: 1,
+        //     editable: true,
+        //     headerClassName: 'theme--header'
+        // },
+        // {field: 'dateOfBirth', headerName: 'Date of Birth', flex: 1, editable: true, headerClassName: 'theme--header'},
+        // {field: 'address', headerName: 'Address', flex: 1, editable: true, headerClassName: 'theme--header'},
         {field: 'email', headerName: 'Email', flex: 1, editable: true, headerClassName: 'theme--header'},
         {
             field: 'emergencyContacts',
@@ -47,13 +47,13 @@ function StudentPage() {
             editable: true,
             headerClassName: 'theme--header'
         },
-        {
-            field: 'enrollmentDate',
-            headerName: 'Enrollment Date',
-            flex: 1,
-            editable: true,
-            headerClassName: 'theme--header'
-        },
+        // {
+        //     field: 'enrollmentDate',
+        //     headerName: 'Enrollment Date',
+        //     flex: 1,
+        //     editable: true,
+        //     headerClassName: 'theme--header'
+        // },
         {
             field: 'graduationDate',
             headerName: 'Graduation Date',

@@ -29,8 +29,8 @@ function Organizations() {
         {field: 'number', headerName: 'Number', flex: 1, editable: true, headerClassName: 'theme--header'},
         {field: 'contactEmail', headerName: 'Contact Email', flex: 1, editable: true, headerClassName: 'theme--header'},
         {field: 'contactPhone', headerName: 'Contact Phone', flex: 1, editable: true, headerClassName: 'theme--header'},
-        {field: 'website', headerName: 'Website', flex: 1, editable: true, headerClassName: 'theme--header'},
-        {field: 'logo', headerName: 'Logo', flex: 1, editable: true, headerClassName: 'theme--header'},
+        // {field: 'website', headerName: 'Website', flex: 1, editable: true, headerClassName: 'theme--header'},
+        // {field: 'logo', headerName: 'Logo', flex: 1, editable: true, headerClassName: 'theme--header'},
         {
             field: 'establishedDate',
             headerName: 'Established Date',

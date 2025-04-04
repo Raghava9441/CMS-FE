@@ -25,7 +25,7 @@ function ParentPage() {
         //     editable: true,
         //     headerClassName: 'theme--header'
         // },
-        {field: 'dateOfBirth', headerName: 'Date of Birth', flex: 1, editable: true, headerClassName: 'theme--header'},
+        // {field: 'dateOfBirth', headerName: 'Date of Birth', flex: 1, editable: true, headerClassName: 'theme--header'},
         // {field: 'address', headerName: 'Address', flex: 1, editable: true, headerClassName: 'theme--header'},
         {field: 'email', headerName: 'Email', flex: 1, editable: true, headerClassName: 'theme--header'},
         {field: 'occupation', headerName: 'Occupation', flex: 1, editable: true, headerClassName: 'theme--header'},
