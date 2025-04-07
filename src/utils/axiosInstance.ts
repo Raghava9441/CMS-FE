@@ -78,6 +78,8 @@ axiosInstance.interceptors.response.use(
                 }
             } catch (refreshError) {
                 refreshingTokenInProgress = false;
+                localStorage.clear()
+                window.location.reload()
                 return Promise.reject(refreshError);
             }
         }

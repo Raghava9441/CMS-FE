@@ -57,6 +57,10 @@ const teacherSlice = createSlice({
             state.loading = true;
             state.error = null;
         },
+        fetchTeachersFailure(state, action: PayloadAction<any>) {
+            state.loading = false;
+            state.error = null;
+        },
         fetchTeachersSuccess(state, action: PayloadAction<NewApiResponseData>) {
             state.loading = false;
             console.log(action.payload)
@@ -108,5 +112,5 @@ const teacherSlice = createSlice({
     },
 });
 
-export const { fetchTeachersStart, fetchTeachersSuccess, fetchTeacherByIdStart, fetchTeacherByIdSuccess, createTeacherStart, createTeacherSuccess, updateTeacherStart, updateTeacherSuccess, deleteTeacherStart, deleteTeacherSuccess } = teacherSlice.actions;
+export const { fetchTeachersStart, fetchTeachersSuccess, fetchTeacherByIdStart, fetchTeacherByIdSuccess, createTeacherStart, createTeacherSuccess, updateTeacherStart, updateTeacherSuccess, deleteTeacherStart, deleteTeacherSuccess,fetchTeachersFailure } = teacherSlice.actions;
 export default teacherSlice.reducer;
