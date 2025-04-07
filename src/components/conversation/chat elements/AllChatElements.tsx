@@ -38,7 +38,9 @@ import { CreateOpenConversation } from "@redux/actions/chat.actions";
 
 const AllChatElement = ({
     _id,
+    fullname,
     firstName,
+    name,
     lastName,
     latestMessage,
     activityStatus,
@@ -78,16 +80,13 @@ const AllChatElement = ({
     const isActiveConvo = getIsActiveConvo();
 
     const handleConversation = () => {
-        console.log("object")
         if (!isActiveConvo && !isLoading) {
-        console.log("object")
 
             // if (fromContact) {
             //     toggleDrawer(_id);
             // } else {
-                console.log("object")
 
-                dispatch(CreateOpenConversation(_id));
+            dispatch(CreateOpenConversation(_id));
             // }
         }
     };
@@ -168,7 +167,7 @@ const AllChatElement = ({
                             {isLoading ? (
                                 <Skeleton animation="wave" height={20} width="7em" />
                             ) : (
-                                `${firstName} ${lastName}${_id === user._id ? "(You)" : ""}`
+                                `${fullname} ${_id === user._id ? "(You)" : ""}`
                             )}
                         </Typography>
                         <Typography

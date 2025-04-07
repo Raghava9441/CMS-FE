@@ -1,4 +1,4 @@
-import { GetConversations, GetMessages, SendMessage } from "@redux/actions/chat.actions";
+import { CreateOpenConversation, GetConversations, GetMessages, SendMessage } from "@redux/actions/chat.actions";
 import { createSlice } from "@reduxjs/toolkit";
 
 interface initalstate {
@@ -91,7 +91,7 @@ const slice = createSlice({
                 state.error = false;
             })
             .addCase(GetConversations.fulfilled, (state, action) => {
-                console.log(action.payload.data)
+                // console.log(action.payload.data)
                 state.conversations = action.payload.data;
                 state.isLoading = false;
                 state.error = false;
@@ -147,7 +147,24 @@ const slice = createSlice({
                 state.sendMsgLoading = false;
                 state.isLoading = false;
                 state.error = true;
-            });
+            })
+
+            // --------- Create Open Conversation Builder ---------
+            .addCase(CreateOpenConversation.pending, (state, action) => {
+                state.isLoading = true;
+                state.error = false;
+            })
+            .addCase(CreateOpenConversation.fulfilled, (state, action) => {
+                // console.log(action.payload.conversation)
+                state.activeConversation = action.payload.conversation;
+                state.activeConvoFriendship = action.payload.isValidFriendShip;
+                state.isLoading = false;
+                state.error = false;
+            })
+            .addCase(CreateOpenConversation.rejected, (state, action) => {
+                state.isLoading = false;
+                state.error = true;
+            })
     }
 })
 

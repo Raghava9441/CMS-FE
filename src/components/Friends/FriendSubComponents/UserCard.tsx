@@ -98,7 +98,7 @@ const UserCard = ({ thisUser, fromSection, isLoading }) => {
                                     {isLoading ? (
                                         <Skeleton animation="wave" width={100} />
                                     ) : (
-                                        `${thisUser?.firstName} ${thisUser?.lastName}`
+                                        `${thisUser?.name} ${thisUser?.lastName}`
                                     )}
                                 </Typography>
                                 <Typography

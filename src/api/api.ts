@@ -60,7 +60,7 @@ export const courseApi = {
 
 export const MessageApi = {
     sendMessage: (payload) => axiosInstance.post('/message/send-message', payload),
-    getMessages: (convo_id: string) => axiosInstance.get(`/conversation/get-messages/${convo_id}`),
+    getMessages: (convo_id: string) => axiosInstance.get(`/message/get-messages/${convo_id}`),
 }
 
 export const ConversationApi = {

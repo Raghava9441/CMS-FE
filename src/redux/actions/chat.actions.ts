@@ -34,7 +34,7 @@ export const CreateOpenConversation = createAsyncThunk(
     async (value, { rejectWithValue, dispatch }) => {
         try {
 
-            const { data } = ConversationApi.createOrOpenConversation({ receiver_id: value })
+            const { data } = await ConversationApi.createOrOpenConversation({ receiver_id: value })
 
             dispatch(closeActiveConversation());
 
