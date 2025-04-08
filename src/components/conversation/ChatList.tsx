@@ -166,9 +166,9 @@ function ChatsList() {
                             }) : //Render contacts grouped by first letter
                                 Object.entries(groupedContacts).map(([letter, contacts]) => (
                                     <Stack spacing={0.5} key={letter}>
-                                        {
+                                        {/* {
                                             console.log(contacts)
-                                        }
+                                        } */}
                                         <Typography variant="subtitle2">{letter}</Typography>
                                         {contacts.map((contact) => (
                                             <AllChatElement

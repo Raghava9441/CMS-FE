@@ -36,8 +36,8 @@ function Conversations() {
             sx={{
                 width: "100%",
                 height: {
-                    xs: activeConversation ? "100vh" : "calc(100vh - 65px)",
-                    md: "100vh",
+                    xs: activeConversation ? "100%" : "calc(100vh - 65px)",
+                    md: "100%",
                 },
             }}
         >

@@ -1,5 +1,5 @@
 import AllChatElement from "@components/conversation/chat elements/AllChatElements";
-import { IconButton, Stack, Typography } from "@mui/material";
+import { Stack, Typography } from "@mui/material";
 import { RootState } from "@redux/store"
 import { useState } from "react";
 import { useSelector } from "react-redux"
@@ -10,16 +10,15 @@ const FriendList = () => {
 
     const { user, friends, isLoading } = useSelector((state: RootState) => state.auth);
 
-  const [openDrawer, setOpenDrawer] = useState(false);
-  const [selectedUserId, setSelectedUserId] = useState("");
+    const [openDrawer, setOpenDrawer] = useState(false);
+    const [selectedUserId, setSelectedUserId] = useState("");
 
-  console.log(isLoading)
 
     const toggleDrawer = (selectedId) => {
         setOpenDrawer(!openDrawer);
-    
+
         setSelectedUserId(selectedId);
-      };
+    };
 
     return (
         <Stack height={"100%"}>

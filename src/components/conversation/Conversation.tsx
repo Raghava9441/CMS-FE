@@ -1,10 +1,12 @@
-import { Stack } from "@mui/material";
+import { Stack, useTheme } from "@mui/material";
 import { GetMessages } from "@redux/actions/chat.actions";
 import { RootState } from "@redux/store";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import ConversationHeader from "./conversationSubElements/ConversationHeader";
 import { getOtherUser } from "@utils/getOtherUsers";
+import ConversationMain from "./conversationSubElements/ConversationMain";
+import ConversationFooter from "./conversationSubElements/ConversationFooter";
 
 type Props = {}
 
@@ -15,6 +17,7 @@ function Conversation({ }: Props) {
         sendMsgLoading,
         isOptimistic,
     } = useSelector((state: RootState) => state.chat);
+    const theme = useTheme();
     const { user, onlineFriends } = useSelector((state: RootState) => state.auth);
 
 
@@ -31,16 +34,16 @@ function Conversation({ }: Props) {
         activeConversation?.users,
         user._id,
         onlineFriends
-      );
+    );
 
     return (
         <Stack height={"100%"} maxHeight={"100vh"} width={"auto"}>
             <ConversationHeader otherUser={otherUser} />
+            <ConversationMain />
 
-            {/* <ConversationMain /> */}
-
-            {/* {
-                activeConvoFriendship && activeConvoFriendship ?
+            {
+                // activeConvoFriendship && activeConvoFriendship
+                true ?
                     (
                         <ConversationFooter
                             convo_id={activeConversation._id}
@@ -67,7 +70,7 @@ function Conversation({ }: Props) {
                             You are no longer friends with this user!
                         </Stack>
                     )
-            } */}
+            }
         </Stack>
     )
 }

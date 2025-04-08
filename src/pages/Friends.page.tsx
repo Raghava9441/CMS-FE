@@ -15,7 +15,7 @@ const Friends = () => {
 
     const { user, showFriendsMenu, isLoading } = useSelector((state: RootState) => state.auth);
 
-      
+
     useEffect(() => {
         dispatch(GetFriends())
     }, [])
@@ -29,8 +29,8 @@ const Friends = () => {
             sx={{
                 width: "100%",
                 height: {
-                    xs: "calc(100vh - 65px)",
-                    md: "100vh",
+                    xs: "100%",
+                    md: "100%",
                 },
             }}>
             {/* Friends area */}

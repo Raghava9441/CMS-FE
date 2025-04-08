@@ -9,9 +9,8 @@ export const GetConversations = createAsyncThunk("conversations/get-conversation
     try {
         // set user loading to true
         dispatch(setLoading(true));
-        //TODO: need to fix this
         const { data } = await ConversationApi.getConversation()
-        console.log(data)
+        // console.log(data)
         // set user loading to false
         dispatch(setLoading(false));
 
@@ -60,7 +59,7 @@ export const GetMessages = createAsyncThunk(
     async (convoId: string, { rejectWithValue, dispatch }) => {
         try {
 
-            const { data } = MessageApi.getMessages(convoId)
+            const { data } = await MessageApi.getMessages(convoId)
 
             return data;
         } catch (error) {
@@ -82,7 +81,7 @@ export const SendMessage = createAsyncThunk(
     "message/send-message",
     async (messageData, { rejectWithValue, dispatch, getState }) => {
         try {
-            const { data } = MessageApi.sendMessage(messageData)
+            const { data } = await MessageApi.sendMessage(messageData)
 
             // Approach check
             if (!getState().chat.isOptimistic) {

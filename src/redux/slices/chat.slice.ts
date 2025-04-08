@@ -106,6 +106,7 @@ const slice = createSlice({
                 state.error = false;
             })
             .addCase(GetMessages.fulfilled, (state, action) => {
+                // console.log(action.payload)
                 state.messages = action.payload.messages;
                 state.isLoading = false;
                 state.error = false;

@@ -60,7 +60,7 @@ export default function MainLayout() {
         // socket listeners
         if (socket) {
 
-            socket.emit("message_from_client", {hey:"server"});
+            socket.emit("message_from_client", { hey: "server" });
 
             // socket server error handling
             socket.on("connect_error", (error) => {
@@ -110,7 +110,7 @@ export default function MainLayout() {
                 }
             };
         }
-    }, [ accessToken]);
+    }, [accessToken]);
 
     // get conversations and friends
     // useEffect(() => {
@@ -177,7 +177,7 @@ export default function MainLayout() {
     const currentPath = location.pathname;
 
     const drawer = (
-        <div>
+        <>
             <Toolbar>
                 <Box sx={{ display: 'flex', alignItems: 'center', width: '100%', justifyContent: 'center' }}>
                     <Typography variant="h5" sx={{ color: theme.palette.primary.main }}>ScholarSync</Typography>
@@ -204,11 +204,11 @@ export default function MainLayout() {
                 ))}
             </List>
             <Divider />
-        </div>
+        </>
     );
 
     return (
-        <Box sx={{ display: 'flex', height: '100vh' }}>
+        <Box sx={{ display: 'flex', minHeight: '100vh' }}>
             <CssBaseline />
             <AppBar
                 position="absolute"
