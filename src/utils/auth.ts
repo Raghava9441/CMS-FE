@@ -1,8 +1,8 @@
-import {Organization} from "@models/organization.modal";
-import {Parent} from "@models/parent.models";
-import {Student} from "@models/student.models";
-import {Teacher} from "@models/teacher.modals";
-import {User} from "@models/user.modals";
+import { Organization } from "@models/organization.modal";
+import { Parent } from "@models/parent.models";
+import { Student } from "@models/student.models";
+import { Teacher } from "@models/teacher.modals";
+import { User } from "@models/user.modals";
 
 export type Role = 'ADMIN' | 'TEACHER' | 'STUDENT' | 'PARENT' | 'ORGADMIN';
 
@@ -170,312 +170,310 @@ const ROLES = {
             delete: false
         },
         students: {
-            view: true,
-            create: true,
-            update: true,
-            delete: true
+            view: (user: any, teacher: any) => user.organizationId === teacher.organizationId,
+            create: false,
+            update: false,
+            delete: false
         },
         parents: {
-            view: true,
-            create: true,
-            update: true,
-            delete: true
+            view: (user: any, teacher: any) => user.organizationId === teacher.organizationId,
+            create: false,
+            update: false,
+            delete: false
         },
         departments: {
-            view: true,
-            create: true,
-            update: true,
-            delete: true
+            view: (user: any, teacher: any) => user.organizationId === teacher.organizationId,
+            create: false,
+            update: false,
+            delete: false
         },
         classes: {
-            view: true,
-            create: true,
-            update: true,
-            delete: true
+            view: (user: any, teacher: any) => user.organizationId === teacher.organizationId,
+            create: false,
+            update: false,
+            delete: false
         },
         courses: {
-            view: true,
-            create: true,
-            update: true,
-            delete: true
+            view: (user: any, teacher: any) => user.organizationId === teacher.organizationId,
+            create: false,
+            update: false,
+            delete: false
         },
         events: {
-            view: true,
-            create: true,
-            update: true,
-            delete: true
+            view: (user: any, teacher: any) => user.organizationId === teacher.organizationId,
+            create: (user: any, teacher: any) => user.organizationId === teacher.organizationId,
+            update: (user: any, teacher: any) => user.organizationId === teacher.organizationId,
+            delete: false
         },
         assignments: {
-            view: true,
-            create: true,
-            update: true,
-            delete: true
+            view: (user: any, teacher: any) => user.organizationId === teacher.organizationId,
+            create: (user: any, teacher: any) => user.organizationId === teacher.organizationId,
+            update: (user: any, teacher: any) => user.organizationId === teacher.organizationId,
+            delete: (user: any, teacher: any) => user.organizationId === teacher.organizationId
         },
         exams: {
-            view: true,
-            create: true,
-            update: true,
-            delete: true
+            view: (user: any, teacher: any) => user.organizationId === teacher.organizationId,
+            create: (user: any, teacher: any) => user.organizationId === teacher.organizationId,
+            update: (user: any, teacher: any) => user.organizationId === teacher.organizationId,
+            delete: (user: any, teacher: any) => user.organizationId === teacher.organizationId
         },
         attendances: {
-            view: true,
-            create: true,
-            update: true,
-            delete: true
+            view: (user: any, teacher: any) => user.organizationId === teacher.organizationId,
+            create: (user: any, teacher: any) => user.organizationId === teacher.organizationId,
+            update: (user: any, teacher: any) => user.organizationId === teacher.organizationId,
+            delete: (user: any, teacher: any) => user.organizationId === teacher.organizationId
         },
         notifications: {
             view: true,
-            create: true,
-            update: true,
-            delete: true
+            create: false,
+            update: false,
+            delete: false
         },
         settings: {
             view: true,
             create: true,
             update: true,
-            delete: true
+            delete: false
         }
     },
     STUDENT: {
         organizations: {
-            view: true,
-            create: true,
-            update: true,
-            delete: true
+            view: (user: any, org: any) => user.organizationId === org._id,
+            create: false,
+            update: false,
+            delete: false
         },
         teachers: {
-            view: true,
-            create: true,
-            update: true,
-            delete: true
+            view: (user: any, org: any) => user.organizationId === org._id,
+            create: false,
+            update: false,
+            delete: false
         },
         students: {
-            view: true,
-            create: true,
-            update: true,
-            delete: true
+            view: (user: any, org: any) => user.organizationId === org._id,
+            create: false,
+            update: (user: any, org: any) => user.organizationId === org._id,
+            delete: false
         },
         parents: {
-            view: true,
-            create: true,
-            update: true,
-            delete: true
+            view: (user: any, org: any) => user.organizationId === org._id,
+            create: false,
+            update: false,
+            delete: false
         },
         departments: {
-            view: true,
-            create: true,
-            update: true,
-            delete: true
+            view: (user: any, org: any) => user.organizationId === org._id,
+            create: false,
+            update: false,
+            delete: false
         },
         classes: {
-            view: true,
-            create: true,
-            update: true,
-            delete: true
+            view: (user: any, org: any) => user.organizationId === org._id,
+            create: false,
+            update: false,
+            delete: false
         },
         courses: {
-            view: true,
-            create: true,
-            update: true,
-            delete: true
+            view: (user: any, org: any) => user.organizationId === org._id,
+            create: false,
+            update: false,
+            delete: false
         },
         events: {
-            view: true,
-            create: true,
-            update: true,
-            delete: true
+            view: (user: any, org: any) => user.organizationId === org._id,
+            create: false,
+            update: false,
+            delete: false
         },
         assignments: {
-            view: true,
-            create: true,
-            update: true,
-            delete: true
+            view: (user: any, org: any) => user.organizationId === org._id,
+            create: false,
+            update: false,
+            delete: false
         },
         exams: {
-            view: true,
-            create: true,
-            update: true,
-            delete: true
+            view: (user: any, org: any) => user.organizationId === org._id,
+            create: false,
+            update: false,
+            delete: false
         },
         attendances: {
-            view: true,
-            create: true,
-            update: true,
-            delete: true
+            view: (user: any, org: any) => user.organizationId === org._id,
+            create: false,
+            update: false,
+            delete: false
         },
         notifications: {
-            view: true,
-            create: true,
-            update: true,
-            delete: true
+            view: (user: any, org: any) => user.organizationId === org._id,
+            create: false,
+            update: false,
+            delete: false
         },
         settings: {
-            view: true,
-            create: true,
-            update: true,
-            delete: true
+            view: (user: any, org: any) => user.organizationId === org._id,
+            create: false,
+            update: false,
+            delete: false
         }
-
     },
     PARENT: {
         organizations: {
-            view: true,
-            create: true,
-            update: true,
-            delete: true
+            view: (user: any, org: any) => user.organizationId === org._id,
+            create: false,
+            update: false,
+            delete: false
         },
         teachers: {
-            view: true,
-            create: true,
-            update: true,
-            delete: true
+            view: (user: any, org: any) => user.organizationId === org._id,
+            create: false,
+            update: false,
+            delete: false
         },
         students: {
-            view: true,
-            create: true,
-            update: true,
-            delete: true
+            view: (user: any, org: any) => user.organizationId === org._id,
+            create: false,
+            update: false,
+            delete: false
         },
         parents: {
-            view: true,
-            create: true,
-            update: true,
-            delete: true
+            view: (user: any, org: any) => user.organizationId === org._id,
+            create: false,
+            update: false,
+            delete: false
         },
         departments: {
-            view: true,
-            create: true,
-            update: true,
-            delete: true
+            view: (user: any, org: any) => user.organizationId === org._id,
+            create: false,
+            update: false,
+            delete: false
         },
         classes: {
-            view: true,
-            create: true,
-            update: true,
-            delete: true
+            view: (user: any, org: any) => user.organizationId === org._id,
+            create: false,
+            update: false,
+            delete: false
         },
         courses: {
-            view: true,
-            create: true,
-            update: true,
-            delete: true
+            view: (user: any, org: any) => user.organizationId === org._id,
+            create: false,
+            update: false,
+            delete: false
         },
         events: {
-            view: true,
-            create: true,
-            update: true,
-            delete: true
+            view: (user: any, org: any) => user.organizationId === org._id,
+            create: false,
+            update: false,
+            delete: false
         },
         assignments: {
-            view: true,
-            create: true,
-            update: true,
-            delete: true
+            view: (user: any, org: any) => user.organizationId === org._id,
+            create: false,
+            update: false,
+            delete: false
         },
         exams: {
-            view: true,
-            create: true,
-            update: true,
-            delete: true
+            view: (user: any, org: any) => user.organizationId === org._id,
+            create: false,
+            update: false,
+            delete: false
         },
         attendances: {
-            view: true,
-            create: true,
-            update: true,
-            delete: true
+            view: (user: any, org: any) => user.organizationId === org._id,
+            create: false,
+            update: false,
+            delete: false
         },
         notifications: {
-            view: true,
-            create: true,
-            update: true,
-            delete: true
+            view: (user: any, org: any) => user.organizationId === org._id,
+            create: false,
+            update: false,
+            delete: false
         },
         settings: {
-            view: true,
-            create: true,
-            update: true,
-            delete: true
+            view: (user: any, org: any) => user.organizationId === org._id,
+            create: false,
+            update: false,
+            delete: false
         }
-
     },
     ORGADMIN: {
         organizations: {
-            view: true,
-            create: true,
-            update: true,
-            delete: true
+            view: (user: any, org: any) => user.organizationId === org._id,
+            create: false,
+            update: false,
+            delete: false
         },
         teachers: {
-            view: true,
-            create: true,
-            update: true,
-            delete: true
+            view: (user: any, org: any) => user.organizationId === org._id,
+            create: false,
+            update: false,
+            delete: false
         },
         students: {
-            view: true,
-            create: true,
-            update: true,
-            delete: true
+            view: (user: any, org: any) => user.organizationId === org._id,
+            create: false,
+            update: false,
+            delete: false
         },
         parents: {
-            view: true,
-            create: true,
-            update: true,
-            delete: true
+            view: (user: any, org: any) => user.organizationId === org._id,
+            create: false,
+            update: false,
+            delete: false
         },
         departments: {
-            view: true,
-            create: true,
-            update: true,
-            delete: true
+            view: (user: any, org: any) => user.organizationId === org._id,
+            create: false,
+            update: false,
+            delete: false
         },
         classes: {
-            view: true,
-            create: true,
-            update: true,
-            delete: true
+            view: (user: any, org: any) => user.organizationId === org._id,
+            create: false,
+            update: false,
+            delete: false
         },
         courses: {
-            view: true,
-            create: true,
-            update: true,
-            delete: true
+            view: (user: any, org: any) => user.organizationId === org._id,
+            create: false,
+            update: false,
+            delete: false
         },
         events: {
-            view: true,
-            create: true,
-            update: true,
-            delete: true
+            view: (user: any, org: any) => user.organizationId === org._id,
+            create: false,
+            update: false,
+            delete: false
         },
         assignments: {
-            view: true,
-            create: true,
-            update: true,
-            delete: true
+            view: (user: any, org: any) => user.organizationId === org._id,
+            create: false,
+            update: false,
+            delete: false
         },
         exams: {
-            view: true,
-            create: true,
-            update: true,
-            delete: true
+            view: (user: any, org: any) => user.organizationId === org._id,
+            create: false,
+            update: false,
+            delete: false
         },
         attendances: {
-            view: true,
-            create: true,
-            update: true,
-            delete: true
+            view: (user: any, org: any) => user.organizationId === org._id,
+            create: false,
+            update: false,
+            delete: false
         },
         notifications: {
-            view: true,
-            create: true,
-            update: true,
-            delete: true
+            view: (user: any, org: any) => user.organizationId === org._id,
+            create: false,
+            update: false,
+            delete: false
         },
         settings: {
-            view: true,
-            create: true,
-            update: true,
-            delete: true
+            view: (user: any, org: any) => user.organizationId === org._id,
+            create: false,
+            update: false,
+            delete: false
         }
 
     },
