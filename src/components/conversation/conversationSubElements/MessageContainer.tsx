@@ -49,12 +49,13 @@ const MessageContainer = ({
                         left: -25,
                     }}
                 >
-                    {getAvatar(
+                    {/* {getAvatar(
                         message?.sender?.avatar,
                         message?.sender?.firstName,
                         theme,
                         20
-                    )}
+                    )} */}
+                    <div>avatar</div>
                 </Box>
             )}
             <Box
@@ -105,12 +106,13 @@ const MessageContainer = ({
                         right: -16,
                     }}
                 >
-                    {getAvatar(
+                    {/* {getAvatar(
                         message?.sender?.avatar,
                         message?.sender?.firstName,
                         theme,
                         15
-                    )}
+                    )} */}
+                    <div>avatar</div>
                 </Box>
             )}
         </Stack>

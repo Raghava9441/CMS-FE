@@ -42,6 +42,7 @@ function Conversation({ }: Props) {
             <ConversationMain />
 
             {
+                // FIXME: fix condition
                 // activeConvoFriendship && activeConvoFriendship
                 true ?
                     (

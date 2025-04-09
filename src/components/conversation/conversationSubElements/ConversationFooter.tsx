@@ -40,10 +40,10 @@ function ConversationFooter({
 
     const handleSubmit = (e) => {
         e.preventDefault();
-
         if (value && value.trim() !== "") {
             // --------- Optimistic Approach ---------
             if (isOptimistic) {
+                // alert(isOptimistic)
                 const currentDate = new Date().getTime();
                 let messageData = {
                     approach: "optimistic",
@@ -73,6 +73,7 @@ function ConversationFooter({
                     updatedAt: new Date(currentDate).toISOString(),
                     __v: 0,
                 };
+                console.log(messageData)
 
                 if (currentUser._id === otherUser._id) {
                     messageData = {

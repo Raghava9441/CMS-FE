@@ -26,6 +26,8 @@ import { authActions } from '../redux/actions/auth.actions';
 import SchoolIcon from '@mui/icons-material/School';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import { connectSocket, socket } from '@utils/socket';
+import { updateMsgConvo, updateTypingConvo } from '@redux/slices/chat.slice';
+import { updateOnlineUsers } from '@redux/slices/authSlice';
 
 const drawerWidth = 240;
 
@@ -84,19 +86,21 @@ export default function MainLayout() {
 
             socket.on("message_received", (message) => {
                 console.log(message)
-                // dispatch(updateMsgConvo(message));
+                dispatch(updateMsgConvo(message));
             });
 
             socket.on("online_friends", (friend) => {
-                // dispatch(updateOnlineUsers(friend));
+                console.log("online_friends", friend)
+                dispatch(updateOnlineUsers(friend));
             });
 
             socket.on("start_typing", (typingData) => {
-                // dispatch(updateTypingConvo(typingData));
+                console.log("start_typing", typingData)
+                dispatch(updateTypingConvo(typingData));
             });
 
             socket.on("stop_typing", (typingData) => {
-                // dispatch(updateTypingConvo(typingData));
+                dispatch(updateTypingConvo(typingData));
             });
 
             return () => {
@@ -229,7 +233,7 @@ export default function MainLayout() {
                             <MenuIcon />
                         </IconButton>
                         <Typography variant="h6" noWrap component="div">
-                            ScholarSync
+                            welcome {user?.fullname}
                         </Typography>
                     </Box>
 

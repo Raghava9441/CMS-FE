@@ -10,7 +10,7 @@ interface initalstate {
     activeConversation: null;
     activeConvoFriendship: null;
     notifications: never[];
-    messages: never[];
+    messages: any[];
     typingConversation: never[];
 }
 
@@ -49,9 +49,10 @@ const slice = createSlice({
 
         updateMsgConvo: (state, action) => {
             const currentConvo = state.activeConversation;
-
+            console.log(action.payload)
             // updating messages
             if (currentConvo?._id === action.payload.conversation._id) {
+                console.log(state)
                 state.messages = [...state.messages, action.payload];
             }
             // update conversations
@@ -106,8 +107,8 @@ const slice = createSlice({
                 state.error = false;
             })
             .addCase(GetMessages.fulfilled, (state, action) => {
-                // console.log(action.payload)
-                state.messages = action.payload.messages;
+                console.log(action.payload)
+                state.messages = action.payload.messages || [];
                 state.isLoading = false;
                 state.error = false;
             })

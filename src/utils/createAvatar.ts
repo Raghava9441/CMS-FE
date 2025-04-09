@@ -1,4 +1,4 @@
-import { Avatar } from "@mui/material";
+import { Avatar, Theme } from "@mui/material";
 
 const PRIMARY_NAME = ["A", "N", "H", "L", "Q", "9", "8"];
 const INFO_NAME = ["F", "G", "T", "I", "J", "1", "2", "3"];
@@ -6,11 +6,16 @@ const SUCCESS_NAME = ["K", "D", "Y", "B", "O", "4", "5"];
 const WARNING_NAME = ["P", "E", "R", "S", "C", "U", "6", "7"];
 const ERROR_NAME = ["V", "W", "X", "M", "Z"];
 
-function getFirstCharacter(name) {
-    return name && name.charAt(0).toUpperCase();
+interface AvatarProps {
+    name: string;
+    color: "primary" | "info" | "success" | "warning" | "error";
 }
 
-function getAvatarColor(name) {
+function getFirstCharacter(name: string): string {
+    return name ? name.charAt(0).toUpperCase() : "";
+}
+
+function getAvatarColor(name: string): "primary" | "info" | "success" | "warning" | "error" {
     if (PRIMARY_NAME.includes(getFirstCharacter(name))) return "primary";
     if (INFO_NAME.includes(getFirstCharacter(name))) return "info";
     if (SUCCESS_NAME.includes(getFirstCharacter(name))) return "success";
@@ -19,14 +24,14 @@ function getAvatarColor(name) {
     return "primary";
 }
 
-export const createAvatar = (name) => {
+export const createAvatar = (name: string): AvatarProps => {
     return {
         name: getFirstCharacter(name),
         color: getAvatarColor(name),
     };
 };
 
-const getSize = (size) => {
+const getSize = (size: number): number | "auto" => {
     if (size <= 20) {
         return size - 5;
     } else if (size <= 40) {
@@ -38,13 +43,31 @@ const getSize = (size) => {
     }
 };
 
-export default function getAvatar(avatar, name, theme, size) {
-    return avatar ? (
-        <Avatar src= { avatar } alt = { name } sx = {{ width: size, height: size }
-} />
-    ) : (
+interface GetAvatarProps {
+    avatar?: string;
+    name: string;
+    theme?: Theme;
+    size: number;
+}
+
+export default function getAvatar({ avatar, name, theme, size }: GetAvatarProps): JSX.Element {
+    if (avatar) {
+        return (
+            <Avatar
+                src= { avatar }
+        alt = { name }
+        sx = {{ width: size, height: size }
+    }
+            />
+        );
+}
+            />
+        );
+}
+
+return (
     <Avatar
-        sx= {{
+            sx= {{
     backgroundColor: theme
         ? theme.palette[createAvatar(name).color].main
         : "none",
@@ -52,11 +75,11 @@ export default function getAvatar(avatar, name, theme, size) {
             color: "#fff",
                 width: size,
                     height: size,
-                        fontSize: getSize(size), //"auto",
-        }}
+                        fontSize: getSize(size),
+            }}
 alt = { name }
     >
     { createAvatar(name).name }
     </Avatar>
     );
-  }
+}

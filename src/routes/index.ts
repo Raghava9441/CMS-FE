@@ -224,6 +224,36 @@ const routes: RouteModel[] = [
         authenticationRequired: true,
         isSideMenu: true,
     },
+    {
+        id: 21,
+        path: appRoutes.FRIENDS,
+        component: lazy(() => import('../pages/Friends.page')),
+        exact: true,
+        label: 'Friends',
+        roles: ['ADMIN', 'TEACHER', 'STUDENT', 'PARENT', 'ORGADMIN'],
+        authenticationRequired: true,
+        isSideMenu: true,
+    },
+    {
+        id: 21,
+        path: appRoutes.FRIENDS,
+        component: lazy(() => import('../pages/Friends.page')),
+        exact: true,
+        label: 'Friends',
+        roles: ['ADMIN', 'TEACHER', 'STUDENT', 'PARENT', 'ORGADMIN'],
+        authenticationRequired: true,
+        isSideMenu: true,
+    },
+    {
+        id: 21,
+        path: appRoutes.FRIENDS,
+        component: lazy(() => import('../pages/Friends.page')),
+        exact: true,
+        label: 'Friends',
+        roles: ['ADMIN', 'TEACHER', 'STUDENT', 'PARENT', 'ORGADMIN'],
+        authenticationRequired: true,
+        isSideMenu: true,
+    },
 ]
 
 export const routesWithoutAuth = routes.filter(route => !route.authenticationRequired)

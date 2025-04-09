@@ -16,6 +16,7 @@ function ConversationMain({ }: Props) {
 
 
     const { messages, activeConversation, typingConversation } = useSelector((state: RootState) => state.chat);
+    const { user } = useSelector((state: RootState) => state.auth);
 
     const containsOnlyEmojis = (text) => {
         const emojiRegex =
