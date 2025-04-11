@@ -61,7 +61,7 @@ export const GetMessages = createAsyncThunk(
 
             const { data } = await MessageApi.getMessages(convoId)
 
-            return data;
+            return data.data;
         } catch (error) {
             console.log(" error:", error)
             // show snackbar

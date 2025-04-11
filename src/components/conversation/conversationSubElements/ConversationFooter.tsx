@@ -73,7 +73,6 @@ function ConversationFooter({
                     updatedAt: new Date(currentDate).toISOString(),
                     __v: 0,
                 };
-                console.log(messageData)
 
                 if (currentUser._id === otherUser._id) {
                     messageData = {
@@ -84,6 +83,7 @@ function ConversationFooter({
                         },
                     };
                 }
+                console.log(messageData)
 
                 // Optimistic Message Update
                 socket.emit("send_message", messageData);

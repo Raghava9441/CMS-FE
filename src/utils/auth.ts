@@ -475,7 +475,6 @@ const ROLES = {
             update: false,
             delete: false
         }
-
     },
 } as const satisfies RolesWithPermissions
 

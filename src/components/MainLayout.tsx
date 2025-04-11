@@ -26,8 +26,10 @@ import { authActions } from '../redux/actions/auth.actions';
 import SchoolIcon from '@mui/icons-material/School';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import { connectSocket, socket } from '@utils/socket';
-import { updateMsgConvo, updateTypingConvo } from '@redux/slices/chat.slice';
-import { updateOnlineUsers } from '@redux/slices/authSlice';
+import { setIsOptimistic, updateMsgConvo, updateTypingConvo } from '@redux/slices/chat.slice';
+import { ShowSnackbar, updateOnlineUsers } from '@redux/slices/authSlice';
+import { GetConversations } from '@redux/actions/chat.actions';
+import { GetOnlineFriends } from '@redux/actions/userActions';
 
 const drawerWidth = 240;
 
@@ -52,7 +54,7 @@ export default function MainLayout() {
         // dispatch(StartServer());
 
         // toggle approach between Optimistic & Pessimistic (true means use optimistic)
-        // dispatch(setIsOptimistic({ isOptimistic: true }));
+        dispatch(setIsOptimistic({ isOptimistic: true }));
 
         // socket connection
         if ((!socket || !socket.connected)) {
@@ -66,22 +68,22 @@ export default function MainLayout() {
 
             // socket server error handling
             socket.on("connect_error", (error) => {
-                // dispatch(
-                //   ShowSnackbar({
-                //     severity: "error",
-                //     message: `Socket: ${error.message}`,
-                //   })
-                // );
+                dispatch(
+                    ShowSnackbar({
+                        severity: "error",
+                        message: `Socket: ${error.message}`,
+                    })
+                );
             });
 
             // socket other error handling
             socket.on("error", (error) => {
-                // dispatch(
-                //   ShowSnackbar({
-                //     severity: error.status,
-                //     message: `Socket: ${error.message}`,
-                //   })
-                // );
+                dispatch(
+                    ShowSnackbar({
+                        severity: error.status,
+                        message: `Socket: ${error.message}`,
+                    })
+                );
             });
 
             socket.on("message_received", (message) => {
@@ -117,15 +119,15 @@ export default function MainLayout() {
     }, [accessToken]);
 
     // get conversations and friends
-    // useEffect(() => {
-    //     if (user.token) {
-    //         // get all conversations
-    //         dispatch(GetConversations());
+    useEffect(() => {
+        if (user.token) {
+            // get all conversations
+            dispatch(GetConversations());
 
-    //         // get online friends
-    //         dispatch(GetOnlineFriends());
-    //     }
-    // }, [user._id]);
+            // get online friends
+            dispatch(GetOnlineFriends());
+        }
+    }, [user.id]);
 
 
     useEffect(() => {
