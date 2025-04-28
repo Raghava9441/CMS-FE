@@ -120,16 +120,14 @@ export default function MainLayout() {
 
     // get conversations and friends
     useEffect(() => {
-        if (user?.token) {
+        if (user.token) {
             // get all conversations
             dispatch(GetConversations());
 
             // get online friends
             dispatch(GetOnlineFriends());
-        } else {
-            navigate(appRoutes.LOGIN);
         }
-    }, [user]);
+    }, [user.id]);
 
 
     useEffect(() => {
