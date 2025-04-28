@@ -1,17 +1,17 @@
 {
   "name": "cms-fe",
-  "homepage": "https://scholarsync.git.io/CMS-FE/",
+  "homepage": "https://scholarsync.github.io/CMS-FE/",
   "private": true,
   "version": "0.0.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "rm -rf node_modules && npm install && vite build",
+    "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview",
     "docs": "typedoc --options typedoc.json",
-    "predeploy":"npm run build",
-    "deploy":"gh-pages -d dist"
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d dist"
   },
   "dependencies": {
     "@emoji-mart/data": "^1.2.1",
