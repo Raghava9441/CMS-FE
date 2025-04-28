@@ -118,15 +118,15 @@ export default function MainLayout() {
         }
     }, [accessToken]);
 
-    useEffect(() => {
-        if (user?.token) {  // Use optional chaining
-            // get all conversations
-            dispatch(GetConversations());
+    // useEffect(() => {
+    //     if (user?.token) {  // Use optional chaining
+    //         // get all conversations
+    //         dispatch(GetConversations());
 
-            // get online friends
-            dispatch(GetOnlineFriends());
-        }
-    }, [user?.id]);
+    //         // get online friends
+    //         dispatch(GetOnlineFriends());
+    //     }
+    // }, [user?.id]);
 
 
     useEffect(() => {
@@ -134,7 +134,10 @@ export default function MainLayout() {
             if (!isauthenticated) {
                 navigate(appRoutes.LOGIN);
             } else {
-                // navigate(appRoutes.DASHBOARD);
+                dispatch(GetConversations());
+
+                // get online friends
+                dispatch(GetOnlineFriends());
             }
         };
         checkAuthentication();
