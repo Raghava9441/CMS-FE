@@ -1,6 +1,0 @@
-[build]
-  command = "CI=false npm run build"
-  publish = "dist"
-
-[build.environment]
-  NODE_VERSION = "16" # adjust this to match your local version
