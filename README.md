@@ -158,3 +158,4 @@ pass:Exampleparent@gmail.com
 end of the page 
 
 
+  // "homepage": "https://scholarsync.github.io/CMS-FE/",
