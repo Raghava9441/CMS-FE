@@ -65,7 +65,7 @@ export default defineConfig({
     reactClickToComponent(),// alt+right click to see  where the component is locatedd in the code base
     // ValidateEnv({ configFile: 'config/env' })
   ],
-  base:'/cms',
+  base:'/CMS-FE/',
   server: {
     port: 3000,
     hmr: {
