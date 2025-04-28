@@ -1,4 +1,4 @@
-import { Avatar, Theme } from "@mui/material";
+// import { Avatar, Theme } from "@mui/material";
 
 const PRIMARY_NAME = ["A", "N", "H", "L", "Q", "9", "8"];
 const INFO_NAME = ["F", "G", "T", "I", "J", "1", "2", "3"];
@@ -31,55 +31,55 @@ export const createAvatar = (name: string): AvatarProps => {
     };
 };
 
-const getSize = (size: number): number | "auto" => {
-    if (size <= 20) {
-        return size - 5;
-    } else if (size <= 40) {
-        return size - 15;
-    } else if (size > 40 && size <= 50) {
-        return "auto";
-    } else {
-        return size - 40;
-    }
-};
+// const getSize = (size: number): number | "auto" => {
+//     if (size <= 20) {
+//         return size - 5;
+//     } else if (size <= 40) {
+//         return size - 15;
+//     } else if (size > 40 && size <= 50) {
+//         return "auto";
+//     } else {
+//         return size - 40;
+//     }
+// };
 
-interface GetAvatarProps {
-    avatar?: string;
-    name: string;
-    theme?: Theme;
-    size: number;
-}
+// interface GetAvatarProps {
+//     avatar?: string;
+//     name: string;
+//     theme?: Theme;
+//     size: number;
+// }
 
-export default function getAvatar({ avatar, name, theme, size }: GetAvatarProps): JSX.Element {
-    if (avatar) {
-        return (
-            <Avatar
-                src= { avatar }
-        alt = { name }
-        sx = {{ width: size, height: size }
-    }
-            />
-        );
-}
-            />
-        );
-}
+// export default function getAvatar({ avatar, name, theme, size }: GetAvatarProps): JSX.Element {
+//     if (avatar) {
+//         return (
+//             <Avatar
+//                 src= { avatar }
+//         alt = { name }
+//         sx = {{ width: size, height: size }
+//     }
+//             />
+//         );
+// }
+//             />
+//         );
+// }
 
-return (
-    <Avatar
-            sx= {{
-    backgroundColor: theme
-        ? theme.palette[createAvatar(name).color].main
-        : "none",
-        fontWeight: 800,
-            color: "#fff",
-                width: size,
-                    height: size,
-                        fontSize: getSize(size),
-            }}
-alt = { name }
-    >
-    { createAvatar(name).name }
-    </Avatar>
-    );
-}
+// return (
+//     <Avatar
+//             sx= {{
+//     backgroundColor: theme
+//         ? theme.palette[createAvatar(name).color].main
+//         : "none",
+//         fontWeight: 800,
+//             color: "#fff",
+//                 width: size,
+//                     height: size,
+//                         fontSize: getSize(size),
+//             }}
+// alt = { name }
+//     >
+//     { createAvatar(name).name }
+//     </Avatar>
+//     );
+// }
