@@ -127,7 +127,7 @@ export default function MainLayout() {
             // get online friends
             dispatch(GetOnlineFriends());
         }
-    }, [user.id]);
+    }, [user]);
 
 
     useEffect(() => {
