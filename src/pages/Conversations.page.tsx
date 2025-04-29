@@ -6,7 +6,7 @@ import Conversation from "@components/conversation/Conversation";
 import LoadingScreen from "@components/LoadingScreen";
 import { Box, Stack, Typography, useMediaQuery, useTheme } from "@mui/material"
 import { GetConversations } from "@redux/actions/chat.actions";
-import { GetOnlineFriends } from "@redux/actions/userActions";
+import { GetFriends, GetOnlineFriends } from "@redux/actions/userActions";
 import { RootState } from "@redux/store";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -22,11 +22,12 @@ function Conversations() {
     useEffect(() => {
         // if (user.token) {
         // get all conversations
-        dispatch(GetConversations());
+        // dispatch(GetConversations());
 
         // get online friends
-          dispatch(GetOnlineFriends());
+        //   dispatch(GetOnlineFriends());
         // }
+        dispatch(GetFriends());
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 

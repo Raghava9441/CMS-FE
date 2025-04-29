@@ -13,7 +13,6 @@ type Props = {}
 function Conversation({ }: Props) {
     const {
         activeConversation,
-        activeConvoFriendship,
         sendMsgLoading,
         isOptimistic,
     } = useSelector((state: RootState) => state.chat);

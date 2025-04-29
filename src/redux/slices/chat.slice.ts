@@ -41,7 +41,7 @@ const slice = createSlice({
             state.isOptimistic = action.payload.isOptimistic;
         },
 
-        closeActiveConversation: (state, action) => {
+        closeActiveConversation: (state) => {
             state.activeConversation = null;
             state.activeConvoFriendship = null;
             state.messages = [];
@@ -92,7 +92,7 @@ const slice = createSlice({
                 state.error = false;
             })
             .addCase(GetConversations.fulfilled, (state, action) => {
-                // console.log(action.payload.data)
+                console.log(action.payload.data)
                 state.conversations = action.payload.data;
                 state.isLoading = false;
                 state.error = false;

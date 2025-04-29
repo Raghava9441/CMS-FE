@@ -159,3 +159,26 @@ end of the page
 
 
   // "homepage": "https://scholarsync.github.io/CMS-FE/",
+
+
+
+  ------------------------------------------------------------------
+  organization- Demo2
+
+  users
+  -----
+
+Demo2_orgadmin@gmail.com
+
+
+  Demo2_teacher3@gmail.com
+  Demo2_teacher2@gmail.com
+  Demo2_teacher1@gmail.com
+
+  Demo2_student1@gmail.com
+  Demo2_student2@gmail.com
+  Demo2_student3@gmail.com
+
+  Demo2_parent1@gmail.com
+  Demo2_parent2@gmail.com
+  Demo2_parent3@gmail.com

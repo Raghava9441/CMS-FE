@@ -51,7 +51,7 @@ export default function MainLayout() {
         activeConversation,
 
     } = useSelector((state: RootState) => state.chat);
-
+    console.log(activeConversation)
     useEffect(() => {
         // start server
         // dispatch(StartServer());
@@ -156,7 +156,7 @@ export default function MainLayout() {
             }
         };
         checkAuthentication();
-    }, [isauthenticated, navigate]);
+    }, [isauthenticated]);
 
 
     const handleDrawerClose = () => {
