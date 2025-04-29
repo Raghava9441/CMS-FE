@@ -1,3 +1,4 @@
+import { sentryVitePlugin } from "@sentry/vite-plugin";
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import path from 'path';
@@ -8,6 +9,8 @@ import { reactClickToComponent } from "vite-plugin-react-click-to-component";
 import TurboConsole from 'unplugin-turbo-console/vite'
 import svgr from "vite-plugin-svgr";
 import richSvg from "vite-plugin-react-rich-svg";
+// import { sentryVitePlugin } from '@sentry/vite-plugin'
+
 
 // import Icons from 'unplugin-icons/vite'
 
@@ -31,48 +34,62 @@ export default defineConfig({
       '@api': path.resolve(__dirname, 'src/api'),
     },
   },
-  plugins: [
-    react(),
-    richSvg(),
-    TurboConsole({}),
-    svgr({
-      // svgr options: https://react-svgr.com/docs/options/
-      svgrOptions: {
-        // Keep title by default
-        titleProp: true,
-        // Convert SVG to React Native format
-        native: false,
-        // Custom props to component
-        exportType: 'named',
-        ref: true,
-        svgo: true,
-        // Plugin options
-        plugins: ['@svgr/plugin-svgo', '@svgr/plugin-jsx'],
-        svgoConfig: {
-          plugins: [
-            {
-              name: 'removeViewBox',
-              // active: false
-            },
-            {
-              name: 'removeDimensions',
-              // active: true
-            }
-          ]
-        }
+
+  plugins: [react(), // sentryVitePlugin({
+  //   org: 'YOUR_ORG_SLUG',
+  //   project: 'YOUR_PROJECT_SLUG',
+  //   authToken: process.env.SENTRY_AUTH_TOKEN, // or use .env
+  //   include: './dist',
+  //   ignore: ['node_modules', 'vite.config.ts'],
+  //   release: process.env.SENTRY_RELEASE || 'cms-fe@1.0.0',
+  // }),
+  richSvg(), TurboConsole({}), svgr({
+    // svgr options: https://react-svgr.com/docs/options/
+    svgrOptions: {
+      // Keep title by default
+      titleProp: true,
+      // Convert SVG to React Native format
+      native: false,
+      // Custom props to component
+      exportType: 'named',
+      ref: true,
+      svgo: true,
+      // Plugin options
+      plugins: ['@svgr/plugin-svgo', '@svgr/plugin-jsx'],
+      svgoConfig: {
+        plugins: [
+          {
+            name: 'removeViewBox',
+            // active: false
+          },
+          {
+            name: 'removeDimensions',
+            // active: true
+          }
+        ]
       }
-    }),
-    reactClickToComponent(),// alt+right click to see  where the component is locatedd in the code base
-    // ValidateEnv({ configFile: 'config/env' })
-  ],
+    }
+  }), // alt+right click to see  where the component is locatedd in the code base
+  // ValidateEnv({ configFile: 'config/env' })
+  reactClickToComponent(), sentryVitePlugin({
+    org: "full-stack-developer-0t",
+    project: "cms-fe"
+  })],
+
   base:'/CMS-FE/',
+
   server: {
     port: 3000,
     hmr: {
       path: 'hmr',
     },
   },
+
   preview: {
     port: 3000,
   },
+
+  build: {
+    sourcemap: true
+  }
 })
