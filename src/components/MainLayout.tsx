@@ -28,7 +28,7 @@ import NotificationsIcon from '@mui/icons-material/Notifications';
 import { connectSocket, socket } from '@utils/socket';
 import { setIsOptimistic, updateMsgConvo, updateTypingConvo } from '@redux/slices/chat.slice';
 import { ShowSnackbar, updateOnlineUsers } from '@redux/slices/authSlice';
-import { GetConversations } from '@redux/actions/chat.actions';
+import { GetConversations, GetMessages } from '@redux/actions/chat.actions';
 import { GetOnlineFriends } from '@redux/actions/userActions';
 
 const drawerWidth = 240;
@@ -47,7 +47,10 @@ export default function MainLayout() {
     const isauthenticated = useSelector((state: RootState) => state.auth.isAuthenticated);
     const user = useSelector((state: RootState) => state.auth.user);
     const { accessToken } = useSelector((state: RootState) => state.auth);
+    const {
+        activeConversation,
 
+    } = useSelector((state: RootState) => state.chat);
 
     useEffect(() => {
         // start server
@@ -63,6 +66,17 @@ export default function MainLayout() {
 
         // socket listeners
         if (socket) {
+
+            socket.on("connect", () => {
+                console.log("Socket connected, syncing messages...");
+                if (activeConversation) {
+                    // after reconnect, fetch missed messages
+                    dispatch(GetMessages(activeConversation?._id));
+                }
+
+            });
+
+
 
             socket.emit("message_from_client", { hey: "server" });
 

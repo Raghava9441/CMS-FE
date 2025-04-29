@@ -8,6 +8,9 @@ const connectSocket = (token: string) => {
         query: {
             token
         },
+        reconnection: true,
+        reconnectionAttempts: 5,
+        reconnectionDelay: 1000
     });
 };
 

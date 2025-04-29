@@ -4,6 +4,8 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 // Define the User interface based on the API response
 export interface User {
     username: string;
+    firstName: string,
+    lastName: string,
     email: string;
     fullname: string;
     avatar: string;
@@ -85,9 +87,9 @@ const authSlice = createSlice({
             state.loading = true;
         },
         loginUserSuccess(state, action: PayloadAction<{ loggedInUser: User; accessToken: string; refreshToken: string }>) {
-            console.log(action.payload.data)
+            // console.log(action.payload.data)
             const { loggedInUser, accessToken, refreshToken } = action.payload.data;
-            console.log(loggedInUser)
+            // console.log(loggedInUser)
             state.loading = false;
             state.isAuthenticated = true;
             state.user = loggedInUser;
@@ -127,8 +129,8 @@ const authSlice = createSlice({
             state.error = action.payload;
         },
         openSnackbar(state, action) {
-            console.log("action", action)
-            console.log("action.payload.severity", action.payload.severity)
+            // console.log("action", action)
+            // console.log("action.payload.severity", action.payload.severity)
             state.snackbar.open = true;
             state.snackbar.severity = action.payload.severity;
             state.snackbar.message = action.payload.message;
@@ -199,7 +201,7 @@ const authSlice = createSlice({
 
             .addCase(GetFriends.pending, handlePending)
             .addCase(GetFriends.fulfilled, (state, action) => {
-                console.log( action.payload.data)
+                // console.log(action.payload.data)
                 state.friends = action.payload.data.friends;
                 state.isLoading = false;
                 state.error = false;
@@ -220,8 +222,8 @@ function handlePending(state, action) {
 }
 
 export function ShowSnackbar({ message, severity }: { message: string, severity: 'error' | 'success' | 'warning' | 'info' }) {
-    console.log(" severity:", severity)
-    console.log(message)
+    // console.log(" severity:", severity)
+    // console.log(message)
     return async (dispatch, getState) => {
         dispatch(authSlice.actions.openSnackbar({ message, severity }));
     };
