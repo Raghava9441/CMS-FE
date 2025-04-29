@@ -1,0 +1,1 @@
+import{j as r}from"./index-sHhKvLKz.js";function e(){return r.jsxs("div",{children:["Dashbaord.page return ",r.jsx("button",{onClick:()=>{throw new Error("This is your first error!")},children:"Break the world"}),";"]})}export{e as default};
