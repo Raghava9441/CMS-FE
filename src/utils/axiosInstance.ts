@@ -19,9 +19,8 @@ export class ApiError extends Error {
         this.name = 'ApiError';
     }
 }
-
 export const axiosInstance = axios.create({
-    baseURL: "http://localhost:8000/api/v1",  // Make sure this matches your backend URL exactly
+    baseURL: import.meta.env.VITE_APP_API_ORIGIN_PROD as string,
     withCredentials: true,
     headers: {
         "Content-Type": "application/json",
