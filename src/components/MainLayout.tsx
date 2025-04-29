@@ -69,6 +69,7 @@ export default function MainLayout() {
 
             socket.on("connect", () => {
                 console.log("Socket connected, syncing messages...");
+                console.log(activeConversation)
                 if (activeConversation) {
                     // after reconnect, fetch missed messages
                     dispatch(GetMessages(activeConversation?._id));
