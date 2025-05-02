@@ -1,1 +1,0 @@
-{"version":3,"file":"Notifications.page-BowcUrLx.js","sources":["../../src/pages/Notifications.page.tsx"],"sourcesContent":["\n\nfunction NotificationsPage() {\n    return (\n        <div>NotificationsPage</div>\n    )\n}\n\nexport default NotificationsPage"],"names":["NotificationsPage","jsx"],"mappings":"iXAEA,SAASA,GAAoB,CAErB,OAAAC,EAAA,IAAC,OAAI,SAAiB,mBAAA,CAAA,CAE9B"}

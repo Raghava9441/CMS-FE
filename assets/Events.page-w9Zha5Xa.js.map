@@ -1,0 +1,1 @@
+{"version":3,"file":"Events.page-w9Zha5Xa.js","sources":["../../src/pages/Events.page.tsx"],"sourcesContent":["\n\nfunction EventsPage() {\n    return (\n        <div>EventsPage</div>\n    )\n}\n\nexport default EventsPage"],"names":["EventsPage","jsx"],"mappings":"iXAEA,SAASA,GAAa,CAEd,OAAAC,EAAA,IAAC,OAAI,SAAU,YAAA,CAAA,CAEvB"}
