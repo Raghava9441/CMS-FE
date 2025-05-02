@@ -81,6 +81,14 @@ export default function MainLayout() {
 
             socket.emit("message_from_client", { hey: "server" });
 
+            socket.emit("user_online", { userId: user?._id })
+
+            socket.on("message_sync", (message) => {
+                //handle the redux to update all the unread messages
+                // console.log(message)
+                // dispatch(updateMsgConvo(message));
+            });
+
             // socket server error handling
             socket.on("connect_error", (error) => {
                 dispatch(

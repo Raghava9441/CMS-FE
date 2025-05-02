@@ -1,4 +1,4 @@
-import { configureStore } from '@reduxjs/toolkit';
+import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import authReducer from '../slices/authSlice';
 import usersReducer from '../slices/users.slice';
 import organizationReducer from '../slices/organization.slice';
@@ -8,20 +8,35 @@ import parentReducer from '../slices/parent.slice';
 import chatreducer from '../slices/chat.slice';
 import friendsReducer from '../slices/Friends.slice';
 import { thunk } from 'redux-thunk';
+import { persistReducer, persistStore } from 'redux-persist';
+import storage from 'redux-persist/lib/storage';
+
+const rootReducer = combineReducers({
+    auth: authReducer,
+    user: usersReducer,
+    organization: organizationReducer,
+    teacher: teacherReducer,
+    student: studentReducer,
+    parent: parentReducer,
+    chat: chatreducer,
+    Friends: friendsReducer,
+});
+
+const persistConfig = {
+    key: 'root',
+    storage,
+};
+
+const persistedReducer = persistReducer(persistConfig, rootReducer);
 
 const store = configureStore({
-    reducer: {
-        auth: authReducer,
-        user: usersReducer,
-        organization: organizationReducer,
-        teacher: teacherReducer,
-        student: studentReducer,
-        parent: parentReducer,
-        chat: chatreducer,
-        Friends:friendsReducer
-    },
-    middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(thunk), // Explicitly add thunk middleware
+    reducer: persistedReducer,
+    middleware: (getDefaultMiddleware) => getDefaultMiddleware({
+        serializableCheck: false,
+    }).concat(thunk),
 });
+
+export const persistor = persistStore(store);
 
 export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;

@@ -4,17 +4,17 @@ import MainLayout from './components/MainLayout';
 import { routesWithAuth, routesWithoutAuth } from './routes';
 import _404 from './pages/_404';
 import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "@redux/store";
+import { RootState } from "./redux/store";
 import { Suspense, useEffect, useState } from "react";
 import { Alert, CircularProgress, Slide, Snackbar, useMediaQuery, useTheme } from "@mui/material";
-import { HideSnackbar } from '@redux/slices/authSlice';
+import { HideSnackbar } from './redux/slices/authSlice';
 import LoadingScreen from '@components/LoadingScreen';
 
 const AppRouter = () => {
     const user = useSelector((state: RootState) => state.auth.user);
     return (
         <Router>
-            <Suspense fallback={<LoadingScreen />}>
+            <Suspense fallback={<LoadingScreen fromChat={false} />}>
                 <Routes>
                     <Route path="/" element={<MainLayout />}>
                         {routesWithAuth(user?.role).map((route, index) => (
