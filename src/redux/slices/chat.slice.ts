@@ -49,12 +49,15 @@ const slice = createSlice({
 
         updateMsgConvo: (state, action) => {
             const currentConvo = state.activeConversation;
-            // console.log(action.payload.conversation._id)
-            // updating messages
-            if (currentConvo?._id === action.payload.conversation._id) {
-                console.log(state)
-                state.messages = [...state.messages, action.payload];
+            // console.log(action.payload.conversation)
+            if (action.payload.conversation) {
+                if (currentConvo?._id === action.payload.conversation._id) {
+                    // console.log(state)
+                    state.messages = [...state.messages, action.payload];
+                }
             }
+            // updating messages
+
             // update conversations
             const conversation = {
                 ...action.payload.conversation,
@@ -92,7 +95,7 @@ const slice = createSlice({
                 state.error = false;
             })
             .addCase(GetConversations.fulfilled, (state, action) => {
-                console.log(action.payload.data)
+                // console.log(action.payload.data)
                 state.conversations = action.payload.data;
                 state.isLoading = false;
                 state.error = false;

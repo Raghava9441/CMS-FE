@@ -67,7 +67,7 @@ const studentSlice = createSlice({
         },
         fetchStudentsSuccess(state, action: PayloadAction<NewApiResponseData>) {
             state.loading = false;
-            console.log(action.payload)
+            // console.log(action.payload)
             state.data = action.payload;
             state.error = null;
         },
@@ -77,7 +77,7 @@ const studentSlice = createSlice({
         },
         fetchStudentByIdSuccess(state, action: PayloadAction<NewApiResponseData>) {
             state.loading = false;
-            console.log(action.payload)
+            // console.log(action.payload)
             state.data = action.payload;
             state.error = null;
         },
@@ -87,7 +87,7 @@ const studentSlice = createSlice({
         },
         createStudentSuccess(state, action: PayloadAction<NewApiResponseData>) {
             state.loading = false;
-            console.log(action.payload)
+            // console.log(action.payload)
             state.data = action.payload;
             state.error = null;
         },
@@ -97,7 +97,7 @@ const studentSlice = createSlice({
         },
         updateStudentSuccess(state, action: PayloadAction<NewApiResponseData>) {
             state.loading = false;
-            console.log(action.payload)
+            // console.log(action.payload)
             state.data = action.payload;
             state.error = null;
         },
@@ -110,7 +110,7 @@ const studentSlice = createSlice({
             if (state.data) {
                 state.data.students = state.data.students.filter((student) => student._id !== action.payload);
             }
-            console.log(state.data)
+            // console.log(state.data)
             state.error = null;
         },
     },

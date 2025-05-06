@@ -12,7 +12,7 @@ import StudentForm from "@components/Forms/Student.Form"
 function StudentPage() {
     const dispatch = useDispatch<AppDispatch>();
     const students = useSelector((state: RootState) => state.student.data);
-    console.log(students)
+    // console.log(students)
     const columns: GridColDef[] = useMemo(() => [
         {field: 'name', headerName: 'Student Name', flex: 1, editable: true, headerClassName: 'theme--header'},
         {field: 'phone', headerName: 'Contact Phone', flex: 1, editable: true, headerClassName: 'theme--header'},

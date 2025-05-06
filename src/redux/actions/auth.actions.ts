@@ -1,7 +1,7 @@
 import { NavigateFunction } from "react-router-dom";
 import { userApi } from "../../api/api";
 import { loginUserFailure, loginUserStart, loginUserSuccess, logoutUserStart, logoutUserSuccess, ShowSnackbar } from "../slices/authSlice";
-import { AppDispatch } from "../store";
+import { AppDispatch, persistor } from "../store";
 import appRoutes from "../../routes/routePaths";
 
 
@@ -26,8 +26,10 @@ export const loginUser = (user: { email: string, password: string }, navigate: N
 export const logoutUser = (navigate: NavigateFunction) => async (dispatch: AppDispatch) => {
     try {
         dispatch(logoutUserStart());
+        await persistor.purge();
         const response = await userApi.logout();
         dispatch(logoutUserSuccess(response.data));
+        
         navigate(appRoutes.LOGIN);
         return response.data;
     } catch (error) {

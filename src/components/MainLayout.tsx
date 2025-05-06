@@ -51,7 +51,7 @@ export default function MainLayout() {
         activeConversation,
 
     } = useSelector((state: RootState) => state.chat);
-    console.log(activeConversation)
+    // console.log(activeConversation)
     useEffect(() => {
         // start server
         // dispatch(StartServer());
@@ -68,8 +68,8 @@ export default function MainLayout() {
         if (socket) {
 
             socket.on("connect", () => {
-                console.log("Socket connected, syncing messages...");
-                console.log(activeConversation)
+                // console.log("Socket connected, syncing messages...");
+                // console.log(activeConversation)
                 if (activeConversation) {
                     // after reconnect, fetch missed messages
                     dispatch(GetMessages(activeConversation?._id));
@@ -110,7 +110,7 @@ export default function MainLayout() {
             });
 
             socket.on("message_received", (message) => {
-                console.log(message)
+                // console.log(message)
                 dispatch(updateMsgConvo(message));
             });
 

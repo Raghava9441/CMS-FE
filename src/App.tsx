@@ -37,7 +37,6 @@ const horizontal = "right";
 
 
 function SlideTransition(props) {
-    // breakpoint
     const theme = useTheme();
     const isSmallScreen = useMediaQuery(theme.breakpoints.down("md"));
 
@@ -50,12 +49,10 @@ function App() {
 
     const isSmallScreen = useMediaQuery(theme.breakpoints.down("md"));
 
-    // from redux
     const { open, message, severity } = useSelector(
         (state: RootState) => state.auth.snackbar
     );
 
-    // use dispatch
     const dispatch = useDispatch();
 
     // Local state to manage Snackbar visibility
@@ -68,9 +65,9 @@ function App() {
 
     // Handler for Snackbar close
     const handleCloseSnackbar = () => {
-        setLocalOpen(false); // Hide Snackbar with local state
+        setLocalOpen(false);
         setTimeout(() => {
-            dispatch(HideSnackbar()); // Dispatch action after delay
+            dispatch(HideSnackbar());
         }, 300);
     };
 
