@@ -1,0 +1,1 @@
+{"version":3,"file":"Attendance.page-BdNeIvWe.js","sources":["../../src/pages/Attendance.page.tsx"],"sourcesContent":["\n\nfunction AttendancePage() {\n  return (\n    <div>AttendancePage</div>\n  )\n}\n\nexport default AttendancePage"],"names":["AttendancePage","jsx"],"mappings":"iXAEA,SAASA,GAAiB,CAEtB,OAAAC,EAAA,IAAC,OAAI,SAAc,gBAAA,CAAA,CAEvB"}
