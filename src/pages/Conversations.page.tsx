@@ -5,7 +5,6 @@ import ChatsList from "@components/conversation/ChatList";
 import Conversation from "@components/conversation/Conversation";
 import LoadingScreen from "@components/LoadingScreen";
 import { Box, Stack, Typography, useMediaQuery, useTheme } from "@mui/material"
-import { GetConversations } from "@redux/actions/chat.actions";
 import { GetFriends, GetOnlineFriends } from "@redux/actions/userActions";
 import { RootState } from "@redux/store";
 import { useEffect } from "react";

@@ -20,6 +20,8 @@ import {
     GridRowModel,
     GridRowEditStopReasons,
     GridToolbarExport,
+    GridToolbarQuickFilter,
+    GridToolbarFilterButton,
 } from '@mui/x-data-grid';
 import { CircularProgress, IconButton, styled, Typography, useTheme } from '@mui/material';
 
@@ -63,6 +65,8 @@ function EditToolbar({ onAdd, reloadData }: { onAdd: () => void; reloadData?: ()
 
     return (
         <GridToolbarContainer sx={{ display: 'flex', justifyContent: 'right', alignItems: 'center', padding: 1 }}>
+            <GridToolbarQuickFilter />
+            <GridToolbarFilterButton />
             <IconButton onClick={handleIconClick}>
                 <CachedIcon
                     color='primary'
@@ -76,6 +80,9 @@ function EditToolbar({ onAdd, reloadData }: { onAdd: () => void; reloadData?: ()
                 slotProps={{
                     tooltip: { title: 'Export data' },
                     button: { variant: 'outlined' },
+                    toolbar: {
+                        showQuickFilter: true,
+                    },
                 }}
             />
             <Button color="primary" startIcon={<AddIcon />} onClick={onAdd} variant='outlined'>

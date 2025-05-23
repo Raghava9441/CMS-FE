@@ -28,7 +28,6 @@ import BeatLoader from "react-spinners/BeatLoader";
 
 // redux imports
 import StyledBadge from "@components/StyledBadge";
-import getAvatar from "@utils/createAvatar";
 import truncateText from "@utils/truncateText";
 import formatTime from "@utils/timeFormatter";
 import { getOtherUser } from "@utils/getOtherUsers";
@@ -113,7 +112,6 @@ const AllChatElement = ({
         borderRadius: 20,
     };
 
-    // ---------------------------------------
     const isTyping = setTyping();
 
     return (

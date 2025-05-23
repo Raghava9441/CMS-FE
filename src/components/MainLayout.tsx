@@ -51,7 +51,7 @@ export default function MainLayout() {
         activeConversation,
 
     } = useSelector((state: RootState) => state.chat);
-    // console.log(activeConversation)
+
     useEffect(() => {
         // start server
         // dispatch(StartServer());
@@ -141,15 +141,7 @@ export default function MainLayout() {
         }
     }, [accessToken]);
 
-    // useEffect(() => {
-    //     if (user?.token) {  // Use optional chaining
-    //         // get all conversations
-    //         dispatch(GetConversations());
 
-    //         // get online friends
-    //         dispatch(GetOnlineFriends());
-    //     }
-    // }, [user?.id]);
 
 
     useEffect(() => {
@@ -205,38 +197,8 @@ export default function MainLayout() {
         dispatch(authActions.logoutUser(navigate));
     };
 
-    const currentPath = location.pathname;
 
-    const drawer = (
-        <>
-            <Toolbar>
-                <Box sx={{ display: 'flex', alignItems: 'center', width: '100%', justifyContent: 'center' }}>
-                    <Typography variant="h5" sx={{ color: theme.palette.primary.main }}>ScholarSync</Typography>
-                    <SchoolIcon sx={{ fontSize: 48, color: theme.palette.primary.main }} />
-                </Box>
-            </Toolbar>
-            <Divider />
-            <List>
-                {routesWithSideMenu(user?.role).filter(route => route.authenticationRequired && route.isSideMenu).map((route) => (
-                    <ListItem
-                        key={route.id}
-                        disablePadding
-                        sx={{
-                            backgroundColor: route.path === currentPath ? theme.palette.primary.main : 'inherit',
-                        }}
-                    >
-                        <ListItemButton onClick={() => route.path !== '/' && navigate(route.path)}>
-                            <ListItemIcon>
-                                {route.id % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-                            </ListItemIcon>
-                            <ListItemText primary={route.label} />
-                        </ListItemButton>
-                    </ListItem>
-                ))}
-            </List>
-            <Divider />
-        </>
-    );
+
 
     return (
         <Box sx={{ display: 'flex', minHeight: '100vh' }}>
@@ -350,7 +312,7 @@ export default function MainLayout() {
                         '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth },
                     }}
                 >
-                    {drawer}
+                    <CustomDrawer location={location.pathname} />
                 </Drawer>
                 <Drawer
                     variant="permanent"
@@ -361,7 +323,7 @@ export default function MainLayout() {
                     }}
                     open
                 >
-                    {drawer}
+                    <CustomDrawer location={location.pathname} />
                 </Drawer>
             </Box>
             <Box
@@ -372,5 +334,44 @@ export default function MainLayout() {
                 <Outlet />
             </Box>
         </Box>
+    );
+}
+
+
+
+const CustomDrawer = ({ location }) => {
+    const theme = useTheme();
+    const navigate = useNavigate();
+    const { user } = useSelector((state: RootState) => state.auth);
+
+    return (
+        <>
+            <Toolbar>
+                <Box sx={{ display: 'flex', alignItems: 'center', width: '100%', justifyContent: 'center' }}>
+                    <Typography variant="h5" sx={{ color: theme.palette.primary.main }}>ScholarSync</Typography>
+                    <SchoolIcon sx={{ fontSize: 48, color: theme.palette.primary.main }} />
+                </Box>
+            </Toolbar>
+            <Divider />
+            <List>
+                {routesWithSideMenu(user?.role).filter(route => route.authenticationRequired && route.isSideMenu).map((route) => (
+                    <ListItem
+                        key={route.id}
+                        disablePadding
+                        sx={{
+                            backgroundColor: route.path === location ? theme.palette.primary.main : 'inherit',
+                        }}
+                    >
+                        <ListItemButton onClick={() => route.path !== '/' && navigate(route.path)}>
+                            <ListItemIcon>
+                                {route.id % 2 === 0 ? <InboxIcon /> : <MailIcon />}
+                            </ListItemIcon>
+                            <ListItemText primary={route.label} />
+                        </ListItemButton>
+                    </ListItem>
+                ))}
+            </List>
+            <Divider />
+        </>
     );
 }

@@ -1,5 +1,4 @@
-import { Stack, Box, useTheme, Typography } from "@mui/material";
-import getAvatar from "@utils/createAvatar";
+import { Stack, Box, useTheme, Typography, Avatar } from "@mui/material";
 import BeatLoader from "react-spinners/BeatLoader";
 
 
@@ -49,13 +48,7 @@ const MessageContainer = ({
                         left: -25,
                     }}
                 >
-                    {/* {getAvatar(
-                        message?.sender?.avatar,
-                        message?.sender?.firstName,
-                        theme,
-                        20
-                    )} */}
-                    <div>avatar</div>
+                    <Avatar sx={{ width: 24, height: 24 }} />
                 </Box>
             )}
             <Box
@@ -72,7 +65,7 @@ const MessageContainer = ({
                         msgType === "text"
                             ? me
                                 ? theme.palette.primary.main
-                                : theme.palette.background.default
+                                : theme.palette.primary.light
                             : msgType === "emoji"
                                 ? ""
                                 : theme.palette.background.default,
@@ -106,13 +99,8 @@ const MessageContainer = ({
                         right: -16,
                     }}
                 >
-                    {/* {getAvatar(
-                        message?.sender?.avatar,
-                        message?.sender?.firstName,
-                        theme,
-                        15
-                    )} */}
-                    <div>avatar</div>
+
+                    <Avatar sx={{ width: 24, height: 24 }} />
                 </Box>
             )}
         </Stack>
