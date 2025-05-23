@@ -1,42 +1,6 @@
-import { GetFriends, SearchFriends } from '@redux/actions/userActions';
+import { GetFriends, SearchFriends } from '../actions/userActions'; 
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-
-// Define the User interface based on the API response
-export interface User {
-    username: string;
-    firstName: string,
-    lastName: string,
-    email: string;
-    fullname: string;
-    avatar: string;
-    coverImage?: string;
-    age?: string;
-    role: 'ADMIN' | 'TEACHER' | 'STUDENT' | 'PARENT';
-    gender: 'male' | 'female' | 'other';
-    organizationId: string;
-    phone?: string;
-    address?: {
-        street?: string;
-        city?: string;
-        state?: string;
-        zip?: string;
-        country?: string;
-    };
-    status?: 'active' | 'inactive';
-    activityStatus: "",
-    dateOfBirth?: Date;
-    biography?: string;
-    permissions?: string[];
-    socialLinks?: {
-        facebook?: string;
-        twitter?: string;
-        linkedin?: string;
-    };
-    preferences?: {
-        notifications?: boolean;
-        language?: string;
-    };
-}
+import { User, OnlineFriend } from '../../types/auth.types'; // Step 2: Import User and OnlineFriend
 
 interface AuthState {
     isAuthenticated: boolean;
@@ -48,12 +12,12 @@ interface AuthState {
     snackbar: {
         open: boolean,
         message: string | null,
-        severity: 'error' | 'success' | 'warning' | 'info',
+        severity: 'error' | 'success' | 'warning' | 'info' | null, // Fix 6: Allow null
     },
-    friends: [],
-    onlineFriends: { _id: string; email: string; avatar: string; activityStatus: string; onlineStatus: string }[],
+    friends: User[], // Fix 4: Correct type for friends
+    onlineFriends: OnlineFriend[], // Fix 3: Use defined OnlineFriend type
     showFriendsMenu: boolean,
-    searchResults: [] | null,
+    searchResults: User[] | null, // Fix 5: Correct type for searchResults
     searchCount: null | number | boolean,
     isLoading: boolean,
 }
@@ -68,11 +32,11 @@ const initialState: AuthState = {
     snackbar: {
         open: false,
         message: null,
-        severity: null,
+        severity: null, // Matches corrected AuthState
     },
     friends: [],
     onlineFriends: [],
-    searchResults: [],
+    searchResults: [], // Initial value is empty array, compatible with User[] | null
     showFriendsMenu: false,
     searchCount: null,
     isLoading: false
@@ -87,15 +51,13 @@ const authSlice = createSlice({
             state.loading = true;
         },
         loginUserSuccess(state, action: PayloadAction<{ loggedInUser: User; accessToken: string; refreshToken: string }>) {
-            // console.log(action.payload.data)
-            const { loggedInUser, accessToken, refreshToken } = action.payload.data;
-            // console.log(loggedInUser)
+            const { loggedInUser, accessToken, refreshToken } = action.payload; // Fix 2: Correct payload access
             state.loading = false;
             state.isAuthenticated = true;
             state.user = loggedInUser;
             state.accessToken = accessToken;
             state.refreshToken = refreshToken;
-            state.isAuthenticated = true;
+            // No need to set isAuthenticated again, it's already true
 
             // Save tokens and user data in localStorage for persistence
             localStorage.setItem('user', JSON.stringify(loggedInUser));
@@ -106,6 +68,7 @@ const authSlice = createSlice({
             state.loading = false;
             state.error = action.payload;
             state.isAuthenticated = false;
+            state.user = null; // Clear user on failure
             state.accessToken = null;
             state.refreshToken = null;
         },
@@ -128,70 +91,54 @@ const authSlice = createSlice({
             state.loading = false;
             state.error = action.payload;
         },
-        openSnackbar(state, action) {
-            // console.log("action", action)
-            // console.log("action.payload.severity", action.payload.severity)
+        openSnackbar(state, action: PayloadAction<{ message: string; severity: 'error' | 'success' | 'warning' | 'info' }>) {
             state.snackbar.open = true;
             state.snackbar.severity = action.payload.severity;
             state.snackbar.message = action.payload.message;
         },
-        closeSnackbar(state, action) {
+        closeSnackbar(state, action: PayloadAction<undefined>) { // Payload is undefined
             state.snackbar.open = false;
+            state.snackbar.message = null; // Optionally reset message and severity
+            state.snackbar.severity = null;
         },
         setShowFriendsMenu(state) {
             state.showFriendsMenu = !state.showFriendsMenu;
         },
-        updateOnlineUsers: (state, action) => {
-            const { _id, firstName, lastName, avatar, onlineStatus } = action.payload;
+        updateOnlineUsers: (state, action: PayloadAction<OnlineFriend>) => { // Use OnlineFriend for payload
+            const newOnlineFriend = action.payload;
             const index = state.onlineFriends.findIndex(
-                (friend) => friend._id === _id
+                (friend) => friend._id === newOnlineFriend._id
             );
 
             if (index !== -1) {
-                // If user is already in onlineFriends array, update onlineStatus
-                state.onlineFriends[index].onlineStatus = onlineStatus;
+                // If user is already in onlineFriends array, update existing friend
+                state.onlineFriends[index] = { ...state.onlineFriends[index], ...newOnlineFriend };
             } else {
-                // If user is not in onlineFriends array, add the whole object to the array
-                state.onlineFriends.push({
-                    _id,
-                    firstName,
-                    lastName,
-                    avatar,
-                    onlineStatus,
-                });
+                // If user is not in onlineFriends array, add the new object
+                state.onlineFriends.push(newOnlineFriend);
             }
         },
-        //cancel friend
-        removeFriend: (state, action) => {
+        removeFriend: (state, action: PayloadAction<{ friend_id: string }>) => {
             const { friend_id } = action.payload;
-
-            // Find index of friend to remove
-            const index = state.friends.findIndex(
-                (friend) => friend._id === friend_id
-            );
-            if (index !== -1) {
-                // Remove friend from friends array
-                state.friends.splice(index, 1);
-            }
+            state.friends = state.friends.filter((friend) => friend._id !== friend_id);
         },
-        setLoading: (state, action) => {
+        setLoading: (state, action: PayloadAction<boolean>) => {
             state.isLoading = action.payload;
         },
-        clearSearch: (state, action) => {
-            state.searchResults = [];
+        clearSearch: (state, action: PayloadAction<undefined>) => { // Payload is undefined
+            state.searchResults = []; // Or null, depending on desired state
             state.searchCount = null;
         },
     },
     extraReducers(builder) {
         builder
-            // --------- Search Friends Builder ---------
             .addCase(SearchFriends.pending, handlePending)
             .addCase(SearchFriends.fulfilled, (state, action) => {
                 if (action.payload.usersFound === 0) {
-                    state.searchResults = null;
-                    state.searchCount = null;
+                    state.searchResults = null; // Keep as null if no users found
+                    state.searchCount = 0; // Set count to 0
                 } else {
-                    state.searchResults = action.payload.friends;
+                    state.searchResults = action.payload.friends as User[]; // Assuming payload.friends are User[]
                     state.searchCount = action.payload.usersFound;
                 }
                 state.isLoading = false;
@@ -201,8 +148,7 @@ const authSlice = createSlice({
 
             .addCase(GetFriends.pending, handlePending)
             .addCase(GetFriends.fulfilled, (state, action) => {
-                // console.log(action.payload.data)
-                state.friends = action.payload.data.friends;
+                state.friends = action.payload.data.friends as User[]; // Assuming payload.data.friends are User[]
                 state.isLoading = false;
                 state.error = false;
             })
@@ -210,38 +156,50 @@ const authSlice = createSlice({
     }
 });
 
-function handleRejected(state, action) {
+function handleRejected(state: AuthState, action: any) { // Use AuthState for type safety
     state.isLoading = false;
-    state.error = true;
+    state.error = action.error?.message || true; // Store error message if available
 }
 
-// function for pending and rejected handling
-function handlePending(state, action) {
+function handlePending(state: AuthState, action: any) { // Use AuthState for type safety
     state.isLoading = true;
     state.error = false;
 }
 
+// Thunks (already defined, ensure dispatch calls are correct)
 export function ShowSnackbar({ message, severity }: { message: string, severity: 'error' | 'success' | 'warning' | 'info' }) {
-    // console.log(" severity:", severity)
-    // console.log(message)
-    return async (dispatch, getState) => {
+    return async (dispatch: any) => { // Use any for dispatch if thunk type is complex
         dispatch(authSlice.actions.openSnackbar({ message, severity }));
     };
 }
 
 export function HideSnackbar() {
-    return async (dispatch, getState) => {
-        dispatch(authSlice.actions.closeSnackbar());
+    return async (dispatch: any) => {
+        dispatch(authSlice.actions.closeSnackbar(undefined)); // Fix 7: Correct dispatch call
     };
 }
-
 
 export function ClearSearch() {
-    return async (dispatch, getState) => {
-        dispatch(authSlice.actions.clearSearch());
+    return async (dispatch: any) => {
+        dispatch(authSlice.actions.clearSearch(undefined)); // Fix 7: Correct dispatch call
     };
 }
 
-export const { loginUserStart, loginUserSuccess, loginUserFailure, logoutUserStart, logoutUserSuccess, logoutUserFailure, setShowFriendsMenu, updateOnlineUsers, removeFriend } = authSlice.actions;
+// Export all actions and the reducer
+export const { 
+    loginUserStart, 
+    loginUserSuccess, 
+    loginUserFailure, 
+    logoutUserStart, 
+    logoutUserSuccess, 
+    logoutUserFailure, 
+    openSnackbar, 
+    closeSnackbar, 
+    setShowFriendsMenu, 
+    updateOnlineUsers, 
+    removeFriend,
+    setLoading,
+    clearSearch 
+} = authSlice.actions; // Fix 8: Ensure all actions are exported
 
 export default authSlice.reducer;

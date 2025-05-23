@@ -11,11 +11,11 @@ interface AvatarProps {
     color: "primary" | "info" | "success" | "warning" | "error";
 }
 
-function getFirstCharacter(name: string): string {
+export function getFirstCharacter(name: string): string {
     return name ? name.charAt(0).toUpperCase() : "";
 }
 
-function getAvatarColor(name: string): "primary" | "info" | "success" | "warning" | "error" {
+export function getAvatarColor(name: string): "primary" | "info" | "success" | "warning" | "error" {
     if (PRIMARY_NAME.includes(getFirstCharacter(name))) return "primary";
     if (INFO_NAME.includes(getFirstCharacter(name))) return "info";
     if (SUCCESS_NAME.includes(getFirstCharacter(name))) return "success";

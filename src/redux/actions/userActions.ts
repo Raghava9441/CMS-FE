@@ -4,7 +4,8 @@ import { createUserStart, createUserSuccess, deleteUserStart, deleteUserSuccess,
 import { toast } from 'react-toastify';
 import { FriendRequest, userApi } from '../../api/api';
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { ShowSnackbar } from '@redux/slices/authSlice';
+import { openSnackbar } from '../slices/authSlice'; // Changed from ShowSnackbar to openSnackbar
+import { User } from '../../types/auth.types'; 
 
 export const fetchUsers = () => async (dispatch: AppDispatch) => {
     try {
@@ -56,7 +57,8 @@ export const updateUser = (user: Omit<User, 'password' | 'accessToken' | 'refres
         dispatch(updateUserSuccess(response.data.data)); // Pass data to success action
         return response.data;
     } catch (error) {
-        toast.error(error.message || 'Failed to fetch user', {
+        toast.error((error as Error).message || 'Failed to fetch user', { // Fix 2: Safe error message access
+        toast.error((error as Error).message || 'Failed to fetch user', { // Fix 2: Safe error message access
             autoClose: 3000, // Auto close after 3 seconds
         });
     }
@@ -83,14 +85,14 @@ export const GetFriends = createAsyncThunk(
             const { data } = await FriendRequest.getFriends();
             console.log(data)
             return data;
-        } catch (error) {
-            // dispatch(
-            //   ShowSnackbar({
-            //     severity: error.error.status,
-            //     message: error.error.message,
+        } catch (error: any) { 
+            // dispatch( 
+            //   openSnackbar({ // Example if this block were active
+            //     severity: 'error', 
+            //     message: (error.response?.data?.message || (error as Error).message || 'An unknown error occurred') 
             //   })
             // );
-            return rejectWithValue(error.error);
+            return rejectWithValue(error.response?.data || error.message || error); // More detailed error info
         }
     }
 );
@@ -103,34 +105,32 @@ export const GetOnlineFriends = createAsyncThunk(
             const { data } = await FriendRequest.getOnlineFriends()
 
             return data;
-        } catch (error) {
-            // dispatch(
-            //   ShowSnackbar({
-            //     severity: error.error.status,
-            //     message: error.error.message,
+        } catch (error: any) { 
+            // dispatch( 
+            //   openSnackbar({ // Example if this block were active
+            //     severity: 'error', 
+            //     message: (error.response?.data?.message || (error as Error).message || 'An unknown error occurred') 
             //   })
             // );
-            return rejectWithValue(error.error);
+            return rejectWithValue(error.response?.data || error.message || error); // More detailed error info
         }
     }
 );
 
 export const SearchFriends = createAsyncThunk(
     "friends/search",
-    async (searchData, { rejectWithValue, dispatch }) => {
+    async (searchData: { keyword: string; page?: number }, { rejectWithValue, dispatch }) => { // Fix 4: Typed searchData
         try {
-
-            const { data } = FriendRequest.searchFriends(`/friends/search/?search=${searchData.keyword}&page=${searchData.page || 0}`)
-
+            const { data } = await FriendRequest.searchFriends(`/friends/search/?search=${searchData.keyword}&page=${searchData.page || 0}`); 
             return data;
-        } catch (error) {
-            dispatch(
-              ShowSnackbar({
-                severity: error.error.status,
-                message: error.error.message,
+        } catch (error: any) { 
+            dispatch( 
+              openSnackbar({ // Changed to use openSnackbar directly
+                severity: 'error', 
+                message: (error.response?.data?.message || (error as Error).message || 'An unknown error occurred') 
               })
             );
-            return rejectWithValue(error.error);
+            return rejectWithValue(error.response?.data || error.message || error); // More detailed error info
         }
     }
 );
@@ -143,5 +143,6 @@ export const userActions = {
     updateUser,
     deleteUser,
     GetOnlineFriends,
-    GetFriends
+    GetFriends,
+    SearchFriends // Added SearchFriends to the exported object
 }
