@@ -76,10 +76,11 @@ export default defineConfig({
     project: "cms-fe"
   })],
 
-  base:'/CMS-FE/',
+  base: '/CMS-FE/',
 
   server: {
     port: 3000,
+    host: '0.0.0.0',
     hmr: {
       path: 'hmr',
     },
