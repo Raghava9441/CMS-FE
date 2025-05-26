@@ -71,8 +71,8 @@ export const ConversationApi = {
 export const FriendRequest = {
     sendRequest: (payload: any) => axiosInstance.post('/friends/send-request', payload),
     getConversation: () => axiosInstance.post(`/friends/cancel-request`),
-    acceptRejectRequest: (data) => axiosInstance.post(`/friends/accept-reject-request`,data),
-    cancelRequest: (data:any) => axiosInstance.post(`/friends/cancel-request`,data),
+    acceptRejectRequest: (data) => axiosInstance.post(`/friends/accept-reject-request`, data),
+    cancelRequest: (data: any) => axiosInstance.post(`/friends/cancel-request`, data),
     getFriends: () => axiosInstance.get(`/friends/get-friends`),
     getOnlineFriends: () => axiosInstance.get(`/friends/online-friends`),
     getSentRequests: () => axiosInstance.get(`/friends/get-sent-requests`),
@@ -80,6 +80,10 @@ export const FriendRequest = {
     searchFriends: (query: string) => axiosInstance.get(`/friends/get-requests${query}`),
     GetFriendRequests: () => axiosInstance.get(`/friends/get-requests`),
     GetOrganizationUsers: () => axiosInstance.get(`/friends/get-orgusers`),
+}
+
+export const DashboardApi = {
+    getDashboardData: () => axiosInstance.get(`/dashboard`),
 }
 
 // TODO:types need to implimnet for each api call to be able to use them
