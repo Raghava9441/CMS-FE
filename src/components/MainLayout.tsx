@@ -25,11 +25,10 @@ import appRoutes from '../routes/routePaths';
 import { authActions } from '../redux/actions/auth.actions';
 import SchoolIcon from '@mui/icons-material/School';
 import NotificationsIcon from '@mui/icons-material/Notifications';
-import { setIsOptimistic, updateMsgConvo, updateTypingConvo } from '@redux/slices/chat.slice';
-import { ShowSnackbar, updateOnlineUsers } from '@redux/slices/authSlice';
+import { setIsOptimistic } from '@redux/slices/chat.slice';
 import { GetConversations, GetMessages } from '@redux/actions/chat.actions';
 import { GetOnlineFriends } from '@redux/actions/userActions';
-import { useSocketManager } from '@hooks/useSocket';
+import { useSocketManager } from '@hooks/usesocket';
 
 const drawerWidth = 240;
 
