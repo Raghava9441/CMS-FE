@@ -3,11 +3,14 @@ import { toast } from 'react-toastify';
 import { parentApi } from '@api/api';
 import { Parent } from '@models/parent.models';
 import { createParentStart, createParentSuccess, deleteParentStart, deleteParentSuccess, fetchParentByIdStart, fetchParentByIdSuccess, fetchParentsStart, fetchParentsSuccess, updateParentStart, updateParentSuccess } from '@redux/slices/parent.slice';
+import { Params } from '@models/pagination.modals';
+import { parseQueryParams } from '@utils/parseQueryParams';
 
-const fetchParents = () => async (dispatch: AppDispatch) => {
+const fetchParents = (params:Params) => async (dispatch: AppDispatch) => {
     try {
+        const queryParams = parseQueryParams(params);
         dispatch(fetchParentsStart());
-        const response = await parentApi.getParents();
+        const response = await parentApi.getParents(queryParams);
         dispatch(fetchParentsSuccess(response.data.data));
     } catch (error) {
         toast.error(error.response?.data?.data || 'Failed to fetch organizations', {

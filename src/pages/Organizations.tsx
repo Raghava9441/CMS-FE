@@ -1,13 +1,15 @@
-import {GridColDef, GridRowId, GridRowModesModel} from '@mui/x-data-grid'
-import {useEffect, useMemo, useState} from 'react'
-import {Box} from '@mui/material'
-import {AppDispatch, RootState} from '@redux/store'
-import {useDispatch, useSelector} from 'react-redux'
-import {hasPermission} from "@utils/auth.ts";
+import { GridColDef, GridRowId, GridRowModesModel } from '@mui/x-data-grid'
+import { useCallback, useMemo, useState } from 'react'
+import { Box } from '@mui/material'
+import { AppDispatch, RootState } from '@redux/store'
+import { useDispatch, useSelector } from 'react-redux'
+import { hasPermission } from "@utils/auth.ts";
 import OrganizationForm from "@components/Forms/OrganizationForm.tsx";
 import GenericModal from "@components/GenericModal.tsx";
-import {organizationActions} from "@redux/actions/organization.actions.ts";
-import {ReusableDataGrid} from "@components/ReusableDataGrid.tsx";
+import { organizationActions } from "@redux/actions/organization.actions.ts";
+import { ReusableDataGrid } from "@components/ReusableDataGrid.tsx";
+import { Params } from '@models/pagination.modals'
+import { usePaginationParams } from '@hooks/usePaginationParams'
 
 /**
  * Organizations component displays a data grid of organizations with CRUD operations.
@@ -24,11 +26,11 @@ function Organizations() {
      * @returns An array of column definitions.
      */
     const columns: GridColDef[] = useMemo(() => [
-        {field: 'name', headerName: 'Name', flex: 1, editable: true, headerClassName: 'theme--header'},
-        {field: 'category', headerName: 'Category', flex: 1, editable: true, headerClassName: 'theme--header'},
-        {field: 'number', headerName: 'Number', flex: 1, editable: true, headerClassName: 'theme--header'},
-        {field: 'contactEmail', headerName: 'Contact Email', flex: 1, editable: true, headerClassName: 'theme--header'},
-        {field: 'contactPhone', headerName: 'Contact Phone', flex: 1, editable: true, headerClassName: 'theme--header'},
+        { field: 'name', headerName: 'Name', flex: 1, editable: true, headerClassName: 'theme--header' },
+        { field: 'category', headerName: 'Category', flex: 1, editable: true, headerClassName: 'theme--header' },
+        { field: 'number', headerName: 'Number', flex: 1, editable: true, headerClassName: 'theme--header' },
+        { field: 'contactEmail', headerName: 'Contact Email', flex: 1, editable: true, headerClassName: 'theme--header' },
+        { field: 'contactPhone', headerName: 'Contact Phone', flex: 1, editable: true, headerClassName: 'theme--header' },
         // {field: 'website', headerName: 'Website', flex: 1, editable: true, headerClassName: 'theme--header'},
         // {field: 'logo', headerName: 'Logo', flex: 1, editable: true, headerClassName: 'theme--header'},
         {
@@ -38,14 +40,14 @@ function Organizations() {
             editable: true,
             headerClassName: 'theme--header'
         },
-        {field: 'description', headerName: 'Description', flex: 1, editable: true, headerClassName: 'theme--header'},
+        { field: 'description', headerName: 'Description', flex: 1, editable: true, headerClassName: 'theme--header' },
     ], []);
 
     const [rowModesModel, setRowModesModel] = useState<GridRowModesModel>({});
     const [open, setOpen] = useState(false);
     const [modalTitle, setModalTitle] = useState<string | undefined>(undefined);
     const [selectedRow, setSelectedRow] = useState<any>(null);
-    const {data: organizations, loading} = useSelector((state: RootState) => state.organization);
+    const { data: organizations, loading } = useSelector((state: RootState) => state.organization);
     const user = useSelector((state: RootState) => state.auth.user);
 
     /**
@@ -60,10 +62,28 @@ function Organizations() {
         );
     }, [user, organizations]);
 
-    useEffect(() => {
-        organizations?.organizations?.length === undefined && dispatch(organizationActions.fetchOrganizations());
-    }, [dispatch]);
+    const fetchOrganizationsCallback = useCallback(
+        (params: Params) => {
+            dispatch(organizationActions.fetchOrganizations(params));
+        },
+        [dispatch]
+    );
 
+    const { params, setParams } = usePaginationParams(
+        {
+            page: 1,
+            limit: 10,
+            sortBy: undefined,
+            sortOrder: undefined,
+            searchTerm: undefined,
+            filters: {},
+        },
+        fetchOrganizationsCallback
+    );
+
+    const onParamasChange = (params: Params) => {
+        setParams(params);
+    };
     /**
      * Handles the add organization action.
      */
@@ -102,7 +122,7 @@ function Organizations() {
      */
     const handleSave = async (data: any) => {
         if (selectedRow) {
-            dispatch(organizationActions.updateOrganization({id: selectedRow._id, ...data}));
+            dispatch(organizationActions.updateOrganization({ id: selectedRow._id, ...data }));
         } else {
             dispatch(organizationActions.createOrganization(data));
         }
@@ -113,7 +133,7 @@ function Organizations() {
      * Handles the reload data action.
      */
     const handleReloadData = () => {
-        dispatch(organizationActions.fetchOrganizations());
+        dispatch(organizationActions.fetchOrganizations(params));
     };
 
     /**
@@ -125,8 +145,10 @@ function Organizations() {
      */
     const handleClose = () => setOpen(false);
 
+    const totalRows = organizations?.totalOrganizations || 0;
+
     return (
-        <Box sx={{width: '100%', height: '100%'}}>
+        <Box sx={{ width: '100%', height: '100%' }}>
             <ReusableDataGrid
                 columns={columns}
                 onAdd={handleAdd}
@@ -137,6 +159,12 @@ function Organizations() {
                 setRowModesModel={setRowModesModel}
                 loading={loading}
                 reloadData={handleReloadData}
+                totalRows={totalRows}
+                paginationModel={{
+                    page: params.page - 1, // if DataGrid is 0-based
+                    pageSize: params.limit,
+                }}
+                onParamsChange={(params) => onParamasChange(params)}
             />
             <GenericModal
                 open={open}

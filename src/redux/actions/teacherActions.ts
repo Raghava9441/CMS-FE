@@ -3,11 +3,14 @@ import { toast } from 'react-toastify';
 import { teacherApi } from '@api/api';
 import { Teacher } from '@models/teacher.modals';
 import { createTeacherStart, createTeacherSuccess, deleteTeacherStart, deleteTeacherSuccess, fetchTeacherByIdStart, fetchTeacherByIdSuccess, fetchTeachersFailure, fetchTeachersStart, fetchTeachersSuccess, updateTeacherStart, updateTeacherSuccess } from '@redux/slices/Teacher.slice';
+import { Params } from '@models/pagination.modals';
+import { parseQueryParams } from '@utils/parseQueryParams';
 
-const fetchTeachers = () => async (dispatch: AppDispatch) => {
+const fetchTeachers = (params:Params) => async (dispatch: AppDispatch) => {
     try {
+        const queryParams = parseQueryParams(params);
         dispatch(fetchTeachersStart());
-        const response = await teacherApi.getTeachers();
+        const response = await teacherApi.getTeachers(queryParams);
         dispatch(fetchTeachersSuccess(response.data.data));
     } catch (error) {
         dispatch(fetchTeachersFailure());

@@ -20,7 +20,7 @@ export class ApiError extends Error {
     }
 }
 export const axiosInstance = axios.create({
-    baseURL: import.meta.env.VITE_APP_API_ORIGIN_PROD as string,
+    baseURL: import.meta.env.VITE_APP_API_ORIGIN as string,
     withCredentials: true,
     headers: {
         "Content-Type": "application/json",

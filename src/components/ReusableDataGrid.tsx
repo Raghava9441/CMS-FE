@@ -22,8 +22,29 @@ import {
     GridToolbarExport,
     GridToolbarQuickFilter,
     GridToolbarFilterButton,
+    GridPaginationModel,
+    GridFilterModel,
+    GridSortModel,
 } from '@mui/x-data-grid';
-import { CircularProgress, IconButton, styled, Typography, useTheme } from '@mui/material';
+import { CircularProgress, IconButton, styled, Typography, useTheme, debounce } from '@mui/material';
+
+// Enhanced interfaces for server-side operations
+interface PaginationParams {
+    page: number;
+    limit: number;
+}
+
+interface FilterParams {
+    searchTerm?: string;
+    filters?: Record<string, any>;
+}
+
+interface SortParams {
+    sortBy?: string;
+    sortOrder?: 'asc' | 'desc';
+}
+
+interface ServerSideParams extends PaginationParams, FilterParams, SortParams {}
 
 interface ReusableDataGridProps {
     rows: GridRowsProp;
@@ -35,6 +56,27 @@ interface ReusableDataGridProps {
     setRowModesModel: React.Dispatch<React.SetStateAction<GridRowModesModel>>;
     loading: boolean;
     reloadData?: () => void;
+    
+    // Server-side pagination props
+    totalRows: number;
+    paginationModel: GridPaginationModel;
+    // onPaginationModelChange: (model: GridPaginationModel) => void;
+    
+    // Server-side filtering props
+    onFilterChange?: (params: FilterParams) => void;
+    
+    // Server-side sorting props
+    onSortChange?: (params: SortParams) => void;
+    
+    // Combined server-side operations
+    onParamsChange?: (params: ServerSideParams) => void;
+    
+    // Additional props for enhanced functionality
+    enableSearch?: boolean;
+    enableFilters?: boolean;
+    enableSorting?: boolean;
+    searchPlaceholder?: string;
+    pageSizeOptions?: number[];
 }
 
 const StyledGridOverlay = styled('div')(({ theme }) => ({
@@ -54,8 +96,39 @@ function CustomLoadingOverlay() {
     );
 }
 
-function EditToolbar({ onAdd, reloadData }: { onAdd: () => void; reloadData?: () => void }) {
+interface EditToolbarProps {
+    onAdd: () => void;
+    reloadData?: () => void;
+    onFilterChange?: (params: FilterParams) => void;
+    enableSearch?: boolean;
+    enableFilters?: boolean;
+    searchPlaceholder?: string;
+}
+
+function EditToolbar({ 
+    onAdd, 
+    reloadData, 
+    onFilterChange, 
+    enableSearch = true, 
+    enableFilters = true,
+    searchPlaceholder = "Search..."
+}: EditToolbarProps) {
     const [isRotating, setIsRotating] = React.useState(false);
+    const [searchTerm, setSearchTerm] = React.useState('');
+
+    // Debounced search function
+    const debouncedSearch = React.useMemo(
+        () => debounce((term: string) => {
+            onFilterChange?.({ searchTerm: term });
+        }, 500),
+        [onFilterChange]
+    );
+
+    const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const value = event.target.value;
+        setSearchTerm(value);
+        debouncedSearch(value);
+    };
 
     const handleIconClick = () => {
         setIsRotating(true);
@@ -63,31 +136,59 @@ function EditToolbar({ onAdd, reloadData }: { onAdd: () => void; reloadData?: ()
         setTimeout(() => setIsRotating(false), 1000);
     };
 
+    // Cleanup debounced function on unmount
+    React.useEffect(() => {
+        return () => {
+            debouncedSearch;
+        };
+    }, [debouncedSearch]);
+
     return (
-        <GridToolbarContainer sx={{ display: 'flex', justifyContent: 'right', alignItems: 'center', padding: 1 }}>
-            <GridToolbarQuickFilter />
-            <GridToolbarFilterButton />
-            <IconButton onClick={handleIconClick}>
-                <CachedIcon
-                    color='primary'
-                    sx={{
-                        transition: 'transform 1s linear',
-                        transform: isRotating ? 'rotate(360deg)' : 'rotate(0deg)',
+        <GridToolbarContainer sx={{ 
+            display: 'flex', 
+            justifyContent: 'space-between', 
+            alignItems: 'center', 
+            padding: 1,
+            gap: 1 
+        }}>
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                {enableSearch && (
+                    <GridToolbarQuickFilter 
+                        placeholder={searchPlaceholder}
+                        value={searchTerm}
+                        onChange={handleSearchChange}
+                    />
+                )}
+                {enableFilters && <GridToolbarFilterButton />}
+            </Box>
+            
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                <IconButton onClick={handleIconClick} title="Refresh Data">
+                    <CachedIcon
+                        color='primary'
+                        sx={{
+                            transition: 'transform 1s linear',
+                            transform: isRotating ? 'rotate(360deg)' : 'rotate(0deg)',
+                        }}
+                    />
+                </IconButton>
+                
+                <GridToolbarExport
+                    slotProps={{
+                        tooltip: { title: 'Export data' },
+                        button: { variant: 'outlined' },
                     }}
                 />
-            </IconButton>
-            <GridToolbarExport
-                slotProps={{
-                    tooltip: { title: 'Export data' },
-                    button: { variant: 'outlined' },
-                    toolbar: {
-                        showQuickFilter: true,
-                    },
-                }}
-            />
-            <Button color="primary" startIcon={<AddIcon />} onClick={onAdd} variant='outlined'>
-                Add record
-            </Button>
+                
+                <Button 
+                    color="primary" 
+                    startIcon={<AddIcon />} 
+                    onClick={onAdd} 
+                    variant='outlined'
+                >
+                    Add record
+                </Button>
+            </Box>
         </GridToolbarContainer>
     );
 }
@@ -102,9 +203,26 @@ export const ReusableDataGrid: React.FC<ReusableDataGridProps> = ({
     setRowModesModel,
     loading,
     reloadData,
+    totalRows,
+    paginationModel,
+    // onPaginationModelChange,
+    onFilterChange,
+    onSortChange,
+    onParamsChange,
+    enableSearch = true,
+    enableFilters = true,
+    enableSorting = true,
+    searchPlaceholder = "Search...",
+    pageSizeOptions = [10, 25, 50, 100],
 }) => {
-
     const theme = useTheme();
+    
+    // State for tracking current server-side parameters
+    const [currentParams, setCurrentParams] = React.useState<ServerSideParams>({
+        page: paginationModel.page + 1, // Convert to 1-based indexing
+        limit: paginationModel.pageSize,
+    });
+
     const handleRowEditStop: GridEventListener<'rowEditStop'> = (params, event) => {
         if (params.reason === GridRowEditStopReasons.rowFocusOut) {
             event.defaultMuiPrevented = true;
@@ -112,17 +230,14 @@ export const ReusableDataGrid: React.FC<ReusableDataGridProps> = ({
     };
 
     const handleEditClick = (id: string) => () => {
-        // console.log(id)
         onEdit(id);
-        // setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.Edit } });
     };
 
     const handleSaveClick = (id: GridRowId) => async () => {
-        // setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.View } });
         const updatedRow = rows.find((row) => row._id === id);
         if (updatedRow) {
             const processedRow = processRowUpdate(updatedRow, rows.find(row => row._id === id) || updatedRow);
-            console.log(processedRow)
+            console.log(processedRow);
         }
     };
 
@@ -131,20 +246,91 @@ export const ReusableDataGrid: React.FC<ReusableDataGridProps> = ({
     };
 
     const handleCancelClick = (id: GridRowId) => () => {
-        // setRowModesModel({
-        //     ...rowModesModel,
-        //     [id]: { mode: GridRowModes.View, ignoreModifications: true },
-        // });
+        // Handle cancel logic here
     };
 
     const processRowUpdate = (newRow: GridRowModel, oldRow: GridRowModel) => {
         const updatedRow = { ...oldRow, ...newRow };
-        console.log(updatedRow)
+        console.log(updatedRow);
         return updatedRow;
     };
 
     const handleRowModesModelChange = (newRowModesModel: GridRowModesModel) => {
-        // setRowModesModel(newRowModesModel);
+        setRowModesModel(newRowModesModel);
+    };
+
+    // Handle pagination changes
+    const handlePaginationModelChange = (model: GridPaginationModel) => {
+        const newParams = {
+            ...currentParams,
+            page: model.page + 1, // Convert to 1-based indexing
+            limit: model.pageSize,
+        };
+        
+        setCurrentParams(newParams);
+        // onPaginationModelChange(model);
+        
+        // Call the unified server-side params change handler
+        onParamsChange?.(newParams);
+    };
+
+    // Handle filter changes
+    const handleFilterChange = (filterParams: FilterParams) => {
+        const newParams = {
+            ...currentParams,
+            ...filterParams,
+            page: 1, // Reset to first page when filtering
+        };
+        
+        setCurrentParams(newParams);
+        onFilterChange?.(filterParams);
+        
+        // Reset pagination to first page
+        // onPaginationModelChange({ page: 0, pageSize: currentParams.limit });
+        
+        // Call the unified server-side params change handler
+        onParamsChange?.(newParams);
+    };
+
+    // Handle sort changes
+    const handleSortModelChange = (sortModel: GridSortModel) => {
+        const sortParams: SortParams = {};
+        
+        if (sortModel.length > 0) {
+            sortParams.sortBy = sortModel[0].field;
+            sortParams.sortOrder = sortModel[0].sort || 'asc';
+        }
+        
+        const newParams = {
+            ...currentParams,
+            ...sortParams,
+        };
+        
+        setCurrentParams(newParams);
+        onSortChange?.(sortParams);
+        
+        // Call the unified server-side params change handler
+        onParamsChange?.(newParams);
+    };
+
+    // Handle filter model changes (for advanced filtering)
+    const handleFilterModelChange = (filterModel: GridFilterModel) => {
+        const filters: Record<string, any> = {};
+        
+        filterModel.items.forEach((item) => {
+            if (item.value !== undefined && item.value !== null && item.value !== '') {
+                filters[item.field] = {
+                    operator: item.operator,
+                    value: item.value,
+                };
+            }
+        });
+        
+        const filterParams: FilterParams = {
+            filters: Object.keys(filters).length > 0 ? filters : undefined,
+        };
+        
+        handleFilterChange(filterParams);
     };
 
     return (
@@ -174,6 +360,7 @@ export const ReusableDataGrid: React.FC<ReusableDataGridProps> = ({
                         headerName: 'Actions',
                         headerClassName: 'theme--header',
                         cellClassName: 'actions',
+                        width: 100,
                         getActions: ({ id }) => {
                             const isInEditMode = rowModesModel[id]?.mode === GridRowModes.Edit;
                             if (isInEditMode) {
@@ -218,8 +405,33 @@ export const ReusableDataGrid: React.FC<ReusableDataGridProps> = ({
                 onRowModesModelChange={handleRowModesModelChange}
                 onRowEditStop={handleRowEditStop}
                 processRowUpdate={processRowUpdate}
+                
+                // Server-side pagination
+                paginationMode="server"
+                paginationModel={paginationModel}
+                onPaginationModelChange={handlePaginationModelChange}
+                pageSizeOptions={pageSizeOptions}
+                rowCount={totalRows}
+                
+                // Server-side sorting
+                sortingMode={enableSorting ? "server" : "client"}
+                onSortModelChange={handleSortModelChange}
+                
+                // Server-side filtering
+                filterMode={enableFilters ? "server" : "client"}
+                onFilterModelChange={handleFilterModelChange}
+                
                 slots={{
-                    toolbar: () => <EditToolbar onAdd={onAdd} reloadData={reloadData} />,
+                    toolbar: () => (
+                        <EditToolbar 
+                            onAdd={onAdd} 
+                            reloadData={reloadData}
+                            onFilterChange={handleFilterChange}
+                            enableSearch={enableSearch}
+                            enableFilters={enableFilters}
+                            searchPlaceholder={searchPlaceholder}
+                        />
+                    ),
                     loadingOverlay: CustomLoadingOverlay
                 }}
                 loading={loading}

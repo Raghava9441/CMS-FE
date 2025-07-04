@@ -5,8 +5,9 @@ import { PaperPlaneTilt } from "phosphor-react";
 import data from "@emoji-mart/data";
 import Picker from "@emoji-mart/react";
 import ChatInput from "./ChatInput";
-import { socket } from "@utils/socket";
+// import { socket } from "@utils/socket";
 import { SendMessage } from "@redux/actions/chat.actions";
+import { socket } from "@utils/socket";
 
 
 function ConversationFooter({
@@ -83,15 +84,19 @@ function ConversationFooter({
                         },
                     };
                 }
-                console.log(messageData)
+                // console.log(messageData)
 
                 // Optimistic Message Update
+                // socketMessage.sendMessage(messageData);
                 socket.emit("send_message", messageData);
+
             }
             // ------------------------------------------
             else {
                 // send message
                 dispatch(SendMessage({ message: value, convo_id: convo_id }));
+                socket.emit("send_message", messageData);
+
             }
 
             // Clear the input field

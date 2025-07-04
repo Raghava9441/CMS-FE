@@ -30,6 +30,7 @@ import { setIsOptimistic, updateMsgConvo, updateTypingConvo } from '@redux/slice
 import { ShowSnackbar, updateOnlineUsers } from '@redux/slices/authSlice';
 import { GetConversations, GetMessages } from '@redux/actions/chat.actions';
 import { GetOnlineFriends } from '@redux/actions/userActions';
+import { useSocketManager } from '@hooks/useSocket';
 
 const drawerWidth = 240;
 
@@ -51,95 +52,153 @@ export default function MainLayout() {
         activeConversation,
 
     } = useSelector((state: RootState) => state.chat);
+    useSocketManager();
 
     useEffect(() => {
-        // start server
-        // dispatch(StartServer());
-
-        // toggle approach between Optimistic & Pessimistic (true means use optimistic)
+        // Set optimistic approach
         dispatch(setIsOptimistic({ isOptimistic: true }));
+        // // Initialize socket connection
+        // if (!socket || !socket.connected) {
+        //     console.log("Initializing socket connection...");
+        //     connectSocket(accessToken);
+        // }
 
-        // socket connection
-        if ((!socket || !socket.connected)) {
-            connectSocket(accessToken);
-        }
+        // // Socket event listeners
+        // if (socket) {
+        //     // Connection established
+        //     socket.on("connect", () => {
+        //         console.log("Socket connected successfully");
 
-        // socket listeners
-        if (socket) {
+        //         // Emit user online status
+        //         socket.emit("user_online", { user_id: user?._id });
 
-            socket.on("connect", () => {
-                // console.log("Socket connected, syncing messages...");
-                // console.log(activeConversation)
-                if (activeConversation) {
-                    // after reconnect, fetch missed messages
-                    dispatch(GetMessages(activeConversation?._id));
-                }
+        //         // Sync messages for active conversation after reconnect
+        //         if (activeConversation) {
+        //             console.log("Syncing messages for active conversation:", activeConversation._id);
+        //             dispatch(GetMessages(activeConversation._id));
+        //         }
+        //     });
 
-            });
+        //     // Test server communication
+        //     socket.on("connection_established", (data) => {
+        //         console.log("Received response from server:", data);
+        //         dispatch(
+        //             ShowSnackbar({
+        //                 severity:  "success",
+        //                 message: `connection_established`,
+        //             })
+        //         );
+        //     });
 
+        //     // Handle connection errors
+        //     socket.on("connect_error", (error) => {
+        //         console.error("Socket connection error:", error);
+        //         dispatch(
+        //             ShowSnackbar({
+        //                 severity: "error",
+        //                 message: `Connection failed: ${error.message}`,
+        //             })
+        //         );
+        //     });
 
+        //     // Handle general socket errors
+        //     socket.on("error", (error) => {
+        //         console.error("Socket error:", error);
+        //         dispatch(
+        //             ShowSnackbar({
+        //                 severity: error.status || "error",
+        //                 message: `Socket error: ${error.message}`,
+        //             })
+        //         );
+        //     });
 
-            socket.emit("message_from_client", { hey: "server" });
+        //     // CRITICAL: Handle incoming messages
+        //     socket.on("message_received", (message) => {
+        //         console.log("📨 New message received:", message);
 
-            socket.emit("user_online", { userId: user?._id })
+        //         // Update the conversation with the new message
+        //         dispatch(updateMsgConvo(message));
 
-            socket.on("message_sync", (message) => {
-                //handle the redux to update all the unread messages
-                // console.log(message)
-                // dispatch(updateMsgConvo(message));
-            });
+        //         // Optional: Show notification for new messages
+        //         if (message.sender._id !== user?._id) {
+        //             // This is a message from someone else
+        //             dispatch(
+        //                 ShowSnackbar({
+        //                     severity: "info",
+        //                     message: `New message from ${message.sender.firstName}`,
+        //                 })
+        //             );
+        //         }
+        //     });
 
-            // socket server error handling
-            socket.on("connect_error", (error) => {
-                dispatch(
-                    ShowSnackbar({
-                        severity: "error",
-                        message: `Socket: ${error.message}`,
-                    })
-                );
-            });
+            
 
-            // socket other error handling
-            socket.on("error", (error) => {
-                dispatch(
-                    ShowSnackbar({
-                        severity: error.status,
-                        message: `Socket: ${error.message}`,
-                    })
-                );
-            });
+        //     // Handle message errors
+        //     socket.on("message_error", (error) => {
+        //         console.error("❌ Message error:", error);
+        //         dispatch(
+        //             ShowSnackbar({
+        //                 severity: "error",
+        //                 message: `Failed to send message: ${error.error}`,
+        //             })
+        //         );
+        //         // You can update UI to show message as failed
+        //         // dispatch(updateMessageStatus({ tempId: error.tempId, status: 'failed' }));
+        //     });
 
-            socket.on("message_received", (message) => {
-                // console.log(message)
-                dispatch(updateMsgConvo(message));
-            });
+        //     // Handle online friends updates
+        //     socket.on("online_friends", (friend) => {
+        //         console.log("👥 Online friends update:", friend);
+        //         dispatch(updateOnlineUsers(friend));
+        //     });
 
-            socket.on("online_friends", (friend) => {
-                console.log("online_friends", friend)
-                dispatch(updateOnlineUsers(friend));
-            });
+        //     // Handle typing indicators
+        //     socket.on("start_typing", (typingData) => {
+        //         console.log("✏️ User started typing:", typingData);
+        //         dispatch(updateTypingConvo({
+        //             ...typingData,
+        //             isTyping: true
+        //         }));
+        //     });
 
-            socket.on("start_typing", (typingData) => {
-                console.log("start_typing", typingData)
-                dispatch(updateTypingConvo(typingData));
-            });
+        //     socket.on("stop_typing", (typingData) => {
+        //         console.log("✏️ User stopped typing:", typingData);
+        //         dispatch(updateTypingConvo({
+        //             ...typingData,
+        //             isTyping: false
+        //         }));
+        //     });
 
-            socket.on("stop_typing", (typingData) => {
-                dispatch(updateTypingConvo(typingData));
-            });
+        //     // Handle message synchronization (for offline messages)
+        //     socket.on("message_sync", (messages) => {
+        //         console.log("🔄 Syncing messages:", messages);
+        //         if (Array.isArray(messages)) {
+        //             messages.forEach(message => {
+        //                 dispatch(updateMsgConvo(message));
+        //             });
+        //         } else {
+        //             dispatch(updateMsgConvo(messages));
+        //         }
+        //     });
 
-            return () => {
-                if (socket) {
-                    socket.off("connect_error");
-                    socket.off("error");
-                    socket.off("message_received");
-                    socket.off("online_friends");
-                    socket.off("start_typing");
-                    socket.off("stop_typing");
-                }
-            };
-        }
-    }, [accessToken]);
+        //     // Cleanup function
+        //     return () => {
+        //         console.log("Cleaning up socket listeners");
+        //         if (socket) {
+        //             socket.off("connect");
+        //             socket.off("connection_established");
+        //             socket.off("connect_error");
+        //             socket.off("error");
+        //             socket.off("message_received");
+        //             socket.off("message_error");
+        //             socket.off("online_friends");
+        //             socket.off("start_typing");
+        //             socket.off("stop_typing");
+        //             socket.off("message_sync");
+        //         }
+        //     };
+        // }
+    }, [accessToken, socket, user?._id, activeConversation]);
 
 
 

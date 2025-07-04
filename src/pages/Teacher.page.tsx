@@ -4,9 +4,11 @@ import { Box } from "@mui/material"
 import { GridColDef, GridRowModesModel } from "@mui/x-data-grid"
 import { useDispatch, useSelector } from "react-redux"
 import { AppDispatch, RootState } from "@redux/store"
-import { useEffect, useMemo, useState } from "react"
+import { useCallback, useEffect, useMemo, useState } from "react"
 import { TeacherActions } from "@redux/actions/teacherActions"
 import TeacherForm from "@components/Forms/Teacher.Form"
+import { usePaginationParams } from "@hooks/usePaginationParams"
+import { Params } from "@models/pagination.modals"
 
 
 
@@ -53,12 +55,28 @@ function TeacherPage() {
 
     const { loading } = useSelector((state: RootState) => state.teacher);
 
+    const fetchTeachersCallback = useCallback(
+        (params: any) => {
+            dispatch(TeacherActions.fetchTeachers(params));
+        },
+        [dispatch]
+    );
 
-    useEffect(() => {
-        // if (teachers?.teachers.length === 0) {
-        dispatch(TeacherActions.fetchTeachers());
-        // }
-    }, [dispatch]);
+    const { params, setParams } = usePaginationParams(
+        {
+            page: 1,
+            limit: 10,
+            sortBy: undefined,
+            sortOrder: undefined,
+            searchTerm: undefined,
+            filters: {},
+        },
+        fetchTeachersCallback
+    );
+
+    const onParamasChange = (params: Params) => {
+        setParams(params);
+    };
 
     const handleAdd = () => {
         setSelectedRow(null);
@@ -87,13 +105,13 @@ function TeacherPage() {
     };
 
     const handleReloadData = () => {
-        dispatch(TeacherActions.fetchTeachers());
+        dispatch(TeacherActions.fetchTeachers(params));
     };
 
     const handleOpen = () => setOpen(true);
 
     const handleClose = () => setOpen(false);
-
+    const totalRows = teachers?.totalTeachers || 0;
     return (
         <Box sx={{ width: '100%', height: '100%' }}>
             <ReusableDataGrid
@@ -106,6 +124,12 @@ function TeacherPage() {
                 setRowModesModel={setRowModesModel}
                 loading={loading}
                 reloadData={handleReloadData}
+                totalRows={totalRows}
+                paginationModel={{
+                    page: params.page - 1, // if DataGrid is 0-based
+                    pageSize: params.limit,
+                }}
+                onParamsChange={(params) => onParamasChange(params)}
             />
             <GenericModal
                 open={open}

@@ -3,11 +3,14 @@ import { toast } from 'react-toastify';
 import { studentApi } from '@api/api';
 import { Student } from '@models/student.models';
 import { createStudentStart, createStudentSuccess, deleteStudentStart, deleteStudentSuccess, fetchStudentByIdStart, fetchStudentByIdSuccess, fetchStudentsStart, fetchStudentsSuccess, updateStudentStart, updateStudentSuccess } from '@redux/slices/student.slice';
+import { Params } from '@models/pagination.modals';
+import { parseQueryParams } from '@utils/parseQueryParams';
 
-const fetchStudents = () => async (dispatch: AppDispatch) => {
+const fetchStudents = (params:Params) => async (dispatch: AppDispatch) => {
     try {
+        const queryParams = parseQueryParams(params);
         dispatch(fetchStudentsStart());
-        const response = await studentApi.getStudents();
+        const response = await studentApi.getStudents(queryParams);
         dispatch(fetchStudentsSuccess(response.data.data));
     } catch (error) {
         toast.error(error.response?.data?.data || 'Failed to fetch students', {

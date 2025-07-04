@@ -5,14 +5,19 @@ import { toast } from 'react-toastify';
 import { FriendRequest, userApi } from '../../api/api';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { ShowSnackbar } from '@redux/slices/authSlice';
+import { parseQueryParams } from '@utils/parseQueryParams';
+import { Params } from '@models/pagination.modals';
 
-export const fetchUsers = () => async (dispatch: AppDispatch) => {
+export const fetchUsers = (params: Params) => async (dispatch: AppDispatch) => {
     try {
         dispatch(fetchUsersStart()); // Set loading state to true
         // const response = await authservice.getallUsers();
-        const response = await userApi.getusers();
+
+        const queryParams = parseQueryParams(params);
+        
+        const response = await userApi.getusers(queryParams);
         // console.log(response.data.data)
-        dispatch(fetchUsersSuccess(response.data.data)); // Pass data to success action
+        dispatch(fetchUsersSuccess(response.data.data));
     } catch (error) {
         toast.error((error as Error)?.message || 'Failed to fetch users', {
             autoClose: 3000, // Auto close after 3 seconds
@@ -125,10 +130,10 @@ export const SearchFriends = createAsyncThunk(
             return data;
         } catch (error) {
             dispatch(
-              ShowSnackbar({
-                severity: error.error.status,
-                message: error.error.message,
-              })
+                ShowSnackbar({
+                    severity: error.error.status,
+                    message: error.error.message,
+                })
             );
             return rejectWithValue(error.error);
         }

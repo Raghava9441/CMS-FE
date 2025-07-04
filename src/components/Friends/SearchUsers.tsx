@@ -21,7 +21,11 @@ function SearchUsers({ }: Props) {
     }, [])
 
     return (
-        <Box height={"100%"} width={"100%"} p={2}>
+        <Box height={"100%"} width={"100%"} p={2} sx={{
+            height: "500px", // Try a fixed value to test
+            overflowY: "auto",
+            // ...other styles
+        }}>
             <Stack spacing={1} alignItems={"center"} justifyContent={"center"}>
                 <Grid container spacing={3} gap={1}>
                     {

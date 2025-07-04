@@ -81,6 +81,7 @@ const ChatInput = ({
     // from redux
     const dispatch = useDispatch();
 
+
     // -------------- Inner Functions --------------
     const handlePopoverOpen = (event) => {
         setPopoverAnchor(event.currentTarget);
@@ -97,14 +98,30 @@ const ChatInput = ({
         }
     };
 
-    // --------- typing handlers ---------
     const startTyping = () => {
+        if (!convo_id) {
+            console.warn("Cannot start typing: Missing conversation ID");
+            return;
+        }
+
+
+        // socketMessage.sendTypingStatus(convo_id, true);
         socket.emit("start_typing", convo_id);
+
         setIsTyping(true);
     };
 
     const stopTyping = () => {
+        if (!convo_id) {
+            console.warn("Cannot stop typing: Missing conversation ID");
+            return;
+        }
+
+        // socketMessage.sendTypingStatus(convo_id, false);
+
         socket.emit("stop_typing", convo_id);
+
+
         setIsTyping(false);
     };
 

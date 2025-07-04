@@ -7,7 +7,7 @@ import { Parent, ParentApiResponse } from "../types/parent.models";
 import { Course, CourseApiResponse } from "@models/course.modals";
 
 export const AsyncorganizationApi = {
-    getOrganizations: () => axiosInstance.get<ApiResponse<Organization[]>>('/organizations'),
+    getOrganizations: (params: any) => axiosInstance.get<ApiResponse<Organization[]>>(`/organizations?${params}`),
     getOrganizationById: (id: string) => axiosInstance.get<ApiResponse<Organization>>(`/organizations/${id}`),
     createOrganization: (organization: Omit<Organization, 'createdAt' | 'updatedAt'>) => axiosInstance.post<ApiResponse<Organization>>(`/organizations`, organization),
     updateOrganization: (organization: Omit<Organization, 'createdAt' | 'updatedAt'>, _id: string) => axiosInstance.put<ApiResponse<Organization>>(`/organizations/${_id}`, organization),
@@ -15,7 +15,7 @@ export const AsyncorganizationApi = {
 }
 
 export const userApi = {
-    getusers: () => axiosInstance.get<ApiResponse<User[]>>('/user'),
+    getusers: (params: any) => axiosInstance.get<ApiResponse<User[]>>(`/user?${params}`),
     getUserById: (id: string) => axiosInstance.get<ApiResponse<User>>(`/user/${id}`),
     createUser: (user: Omit<User, 'password' | 'accessToken' | 'refreshToken'>) => axiosInstance.post<ApiResponse<User>>('/user', user),
     updateUser: (user: Omit<User, 'password' | 'accessToken' | 'refreshToken'>) => axiosInstance.put<ApiResponse<User>>(`/user/${user._id}`, user),
@@ -27,7 +27,7 @@ export const userApi = {
 }
 
 export const teacherApi = {
-    getTeachers: () => axiosInstance.get<TeacherApiResponse<Teacher[]>>('/teachers'),
+    getTeachers: (params: string) => axiosInstance.get<TeacherApiResponse<Teacher[]>>(`/teachers?${params}`),
     getTeacherById: (id: string) => axiosInstance.get<TeacherApiResponse<Teacher>>(`/teachers/${id}`),
     createTeacher: (teacher: Teacher) => axiosInstance.post<TeacherApiResponse<Teacher>>('/teachers', teacher),
     updateTeacher: (teacher: Omit<Teacher, 'createdAt' | 'updatedAt'>, _id: string) => axiosInstance.put<TeacherApiResponse<Teacher>>(`/teachers/${_id}`, teacher),
@@ -35,7 +35,7 @@ export const teacherApi = {
 }
 
 export const studentApi = {
-    getStudents: () => axiosInstance.get<StudentApiResponse<Student[]>>('/students'),
+    getStudents: (queryParams: string) => axiosInstance.get<StudentApiResponse<Student[]>>(`/students?${queryParams}`),
     getStudentById: (id: string) => axiosInstance.get<StudentApiResponse<Student>>(`/students/${id}`),
     createStudent: (student: Student) => axiosInstance.post<StudentApiResponse<Student>>('/students', student),
     updateStudent: (student: Student) => axiosInstance.put<StudentApiResponse<Student>>('/students', student),
@@ -43,7 +43,7 @@ export const studentApi = {
 }
 
 export const parentApi = {
-    getParents: () => axiosInstance.get<ParentApiResponse<Parent[]>>('/parents'),
+    getParents: (queryParams: string) => axiosInstance.get<ParentApiResponse<Parent[]>>(`/parents?${queryParams}`),
     getParentById: (id: string) => axiosInstance.get<ParentApiResponse<Parent>>(`/parents/${id}`),
     createParent: (parent: Parent) => axiosInstance.post<ParentApiResponse<Parent>>('/parents', parent),
     updateParent: (parent: Parent) => axiosInstance.put<ParentApiResponse<Parent>>('/parents', parent),
@@ -150,3 +150,5 @@ export const DashboardApi = {
 //     updateCourseScheduleAttendance: (courseScheduleAttendance: CourseScheduleAttendance) => axiosInstance.put<CourseScheduleAttendanceApiResponse<CourseScheduleAttendance>>('/course-schedule-attendance', courseScheduleAttendance),
 //     deleteCourseScheduleAttendance: (id: string) => axiosInstance.delete<CourseScheduleAttendanceApiResponse<CourseScheduleAttendance>>(`/course-schedule-attendance/${id}`),
 // }
+
+//i want to impliment video chat implementation

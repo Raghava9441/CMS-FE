@@ -88,8 +88,8 @@ function ConversationMain({ }: Props) {
                             isStartOfSequence={isStartOfSequence}
                             isEndOfSequence={isEndOfSequence}
                             msgType={getMessageType(e.message)}
-                            isLastMessage={isLastMessage}
-
+                            isLastMessage={isLastMessage} 
+                            isTyping={isTyping}
                         />
                     );
                 })}

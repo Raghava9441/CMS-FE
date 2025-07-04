@@ -5,11 +5,15 @@ import { AppDispatch } from '../store';
 import { createOrganizationStart, createOrganizationSuccess, deleteOrganizationStart, deleteOrganizationSuccess, fetchOrganizationByIdStart, fetchOrganizationByIdSuccess, fetchOrganizationsStart, fetchOrganizationsSuccess, updateOrganizationStart, updateOrganizationSuccess } from '../slices/organization.slice';
 import { toast } from 'react-toastify';
 import { AsyncorganizationApi } from '@api/api';
+import { Params } from '@models/pagination.modals';
+import { parseQueryParams } from '@utils/parseQueryParams';
 
-const fetchOrganizations = () => async (dispatch: AppDispatch) => {
+const fetchOrganizations = (params: Params) => async (dispatch: AppDispatch) => {
     try {
+        const queryParams = parseQueryParams(params);
+
         dispatch(fetchOrganizationsStart());
-        const response = await AsyncorganizationApi.getOrganizations();
+        const response = await AsyncorganizationApi.getOrganizations(queryParams);
         console.log(response)
         dispatch(fetchOrganizationsSuccess(response.data.data));
     } catch (error) {
