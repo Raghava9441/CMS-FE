@@ -1,0 +1,1 @@
+{"version":3,"file":"Exam.page-DyGGGuCP.js","sources":["../../src/pages/Exam.page.tsx"],"sourcesContent":["\n\nfunction ExamPage() {\n    return (\n        <div>ExamPage</div>\n    )\n}\n\nexport default ExamPage"],"names":["ExamPage","jsx"],"mappings":"iXAEA,SAASA,GAAW,CAEZ,OAAAC,EAAA,IAAC,OAAI,SAAQ,UAAA,CAAA,CAErB"}

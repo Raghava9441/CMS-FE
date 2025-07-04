@@ -1,2 +1,0 @@
-import{j as n}from"./index-Wd-8jL93.js";try{let e=typeof window<"u"?window:typeof global<"u"?global:typeof globalThis<"u"?globalThis:typeof self<"u"?self:{},s=new e.Error().stack;s&&(e._sentryDebugIds=e._sentryDebugIds||{},e._sentryDebugIds[s]="54842912-ca92-4b40-8861-a373706b32ae",e._sentryDebugIdIdentifier="sentry-dbid-54842912-ca92-4b40-8861-a373706b32ae")}catch{}function d(){return n.jsx("div",{children:"ClassesPage"})}export{d as default};
-//# sourceMappingURL=Classes.page-CraDibW3.js.map

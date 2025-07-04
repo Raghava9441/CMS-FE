@@ -1,2 +1,0 @@
-import{j as n}from"./index-Wd-8jL93.js";try{let e=typeof window<"u"?window:typeof global<"u"?global:typeof globalThis<"u"?globalThis:typeof self<"u"?self:{},d=new e.Error().stack;d&&(e._sentryDebugIds=e._sentryDebugIds||{},e._sentryDebugIds[d]="ce854dcf-3bbb-455d-871e-d2a854d2f3da",e._sentryDebugIdIdentifier="sentry-dbid-ce854dcf-3bbb-455d-871e-d2a854d2f3da")}catch{}function f(){return n.jsx("div",{children:"AttendancePage"})}export{f as default};
-//# sourceMappingURL=Attendance.page-D38luHOm.js.map
