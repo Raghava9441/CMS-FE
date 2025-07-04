@@ -25,7 +25,6 @@ import appRoutes from '../routes/routePaths';
 import { authActions } from '../redux/actions/auth.actions';
 import SchoolIcon from '@mui/icons-material/School';
 import NotificationsIcon from '@mui/icons-material/Notifications';
-import { connectSocket, socket } from '@utils/socket';
 import { setIsOptimistic, updateMsgConvo, updateTypingConvo } from '@redux/slices/chat.slice';
 import { ShowSnackbar, updateOnlineUsers } from '@redux/slices/authSlice';
 import { GetConversations, GetMessages } from '@redux/actions/chat.actions';
@@ -198,7 +197,7 @@ export default function MainLayout() {
         //         }
         //     };
         // }
-    }, [accessToken, socket, user?._id, activeConversation]);
+    }, [accessToken, user?._id, activeConversation]);
 
 
 
