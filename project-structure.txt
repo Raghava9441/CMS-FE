@@ -1,0 +1,204 @@
+CMS-FE
+├── CONTRIBUTING.md
+├── README.md
+├── index.html
+├── package-lock.json
+├── package.json
+├── project-structure.txt
+├── public
+│   └── vite.svg
+├── src
+│   ├── App.css
+│   ├── App.tsx
+│   ├── AppContainer.tsx
+│   ├── __mocks__
+│   │   ├── redux
+│   │   └── utils
+│   ├── api
+│   │   └── api.ts
+│   ├── assects
+│   │   └── contries.json
+│   ├── assets
+│   │   ├── animations
+│   │   │   ├── Cat404.json
+│   │   │   ├── CatAnimation1.json
+│   │   │   ├── CatAnimation2.json
+│   │   │   ├── CatAnimation3.json
+│   │   │   ├── CatAnimation4.json
+│   │   │   ├── CatAnimation5.json
+│   │   │   ├── ChillingVibes.json
+│   │   │   ├── HangingBuddy.json
+│   │   │   ├── NoChat.tsx
+│   │   │   ├── NoResultsFound.json
+│   │   │   └── SearchNotFound.json
+│   │   ├── backgrounds
+│   │   │   ├── catDoodle.png
+│   │   │   ├── catDoodle2.png
+│   │   │   └── catDoodle3.png
+│   │   ├── forgot_password.svg
+│   │   ├── icons.tsx
+│   │   ├── loginScreen.svg
+│   │   ├── login_left.svg
+│   │   └── react.svg
+│   ├── components
+│   │   ├── Forms
+│   │   │   ├── OrganizationForm.tsx
+│   │   │   ├── Parent.Form.tsx
+│   │   │   ├── Student.Form.tsx
+│   │   │   ├── Teacher.Form.tsx
+│   │   │   └── UsersForm.tsx
+│   │   ├── Friends
+│   │   │   ├── FriendList.tsx
+│   │   │   ├── FriendProfileDrawer
+│   │   │   │   ├── UserDrawerHeader.tsx
+│   │   │   │   └── UserProfileDrawer.tsx
+│   │   │   ├── FriendRequests.tsx
+│   │   │   ├── FriendSubComponents
+│   │   │   │   └── UserCard.tsx
+│   │   │   ├── FriendsMenu.tsx
+│   │   │   ├── SearchUsers.tsx
+│   │   │   └── SentRequests.tsx
+│   │   ├── GenericModal.tsx
+│   │   ├── LoadingScreen.tsx
+│   │   ├── LottieAnimation.tsx
+│   │   ├── MainLayout.tsx
+│   │   ├── ReusableDataGrid.tsx
+│   │   ├── SettingsButton.tsx
+│   │   ├── SettingsPanel.css
+│   │   ├── SettingsPanel.tsx
+│   │   ├── StyledBadge.tsx
+│   │   ├── ThemeContextProvider.tsx
+│   │   ├── ThemeControlPanel.tsx
+│   │   ├── ThemeLocalization.tsx
+│   │   ├── chatMediaActions
+│   │   │   └── actionhandler.ts
+│   │   ├── conversation
+│   │   │   ├── ChatList.tsx
+│   │   │   ├── Conversation.tsx
+│   │   │   ├── chat elements
+│   │   │   │   └── AllChatElements.tsx
+│   │   │   └── conversationSubElements
+│   │   │       ├── ChatInput.tsx
+│   │   │       ├── ConversationFooter.tsx
+│   │   │       ├── ConversationHeader.tsx
+│   │   │       ├── ConversationMain.tsx
+│   │   │       └── MessageContainer.tsx
+│   │   └── palyground
+│   │       └── Child.tsx
+│   ├── contexts
+│   │   ├── AuthContext.tsx
+│   │   ├── SettingsContext.tsx
+│   │   └── UserContext.tsx
+│   ├── data
+│   │   └── index.ts
+│   ├── hooks
+│   │   ├── useLocalStorage.ts
+│   │   ├── useLocales.ts
+│   │   ├── useOutsideClick.ts
+│   │   ├── usePaginationParams.ts
+│   │   ├── useSettings.ts
+│   │   └── usesocket.ts
+│   ├── index.css
+│   ├── index.d.ts
+│   ├── locales
+│   │   └── i18n.ts
+│   ├── lottie files
+│   │   └── 404.json
+│   ├── main.tsx
+│   ├── pages
+│   │   ├── AddUser.page.tsx
+│   │   ├── Assignment.page.tsx
+│   │   ├── Attendance.page.tsx
+│   │   ├── Classes.page.tsx
+│   │   ├── Conversations.page.tsx
+│   │   ├── Courses.page.tsx
+│   │   ├── Dashbaord.page.tsx
+│   │   ├── Events.page.tsx
+│   │   ├── Exam.page.tsx
+│   │   ├── ForgotPassword.page.tsx
+│   │   ├── Friends.page.tsx
+│   │   ├── Login.page.tsx
+│   │   ├── Notifications.page.tsx
+│   │   ├── Organizations.tsx
+│   │   ├── Parent.page.tsx
+│   │   ├── Profile.page.tsx
+│   │   ├── Settings.page.tsx
+│   │   ├── SignUp.page.tsx
+│   │   ├── Student.page.tsx
+│   │   ├── Subject.page.tsx
+│   │   ├── Teacher.page.tsx
+│   │   ├── Users.page.tsx
+│   │   └── _404.tsx
+│   ├── redux
+│   │   ├── actions
+│   │   │   ├── Friend.actions.ts
+│   │   │   ├── auth.actions.ts
+│   │   │   ├── chat.actions.ts
+│   │   │   ├── course.actions.ts
+│   │   │   ├── organization.actions.ts
+│   │   │   ├── parent.actions.ts
+│   │   │   ├── student.actions.ts
+│   │   │   ├── teacherActions.ts
+│   │   │   └── userActions.ts
+│   │   ├── selectors
+│   │   ├── slices
+│   │   │   ├── Friends.slice.ts
+│   │   │   ├── Teacher.slice.ts
+│   │   │   ├── authSlice.ts
+│   │   │   ├── chat.slice.ts
+│   │   │   ├── course.slice.ts
+│   │   │   ├── organization.slice.ts
+│   │   │   ├── parent.slice.ts
+│   │   │   ├── student.slice.ts
+│   │   │   └── users.slice.ts
+│   │   └── store
+│   │       └── index.ts
+│   ├── routes
+│   │   ├── index.ts
+│   │   └── routePaths.ts
+│   ├── services
+│   │   ├── socketDebugger.ts
+│   │   └── socketManager.ts
+│   ├── styles
+│   │   ├── MuiUtils.ts
+│   │   ├── app.scss
+│   │   ├── base
+│   │   │   ├── _animate.scss
+│   │   │   ├── _grid.scss
+│   │   │   ├── _icon.scss
+│   │   │   └── _variables.scss
+│   │   └── components
+│   ├── theme
+│   │   ├── globalstyles.ts
+│   │   ├── index.tsx
+│   │   ├── palette.ts
+│   │   ├── shadows.ts
+│   │   ├── shape.ts
+│   │   └── typography.ts
+│   ├── types
+│   │   ├── course.modals.ts
+│   │   ├── dashboard.modals.ts
+│   │   ├── department.modals.ts
+│   │   ├── organization.modal.ts
+│   │   ├── pagination.modals.ts
+│   │   ├── parent.models.ts
+│   │   ├── student.model.ts
+│   │   ├── student.models.ts
+│   │   ├── svg.d.ts
+│   │   ├── teacher.modals.ts
+│   │   └── user.modals.ts
+│   ├── utils
+│   │   ├── auth.ts
+│   │   ├── axiosInstance.ts
+│   │   ├── createAvatar.ts
+│   │   ├── featureFlag.ts
+│   │   ├── getOtherUsers.ts
+│   │   ├── index.ts
+│   │   ├── parseQueryParams.ts
+│   │   ├── scrollToBottom.ts
+│   │   ├── socket.ts
+│   │   ├── timeFormatter.ts
+│   │   └── truncateText.ts
+│   └── vite-env.d.ts
+├── structure.md
+├── typedoc.json

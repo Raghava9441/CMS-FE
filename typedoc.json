@@ -1,6 +1,6 @@
 {
     "entryPoints": [
-        "src/main.tsx"
+        "src"
     ],
     "entryPointStrategy": "expand",
     "out": "docs",
@@ -14,8 +14,6 @@
     "excludeExternals": true,
     "includeVersion": true,
     "hideGenerator": true,
-    "plugin": [
-        // "typedoc-plugin-react-doc-constructor"
-    ],
+    "plugin": ["typedoc-plugin-react"],
     "skipErrorChecking": true
 }

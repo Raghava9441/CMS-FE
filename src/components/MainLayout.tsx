@@ -1,3 +1,11 @@
+/**
+ * MainLayout module.
+ *
+ * This file contains the MainLayout React component, which provides the main application layout for ScholarSync.
+ * It includes the AppBar, side navigation drawer, and main content area, and manages authentication, socket initialization, and user menu interactions.
+ *
+ * @module MainLayout
+ */
 import * as React from 'react';
 import { useEffect } from 'react';
 import AppBar from '@mui/material/AppBar';
@@ -32,7 +40,13 @@ import { useSocketManager } from '@hooks/usesocket';
 
 const drawerWidth = 240;
 
-
+/**
+ * MainLayout component provides the main application layout, including the AppBar, side navigation drawer, and main content area.
+ * It manages authentication checks, socket initialization, and user menu interactions.
+ *
+ * @component
+ * @returns {JSX.Element} The rendered main layout of the application.
+ */
 export default function MainLayout() {
     const theme = useTheme();
     const dispatch = useDispatch<AppDispatch>();
@@ -394,8 +408,12 @@ export default function MainLayout() {
     );
 }
 
-
-
+/**
+ * CustomDrawer component renders the side navigation drawer with application routes based on the user's role.
+ *
+ * @param {{ location: string }} props - The props object containing the current location pathname.
+ * @returns {JSX.Element} The rendered drawer with navigation links.
+ */
 const CustomDrawer = ({ location }) => {
     const theme = useTheme();
     const navigate = useNavigate();

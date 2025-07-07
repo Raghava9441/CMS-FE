@@ -1,4 +1,4 @@
-import { Card, CardContent, Grid2, Skeleton, Stack, Typography, useMediaQuery, useTheme } from "@mui/material";
+import { Avatar, Card, CardContent, Grid2, Skeleton, Stack, Typography, useMediaQuery, useTheme } from "@mui/material";
 import { AcceptRejectRequest, SendRequest, UnsendRequest } from "@redux/actions/Friend.actions";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -88,7 +88,7 @@ const UserCard = ({ thisUser, fromSection, isLoading }) => {
                                 //     theme,
                                 //     isSmallScreen ? 60 : 80
                                 // )
-                                <div>avatar</div>
+                                <Avatar />
 
                             )}
 
@@ -98,7 +98,7 @@ const UserCard = ({ thisUser, fromSection, isLoading }) => {
                                     {isLoading ? (
                                         <Skeleton animation="wave" width={100} />
                                     ) : (
-                                        `${thisUser?.name} ${thisUser?.lastName}`
+                                        `${thisUser?.fullname}`
                                     )}
                                 </Typography>
                                 <Typography

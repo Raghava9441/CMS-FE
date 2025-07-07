@@ -1,3 +1,9 @@
+/**
+ * AppContainer wraps the ScholarSync App with all necessary context providers,
+ * including theme, localization, notifications, and settings.
+ *
+ * @packageDocumentation
+ */
 import './App.css'
 import ThemeConfig from './theme'
 import { SettingsProvider } from './contexts/SettingsContext'
@@ -11,6 +17,12 @@ import 'react-toastify/dist/ReactToastify.css';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 
+/**
+ * AppContainer wraps the ScholarSync App with all necessary context providers.
+ *
+ * @component
+ * @returns {JSX.Element} The ScholarSync application wrapped with providers.
+ */
 function AppContainer() {
     return (
         <>
