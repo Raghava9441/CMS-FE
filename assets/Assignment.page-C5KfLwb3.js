@@ -1,0 +1,2 @@
+import{j as d}from"./index-CGCMCOQF.js";try{let e=typeof window<"u"?window:typeof global<"u"?global:typeof globalThis<"u"?globalThis:typeof self<"u"?self:{},n=new e.Error().stack;n&&(e._sentryDebugIds=e._sentryDebugIds||{},e._sentryDebugIds[n]="48807aea-7316-44b3-a305-fd6df6ec245d",e._sentryDebugIdIdentifier="sentry-dbid-48807aea-7316-44b3-a305-fd6df6ec245d")}catch{}function s(){return d.jsx("div",{children:"AssignmentPage"})}export{s as default};
+//# sourceMappingURL=Assignment.page-C5KfLwb3.js.map

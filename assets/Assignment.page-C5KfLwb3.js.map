@@ -1,0 +1,1 @@
+{"version":3,"file":"Assignment.page-C5KfLwb3.js","sources":["../../src/pages/Assignment.page.tsx"],"sourcesContent":["\n\nfunction AssignmentPage() {\n    return (\n        <div>AssignmentPage</div>\n    )\n}\n\nexport default AssignmentPage"],"names":["AssignmentPage","jsx"],"mappings":"iXAEA,SAASA,GAAiB,CAElB,OAAAC,EAAA,IAAC,OAAI,SAAc,gBAAA,CAAA,CAE3B"}
