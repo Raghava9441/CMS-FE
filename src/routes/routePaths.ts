@@ -1,15 +1,18 @@
 
 const appRoutes = {
+    MAIN_LAYOUT: '/CMS-FE',
     DASHBOARD: '/CMS-FE/dashboard',
     ORGANIZATIONS: '/CMS-FE/organizations',
-    TEACHERS: '/CMS-FE/teachers',
+    ORGANIZATION_PROFILE: '/CMS-FE/organizations/profile/:id',
+    TEACHERS: "/CMS-FE/teachers",
+    TEACHER_PROFILE: '/CMS-FE/teachers/profile/:id',
     STUDENTS: '/CMS-FE/students',
     PARENTS: '/CMS-FE/parents',
     PROFILE: '/CMS-FE/profile',
     TEACHER: '/CMS-FE/teacher',
     USERS: '/CMS-FE/users',
     ASSIGNMENT: '/CMS-FE/assignment',
-    ATTENDANCE: '/attendance',
+    ATTENDANCE: '/CMS-FE/attendance',
     CLASSES: '/CMS-FE/classes',
     COURSES: '/CMS-FE/courses',
     EVENTS: '/CMS-FE/events',
@@ -20,7 +23,14 @@ const appRoutes = {
     REGISTER_USER: '/CMS-FE/register-user',
     CONVERSATIONS: '/CMS-FE/conversations',
     FRIENDS: '/CMS-FE/friends',
+    DEPARTMENT: '/CMS-FE/department',
 
+
+    NOT_FOUND: "/CMS-FE/_404",
+    UNAUTHORIZED: "/CMS-FE/unauthorized",
+
+
+    AUTH_LAYOUT: '/CMS-FE/user/auth',
 
     LOGIN: '/CMS-FE/user/auth/login',
     LOGIN_SESSION: '/CMS-FE/user/auth/session',

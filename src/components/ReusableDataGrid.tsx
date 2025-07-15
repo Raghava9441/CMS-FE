@@ -44,33 +44,34 @@ interface SortParams {
     sortOrder?: 'asc' | 'desc';
 }
 
-interface ServerSideParams extends PaginationParams, FilterParams, SortParams {}
+interface ServerSideParams extends PaginationParams, FilterParams, SortParams { }
 
 interface ReusableDataGridProps {
     rows: GridRowsProp;
     columns: GridColDef[];
     onAdd: () => void;
-    onEdit: (id: string) => void;
+    onEdit?: (id: string) => void;
+    onView: (id: string) => void;
     onDelete: (id: string) => void;
     rowModesModel: GridRowModesModel;
     setRowModesModel: React.Dispatch<React.SetStateAction<GridRowModesModel>>;
     loading: boolean;
     reloadData?: () => void;
-    
+
     // Server-side pagination props
     totalRows: number;
     paginationModel: GridPaginationModel;
     // onPaginationModelChange: (model: GridPaginationModel) => void;
-    
+
     // Server-side filtering props
     onFilterChange?: (params: FilterParams) => void;
-    
+
     // Server-side sorting props
     onSortChange?: (params: SortParams) => void;
-    
+
     // Combined server-side operations
     onParamsChange?: (params: ServerSideParams) => void;
-    
+
     // Additional props for enhanced functionality
     enableSearch?: boolean;
     enableFilters?: boolean;
@@ -105,11 +106,11 @@ interface EditToolbarProps {
     searchPlaceholder?: string;
 }
 
-function EditToolbar({ 
-    onAdd, 
-    reloadData, 
-    onFilterChange, 
-    enableSearch = true, 
+function EditToolbar({
+    onAdd,
+    reloadData,
+    onFilterChange,
+    enableSearch = true,
     enableFilters = true,
     searchPlaceholder = "Search..."
 }: EditToolbarProps) {
@@ -144,16 +145,16 @@ function EditToolbar({
     }, [debouncedSearch]);
 
     return (
-        <GridToolbarContainer sx={{ 
-            display: 'flex', 
-            justifyContent: 'space-between', 
-            alignItems: 'center', 
+        <GridToolbarContainer sx={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
             padding: 1,
-            gap: 1 
+            gap: 1
         }}>
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                 {enableSearch && (
-                    <GridToolbarQuickFilter 
+                    <GridToolbarQuickFilter
                         placeholder={searchPlaceholder}
                         value={searchTerm}
                         onChange={handleSearchChange}
@@ -161,7 +162,7 @@ function EditToolbar({
                 )}
                 {enableFilters && <GridToolbarFilterButton />}
             </Box>
-            
+
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                 <IconButton onClick={handleIconClick} title="Refresh Data">
                     <CachedIcon
@@ -172,18 +173,18 @@ function EditToolbar({
                         }}
                     />
                 </IconButton>
-                
+
                 <GridToolbarExport
                     slotProps={{
                         tooltip: { title: 'Export data' },
                         button: { variant: 'outlined' },
                     }}
                 />
-                
-                <Button 
-                    color="primary" 
-                    startIcon={<AddIcon />} 
-                    onClick={onAdd} 
+
+                <Button
+                    color="primary"
+                    startIcon={<AddIcon />}
+                    onClick={onAdd}
                     variant='outlined'
                 >
                     Add record
@@ -198,6 +199,7 @@ export const ReusableDataGrid: React.FC<ReusableDataGridProps> = ({
     columns,
     onAdd,
     onEdit,
+    onView,
     onDelete,
     rowModesModel,
     setRowModesModel,
@@ -216,7 +218,7 @@ export const ReusableDataGrid: React.FC<ReusableDataGridProps> = ({
     pageSizeOptions = [10, 25, 50, 100],
 }) => {
     const theme = useTheme();
-    
+
     // State for tracking current server-side parameters
     const [currentParams, setCurrentParams] = React.useState<ServerSideParams>({
         page: paginationModel.page + 1, // Convert to 1-based indexing
@@ -231,6 +233,10 @@ export const ReusableDataGrid: React.FC<ReusableDataGridProps> = ({
 
     const handleEditClick = (id: string) => () => {
         onEdit(id);
+    };
+
+    const handleviewClick = (id: string) => () => {
+        onView(id);
     };
 
     const handleSaveClick = (id: GridRowId) => async () => {
@@ -266,10 +272,10 @@ export const ReusableDataGrid: React.FC<ReusableDataGridProps> = ({
             page: model.page + 1, // Convert to 1-based indexing
             limit: model.pageSize,
         };
-        
+
         setCurrentParams(newParams);
         // onPaginationModelChange(model);
-        
+
         // Call the unified server-side params change handler
         onParamsChange?.(newParams);
     };
@@ -281,13 +287,13 @@ export const ReusableDataGrid: React.FC<ReusableDataGridProps> = ({
             ...filterParams,
             page: 1, // Reset to first page when filtering
         };
-        
+
         setCurrentParams(newParams);
         onFilterChange?.(filterParams);
-        
+
         // Reset pagination to first page
         // onPaginationModelChange({ page: 0, pageSize: currentParams.limit });
-        
+
         // Call the unified server-side params change handler
         onParamsChange?.(newParams);
     };
@@ -295,20 +301,20 @@ export const ReusableDataGrid: React.FC<ReusableDataGridProps> = ({
     // Handle sort changes
     const handleSortModelChange = (sortModel: GridSortModel) => {
         const sortParams: SortParams = {};
-        
+
         if (sortModel.length > 0) {
             sortParams.sortBy = sortModel[0].field;
             sortParams.sortOrder = sortModel[0].sort || 'asc';
         }
-        
+
         const newParams = {
             ...currentParams,
             ...sortParams,
         };
-        
+
         setCurrentParams(newParams);
         onSortChange?.(sortParams);
-        
+
         // Call the unified server-side params change handler
         onParamsChange?.(newParams);
     };
@@ -316,7 +322,7 @@ export const ReusableDataGrid: React.FC<ReusableDataGridProps> = ({
     // Handle filter model changes (for advanced filtering)
     const handleFilterModelChange = (filterModel: GridFilterModel) => {
         const filters: Record<string, any> = {};
-        
+
         filterModel.items.forEach((item) => {
             if (item.value !== undefined && item.value !== null && item.value !== '') {
                 filters[item.field] = {
@@ -325,11 +331,11 @@ export const ReusableDataGrid: React.FC<ReusableDataGridProps> = ({
                 };
             }
         });
-        
+
         const filterParams: FilterParams = {
             filters: Object.keys(filters).length > 0 ? filters : undefined,
         };
-        
+
         handleFilterChange(filterParams);
     };
 
@@ -337,7 +343,6 @@ export const ReusableDataGrid: React.FC<ReusableDataGridProps> = ({
         <Box
             sx={{
                 height: "100%",
-                width: '100%',
                 '& .actions': {
                     color: 'text.secondary',
                 },
@@ -347,6 +352,10 @@ export const ReusableDataGrid: React.FC<ReusableDataGridProps> = ({
                 '& .theme--header': {
                     backgroundColor: theme.palette.primary.main,
                 },
+                padding: 1,
+                width: "100%", // Changed to 100%
+                minWidth: 0, // Add min-width constraint
+                boxSizing: 'border-box'
             }}
         >
             <DataGrid
@@ -360,7 +369,6 @@ export const ReusableDataGrid: React.FC<ReusableDataGridProps> = ({
                         headerName: 'Actions',
                         headerClassName: 'theme--header',
                         cellClassName: 'actions',
-                        width: 100,
                         getActions: ({ id }) => {
                             const isInEditMode = rowModesModel[id]?.mode === GridRowModes.Edit;
                             if (isInEditMode) {
@@ -391,6 +399,13 @@ export const ReusableDataGrid: React.FC<ReusableDataGridProps> = ({
                                     color="inherit"
                                 />,
                                 <GridActionsCellItem
+                                    icon={<EditIcon />}
+                                    label="Edit"
+                                    className="textPrimary"
+                                    onClick={handleviewClick(id as string)}
+                                    color="inherit"
+                                />,
+                                <GridActionsCellItem
                                     icon={<DeleteIcon />}
                                     label="Delete"
                                     onClick={handleDeleteClick(id as string)}
@@ -405,26 +420,26 @@ export const ReusableDataGrid: React.FC<ReusableDataGridProps> = ({
                 onRowModesModelChange={handleRowModesModelChange}
                 onRowEditStop={handleRowEditStop}
                 processRowUpdate={processRowUpdate}
-                
+
                 // Server-side pagination
                 paginationMode="server"
                 paginationModel={paginationModel}
                 onPaginationModelChange={handlePaginationModelChange}
                 pageSizeOptions={pageSizeOptions}
                 rowCount={totalRows}
-                
+
                 // Server-side sorting
                 sortingMode={enableSorting ? "server" : "client"}
                 onSortModelChange={handleSortModelChange}
-                
+
                 // Server-side filtering
                 filterMode={enableFilters ? "server" : "client"}
                 onFilterModelChange={handleFilterModelChange}
-                
+
                 slots={{
                     toolbar: () => (
-                        <EditToolbar 
-                            onAdd={onAdd} 
+                        <EditToolbar
+                            onAdd={onAdd}
                             reloadData={reloadData}
                             onFilterChange={handleFilterChange}
                             enableSearch={enableSearch}
@@ -441,6 +456,23 @@ export const ReusableDataGrid: React.FC<ReusableDataGridProps> = ({
                     borderColor: 'primary.light',
                     '& .MuiDataGrid-cell:hover': {
                         color: 'primary.main',
+                    },
+                    '& .theme--header': {
+                        backgroundColor: theme.palette.primary.main,
+                        color: theme.palette.primary.contrastText, // Ensure text is visible
+                    },
+                    '& .MuiDataGrid-columnHeaders': {
+                        // minHeight: `$px !important`, // Use !important to override Material-UI's default
+                        // maxHeight: `${headerHeight}px !important`,
+                        height: `${6}px !important`,
+                        // lineHeight: `${headerHeight}px !important`, // Adjust line-height for vertical alignment
+                    },
+                    // Optional: Adjust column header cell padding if needed for smaller height
+                    '& .MuiDataGrid-columnHeaderTitleContainer': {
+                        padding: '0 0px', // Adjust padding as needed
+                    },
+                    '& .MuiDataGrid-virtualScroller': {
+                        minWidth: 0, // Important for nested scrolling
                     },
                 }}
             />

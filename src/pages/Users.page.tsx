@@ -97,7 +97,7 @@ function UsersPage() {
     const rows = data?.users || [];
 
     return (
-        <Box sx={{ width: '100%', height: '100%' }}>
+        <Box sx={{ height: '100%' }}>
             <ReusableDataGrid
                 columns={columns}
                 onAdd={handleAdd}

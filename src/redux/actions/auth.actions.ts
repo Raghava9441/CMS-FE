@@ -1,6 +1,6 @@
 import { NavigateFunction } from "react-router-dom";
 import { userApi } from "../../api/api";
-import { loginUserFailure, loginUserStart, loginUserSuccess, logoutUserStart, logoutUserSuccess, ShowSnackbar } from "../slices/authSlice";
+import { loginUserFailure, loginUserStart, loginUserSuccess, logoutUserStart, logoutUserSuccess, permissionSuccess, ShowSnackbar } from "../slices/authSlice";
 import { AppDispatch, persistor } from "../store";
 import appRoutes from "../../routes/routePaths";
 
@@ -9,6 +9,8 @@ export const loginUser = (user: { email: string, password: string }, navigate: N
     try {
         dispatch(loginUserStart());
         const response = await userApi.login(user);
+        const permissionResponse = await userApi.permissions(response.data.data.loggedInUser._id);
+        dispatch(permissionSuccess(permissionResponse.data));
         dispatch(loginUserSuccess(response.data));
         navigate(appRoutes.DASHBOARD);
         return response.data;
@@ -29,7 +31,7 @@ export const logoutUser = (navigate: NavigateFunction) => async (dispatch: AppDi
         await persistor.purge();
         const response = await userApi.logout();
         dispatch(logoutUserSuccess(response.data));
-        
+
         navigate(appRoutes.LOGIN);
         return response.data;
     } catch (error) {

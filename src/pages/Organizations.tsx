@@ -148,7 +148,12 @@ function Organizations() {
     const totalRows = organizations?.totalOrganizations || 0;
 
     return (
-        <Box sx={{ width: '100%', height: '100%' }}>
+        <Box sx={{
+            width: '100%',
+            height: '100%',
+            minWidth: 0, // Add min-width constraint
+            overflow: 'hidden',
+        }}>
             <ReusableDataGrid
                 columns={columns}
                 onAdd={handleAdd}

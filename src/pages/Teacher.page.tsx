@@ -9,10 +9,13 @@ import { TeacherActions } from "@redux/actions/teacherActions"
 import TeacherForm from "@components/Forms/Teacher.Form"
 import { usePaginationParams } from "@hooks/usePaginationParams"
 import { Params } from "@models/pagination.modals"
+import { Outlet, useLocation, useNavigate } from "react-router-dom"
+import appRoutes from "@routes/routePaths"
 
 
 
 function TeacherPage() {
+    const navigate = useNavigate()
     const dispatch = useDispatch<AppDispatch>();
     const teachers = useSelector((state: RootState) => state.teacher.data);
 
@@ -53,6 +56,9 @@ function TeacherPage() {
     const [selectedRow, setSelectedRow] = useState<any>(null);
     const [open, setOpen] = useState(false);
 
+    const location = useLocation();
+    const isViewingProfile = location.pathname.includes('/teachers/profile');
+
     const { loading } = useSelector((state: RootState) => state.teacher);
 
     const fetchTeachersCallback = useCallback(
@@ -91,6 +97,12 @@ function TeacherPage() {
         handleOpen();
     };
 
+    const handleView = (id: string) => {
+        const selectedTeacher = teachers?.teachers.find((teacher: any) => teacher._id === id);
+        if (!selectedTeacher) return
+        navigate(appRoutes.TEACHER_PROFILE.replace(":id", selectedTeacher?._id))
+    };
+
     const handleDelete = async (id: string) => {
         dispatch(TeacherActions.deleteTeachers(id));
     };
@@ -114,36 +126,38 @@ function TeacherPage() {
     const totalRows = teachers?.totalTeachers || 0;
     return (
         <Box sx={{ width: '100%', height: '100%' }}>
-            <ReusableDataGrid
-                columns={columns}
-                onAdd={handleAdd}
-                onDelete={handleDelete}
-                onEdit={handleEdit}
-                rows={teachers?.teachers ?? []}
-                rowModesModel={rowModesModel}
-                setRowModesModel={setRowModesModel}
-                loading={loading}
-                reloadData={handleReloadData}
-                totalRows={totalRows}
-                paginationModel={{
-                    page: params.page - 1, // if DataGrid is 0-based
-                    pageSize: params.limit,
-                }}
-                onParamsChange={(params) => onParamasChange(params)}
-            />
-            <GenericModal
-                open={open}
-                onClose={handleClose}
-                title={modalTitle}
-            >
-                <TeacherForm
-                    initialValues={selectedRow}
-                    onSubmit={handleSave}
-                    onClose={handleClose}
-                />
-            </GenericModal>
+            {isViewingProfile ? (
+                <Outlet /> // Only render nested page
+            ) : (
+                <>
+                    <ReusableDataGrid
+                        columns={columns}
+                        onAdd={handleAdd}
+                        onDelete={handleDelete}
+                        onEdit={handleEdit}
+                        rows={teachers?.teachers ?? []}
+                        rowModesModel={rowModesModel}
+                        setRowModesModel={setRowModesModel}
+                        loading={loading}
+                        reloadData={handleReloadData}
+                        totalRows={totalRows}
+                        paginationModel={{
+                            page: params.page - 1,
+                            pageSize: params.limit,
+                        }}
+                        onParamsChange={onParamasChange}
+                        onView={handleView}
+                    />
+                    <GenericModal open={open} onClose={handleClose} title={modalTitle}>
+                        <TeacherForm
+                            initialValues={selectedRow}
+                            onSubmit={handleSave}
+                            onClose={handleClose}
+                        />
+                    </GenericModal>
+                </>
+            )}
         </Box>
-    )
+    );
 }
-
 export default TeacherPage

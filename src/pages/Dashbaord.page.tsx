@@ -23,6 +23,11 @@ import {
     FamilyRestroom as FamilyIcon
 } from '@mui/icons-material';
 import { PieChart, BarChart } from '@mui/x-charts';
+import { findRouteByPath, findRouteByPathPattern } from "@utils/routes.utills";
+import { routeConfig } from "../config/routes.config";
+import { useLocation } from "react-router-dom";
+import { usePermissions } from '../hooks/usePermissions';
+import { ConditionalComponent } from "@components/ConditionalComponent";
 
 const DashboardSkeleton = () => {
     return (
@@ -104,6 +109,12 @@ const DashboardSkeleton = () => {
 function DashboardPage() {
     const [dashboardData, setDashboardData] = useState<AdminDashboardData | null>(null);
     const [loading, setLoading] = useState(true);
+    const location = useLocation();
+    const currentRoute = findRouteByPath(routeConfig, location.pathname);
+    const { hasPermission, getResourcePermissions } = usePermissions();
+    const dashboardPermissions = getResourcePermissions('dashboard');
+    console.log(dashboardPermissions)
+    console.log(currentRoute)
 
     const data = [
         {
@@ -158,10 +169,14 @@ function DashboardPage() {
     ];
 
     return (
-        <Box sx={{ p: 3 }}>
+        <Box sx={{ p: 3, overflowY: "auto", height: "100%" }}>
             <Typography variant="h4" sx={{ mb: 4, fontWeight: 'bold' }}>
                 Admin Dashboard
             </Typography>
+
+            <ConditionalComponent resource="dashboard" action="edit">
+                <button>Edit Dashboard Settings</button>
+            </ConditionalComponent>
 
             {/* User Counts Section */}
             <Grid container spacing={3} sx={{ mb: 4 }}>

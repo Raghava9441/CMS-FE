@@ -1,4 +1,5 @@
 import './App.css'
+import './styles/app.scss'
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import MainLayout from './components/MainLayout';
 import { routesWithAuth, routesWithoutAuth } from './routes';
@@ -9,7 +10,7 @@ import { Suspense, useEffect, useState } from "react";
 import { Alert, CircularProgress, Slide, Snackbar, useMediaQuery, useTheme } from "@mui/material";
 import { HideSnackbar } from './redux/slices/authSlice';
 import LoadingScreen from '@components/LoadingScreen';
-
+import NewAppRouter from './NewAppRouter';
 const AppRouter = () => {
     const user = useSelector((state: RootState) => state.auth.user);
     return (
@@ -73,7 +74,8 @@ function App() {
 
     return (
         <>
-            <AppRouter />
+            {/* <AppRouter /> */}
+            <NewAppRouter/>
             <Snackbar
                 anchorOrigin={{
                     vertical: "top",

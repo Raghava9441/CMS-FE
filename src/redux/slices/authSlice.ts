@@ -36,6 +36,7 @@ export interface User {
         notifications?: boolean;
         language?: string;
     };
+
 }
 
 interface AuthState {
@@ -56,6 +57,7 @@ interface AuthState {
     searchResults: [] | null,
     searchCount: null | number | boolean,
     isLoading: boolean,
+    permissions: any
 }
 
 const initialState: AuthState = {
@@ -75,7 +77,8 @@ const initialState: AuthState = {
     searchResults: [],
     showFriendsMenu: false,
     searchCount: null,
-    isLoading: false
+    isLoading: false,
+    permissions: {}
 };
 
 // Create the auth slice
@@ -96,6 +99,8 @@ const authSlice = createSlice({
             state.accessToken = accessToken;
             state.refreshToken = refreshToken;
             state.isAuthenticated = true;
+            console.log(action.payload.data)
+            // state.permissions = action.payload
 
             // Save tokens and user data in localStorage for persistence
             localStorage.setItem('user', JSON.stringify(loggedInUser));
@@ -127,6 +132,10 @@ const authSlice = createSlice({
         logoutUserFailure(state, action: PayloadAction<string>) {
             state.loading = false;
             state.error = action.payload;
+        },
+        permissionSuccess(state, action) {
+            console.log(action.payload.permissions)
+            state.permissions = action.payload.permissions
         },
         openSnackbar(state, action) {
             // console.log("action", action)
@@ -242,6 +251,6 @@ export function ClearSearch() {
     };
 }
 
-export const { loginUserStart, loginUserSuccess, loginUserFailure, logoutUserStart, logoutUserSuccess, logoutUserFailure, setShowFriendsMenu, updateOnlineUsers, removeFriend } = authSlice.actions;
+export const { loginUserStart, loginUserSuccess, loginUserFailure, logoutUserStart, logoutUserSuccess, logoutUserFailure, setShowFriendsMenu, updateOnlineUsers, removeFriend, permissionSuccess } = authSlice.actions;
 
 export default authSlice.reducer;

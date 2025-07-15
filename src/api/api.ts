@@ -108,6 +108,10 @@ export const userApi = {
      * @returns {Promise<ApiResponse<{ accessToken: string, newRefreshToken: string }>>} A promise that resolves to an API response containing a new access token and potentially a new refresh token.
      */
     refreshAccessToken: (refreshToken: string) => axiosInstance.post<ApiResponse<{ accessToken: string, newRefreshToken: string }>>('user/auth/refresh', { refreshToken }),
+
+    permissions: (id: string) => axiosInstance.get<ApiResponse<any>>(`/permissions/${id}`),
+
+    modifyPermissions: (permissions: any) => axiosInstance.patch<ApiResponse<any>>('user/permissions', permissions),
 }
 
 export const teacherApi = {

@@ -7,12 +7,10 @@
  * @module MainLayout
  */
 import * as React from 'react';
-import { useEffect } from 'react';
-import AppBar from '@mui/material/AppBar';
+import { useEffect, useCallback, useMemo } from 'react';
 import Box from '@mui/material/Box';
 import CssBaseline from '@mui/material/CssBaseline';
 import Divider from '@mui/material/Divider';
-import Drawer from '@mui/material/Drawer';
 import IconButton from '@mui/material/IconButton';
 import InboxIcon from '@mui/icons-material/MoveToInbox';
 import List from '@mui/material/List';
@@ -21,12 +19,10 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import MailIcon from '@mui/icons-material/Mail';
-import MenuIcon from '@mui/icons-material/Menu';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import { Outlet, useNavigate, useLocation } from 'react-router-dom';
-import { Avatar, Menu, MenuItem, Theme, useTheme } from '@mui/material';
-import { routesWithSideMenu } from '../routes';
+import { Avatar, Menu, MenuItem, Theme, useTheme, Tooltip } from '@mui/material';
 import { AppDispatch, RootState } from '../redux/store';
 import { useDispatch, useSelector } from 'react-redux';
 import appRoutes from '../routes/routePaths';
@@ -34,11 +30,27 @@ import { authActions } from '../redux/actions/auth.actions';
 import SchoolIcon from '@mui/icons-material/School';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import { setIsOptimistic } from '@redux/slices/chat.slice';
-import { GetConversations, GetMessages } from '@redux/actions/chat.actions';
+import { GetConversations } from '@redux/actions/chat.actions'; // GetMessages removed as it was unused
 import { GetOnlineFriends } from '@redux/actions/userActions';
 import { useSocketManager } from '@hooks/usesocket';
+import { getSidebarRoutes } from '@utils/routes.utills';
+import { useRouteGuard } from '@hooks/useRouteGuard';
+import { useSidebarItems } from '@hooks/useSidebarItems';
 
-const drawerWidth = 240;
+// Define drawer widths as constants for better readability and maintainability
+const DRAWER_WIDTH = 240;
+const COLLAPSED_DRAWER_WIDTH = 64;
+
+// Icon mapping for sidebar items
+const routeIcons: { [key: string]: React.ElementType } = {
+    // You should map specific routes to specific icons for clarity
+    // Example:
+    // [appRoutes.DASHBOARD]: DashboardIcon,
+    // [appRoutes.MESSAGES]: MessageIcon,
+    // For now, using generic InboxIcon and MailIcon as in original code
+    defaultEven: InboxIcon,
+    defaultOdd: MailIcon,
+};
 
 /**
  * MainLayout component provides the main application layout, including the AppBar, side navigation drawer, and main content area.
@@ -48,405 +60,432 @@ const drawerWidth = 240;
  * @returns {JSX.Element} The rendered main layout of the application.
  */
 export default function MainLayout() {
+    useRouteGuard();
+
+    const styles = {
+        layoutWrapper: {
+            display: 'flex',
+            height: '100vh',
+            flexFlow: "row nowrap",
+            position: "relative",
+        },
+        layoutContainer: {
+            height: "100%",
+            width: "-webkit-fill-available",
+            flexGrow: 1,
+            minWidth: 0,
+        },
+        layoutHeader: {
+            height: '8%',
+        },
+        headerRow: {
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+        },
+        headerLeft: {
+            display: 'flex',
+            alignItems: 'center',
+        },
+        headerRight: {
+            display: 'flex',
+            alignItems: 'center',
+        },
+        notificationIcon: {
+            paddingRight: '2rem',
+        },
+        avatarIcon: {
+            padding: '0px',
+        },
+        menuPaper: {
+            width: '200px',
+            maxWidth: 'calc(100% - 48px)',
+        },
+        pageWrapper: {
+            height: '92%',
+        },
+        drawerBox: {
+            height: '100%',
+            position: "relative",
+        },
+        drawerToolbar: {
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            overflow: 'hidden',
+            px: 2,
+        },
+        drawerTitleBox: (collapsed: boolean) => ({
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: collapsed ? 'center' : 'flex-start',
+            flex: 1,
+        }),
+        drawerTitleText: (theme: Theme) => ({
+            color: theme.palette.primary.main,
+            whiteSpace: 'nowrap',
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+            mr: 1,
+        }),
+        drawerIcon: (theme: Theme, collapsed: boolean) => ({
+            fontSize: 40,
+            color: theme.palette.primary.main,
+            ...(collapsed && { ml: 0 }),
+        }),
+        expandCollapseButton: {
+            minHeight: 48,
+            justifyContent: 'center',
+            px: 2.5,
+        },
+        listItemIconCollapsed: {
+            minWidth: 0,
+            mr: 'auto',
+            justifyContent: 'center',
+        },
+        listItemButton: (collapsed: boolean, selected: boolean, theme: Theme) => ({
+            minHeight: 10,
+            height: 40,
+            justifyContent: collapsed ? 'center' : 'initial',
+            px: 2.5,
+            color: selected ? theme.palette.primary.contrastText : theme.palette.text.primary,
+            '& .MuiListItemIcon-root': {
+                color: selected ? theme.palette.primary.contrastText : theme.palette.action.active,
+            },
+        }),
+        listItemIcon: (collapsed: boolean) => ({
+            minWidth: 0,
+            mr: collapsed ? 'auto' : 3,
+            justifyContent: 'center',
+        }),
+        listItemText: (collapsed: boolean) => ({
+            opacity: collapsed ? 0 : 1,
+            display: collapsed ? 'none' : 'block',
+        }),
+    };
+
     const theme = useTheme();
     const dispatch = useDispatch<AppDispatch>();
     const navigate = useNavigate();
     const location = useLocation();
+
     const [mobileOpen, setMobileOpen] = React.useState(false);
     const [isClosing, setIsClosing] = React.useState(false);
+    const [drawerCollapsed, setDrawerCollapsed] = React.useState(false);
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
     const [notificationAnchorEl, setNotificationAnchorEl] = React.useState<null | HTMLElement>(null);
-    const open = Boolean(anchorEl);
-    const isauthenticated = useSelector((state: RootState) => state.auth.isAuthenticated);
+
+    const isUserMenuOpen = Boolean(anchorEl);
+    const isNotificationMenuOpen = Boolean(notificationAnchorEl);
+
+    const isAuthenticated = useSelector((state: RootState) => state.auth.isAuthenticated);
     const user = useSelector((state: RootState) => state.auth.user);
-    const { accessToken } = useSelector((state: RootState) => state.auth);
-    const {
-        activeConversation,
+    const accessToken = useSelector((state: RootState) => state.auth.accessToken);
+    const activeConversation = useSelector((state: RootState) => state.chat.activeConversation);
 
-    } = useSelector((state: RootState) => state.chat);
-    useSocketManager();
+    const currentDrawerWidth = useMemo(() => drawerCollapsed ? COLLAPSED_DRAWER_WIDTH : DRAWER_WIDTH, [drawerCollapsed]);
 
     useEffect(() => {
-        // Set optimistic approach
         dispatch(setIsOptimistic({ isOptimistic: true }));
-        // // Initialize socket connection
-        // if (!socket || !socket.connected) {
-        //     console.log("Initializing socket connection...");
-        //     connectSocket(accessToken);
-        // }
-
-        // // Socket event listeners
-        // if (socket) {
-        //     // Connection established
-        //     socket.on("connect", () => {
-        //         console.log("Socket connected successfully");
-
-        //         // Emit user online status
-        //         socket.emit("user_online", { user_id: user?._id });
-
-        //         // Sync messages for active conversation after reconnect
-        //         if (activeConversation) {
-        //             console.log("Syncing messages for active conversation:", activeConversation._id);
-        //             dispatch(GetMessages(activeConversation._id));
-        //         }
-        //     });
-
-        //     // Test server communication
-        //     socket.on("connection_established", (data) => {
-        //         console.log("Received response from server:", data);
-        //         dispatch(
-        //             ShowSnackbar({
-        //                 severity:  "success",
-        //                 message: `connection_established`,
-        //             })
-        //         );
-        //     });
-
-        //     // Handle connection errors
-        //     socket.on("connect_error", (error) => {
-        //         console.error("Socket connection error:", error);
-        //         dispatch(
-        //             ShowSnackbar({
-        //                 severity: "error",
-        //                 message: `Connection failed: ${error.message}`,
-        //             })
-        //         );
-        //     });
-
-        //     // Handle general socket errors
-        //     socket.on("error", (error) => {
-        //         console.error("Socket error:", error);
-        //         dispatch(
-        //             ShowSnackbar({
-        //                 severity: error.status || "error",
-        //                 message: `Socket error: ${error.message}`,
-        //             })
-        //         );
-        //     });
-
-        //     // CRITICAL: Handle incoming messages
-        //     socket.on("message_received", (message) => {
-        //         console.log("📨 New message received:", message);
-
-        //         // Update the conversation with the new message
-        //         dispatch(updateMsgConvo(message));
-
-        //         // Optional: Show notification for new messages
-        //         if (message.sender._id !== user?._id) {
-        //             // This is a message from someone else
-        //             dispatch(
-        //                 ShowSnackbar({
-        //                     severity: "info",
-        //                     message: `New message from ${message.sender.firstName}`,
-        //                 })
-        //             );
-        //         }
-        //     });
-
-            
-
-        //     // Handle message errors
-        //     socket.on("message_error", (error) => {
-        //         console.error("❌ Message error:", error);
-        //         dispatch(
-        //             ShowSnackbar({
-        //                 severity: "error",
-        //                 message: `Failed to send message: ${error.error}`,
-        //             })
-        //         );
-        //         // You can update UI to show message as failed
-        //         // dispatch(updateMessageStatus({ tempId: error.tempId, status: 'failed' }));
-        //     });
-
-        //     // Handle online friends updates
-        //     socket.on("online_friends", (friend) => {
-        //         console.log("👥 Online friends update:", friend);
-        //         dispatch(updateOnlineUsers(friend));
-        //     });
-
-        //     // Handle typing indicators
-        //     socket.on("start_typing", (typingData) => {
-        //         console.log("✏️ User started typing:", typingData);
-        //         dispatch(updateTypingConvo({
-        //             ...typingData,
-        //             isTyping: true
-        //         }));
-        //     });
-
-        //     socket.on("stop_typing", (typingData) => {
-        //         console.log("✏️ User stopped typing:", typingData);
-        //         dispatch(updateTypingConvo({
-        //             ...typingData,
-        //             isTyping: false
-        //         }));
-        //     });
-
-        //     // Handle message synchronization (for offline messages)
-        //     socket.on("message_sync", (messages) => {
-        //         console.log("🔄 Syncing messages:", messages);
-        //         if (Array.isArray(messages)) {
-        //             messages.forEach(message => {
-        //                 dispatch(updateMsgConvo(message));
-        //             });
-        //         } else {
-        //             dispatch(updateMsgConvo(messages));
-        //         }
-        //     });
-
-        //     // Cleanup function
-        //     return () => {
-        //         console.log("Cleaning up socket listeners");
-        //         if (socket) {
-        //             socket.off("connect");
-        //             socket.off("connection_established");
-        //             socket.off("connect_error");
-        //             socket.off("error");
-        //             socket.off("message_received");
-        //             socket.off("message_error");
-        //             socket.off("online_friends");
-        //             socket.off("start_typing");
-        //             socket.off("stop_typing");
-        //             socket.off("message_sync");
-        //         }
-        //     };
-        // }
-    }, [accessToken, user?._id, activeConversation]);
-
-
-
+    }, [dispatch, accessToken, user?._id, activeConversation]);
 
     useEffect(() => {
-        const checkAuthentication = () => {
-            if (!isauthenticated) {
-                navigate(appRoutes.LOGIN);
-            } else {
-                dispatch(GetConversations());
+        if (!isAuthenticated) {
+            navigate(appRoutes.LOGIN);
+        } else {
+            dispatch(GetConversations());
+            dispatch(GetOnlineFriends());
+        }
+    }, [isAuthenticated, dispatch, navigate]);
 
-                // get online friends
-                dispatch(GetOnlineFriends());
-            }
-        };
-        checkAuthentication();
-    }, [isauthenticated]);
-
-
-    const handleDrawerClose = () => {
+    const handleDrawerClose = useCallback(() => {
         setIsClosing(true);
         setMobileOpen(false);
-    };
+    }, []);
 
-    const handleDrawerTransitionEnd = () => {
+    const handleDrawerTransitionEnd = useCallback(() => {
         setIsClosing(false);
-    };
+    }, []);
 
-    const handleDrawerToggle = () => {
+    const handleDrawerToggle = useCallback(() => {
         if (!isClosing) {
-            setMobileOpen(!mobileOpen);
+            setMobileOpen((prev) => !prev);
         }
-    };
+    }, [isClosing]);
 
-    const handleAvatarClick = (event: React.MouseEvent<HTMLElement>) => {
+    const handleDrawerCollapse = useCallback(() => {
+        setDrawerCollapsed((prev) => !prev);
+    }, []);
+
+    const handleAvatarClick = useCallback((event: React.MouseEvent<HTMLElement>) => {
         setAnchorEl(event.currentTarget);
-    };
+    }, []);
 
-    const handleNotificationsClick = (event: React.MouseEvent<HTMLElement>) => {
+    const handleNotificationsClick = useCallback((event: React.MouseEvent<HTMLElement>) => {
         setNotificationAnchorEl(event.currentTarget);
-    };
+    }, []);
 
-    const handleNotificationsClose = () => {
+    const handleNotificationsClose = useCallback(() => {
         setNotificationAnchorEl(null);
-    };
+    }, []);
 
-    const handleMenuClose = () => {
+    const handleMenuClose = useCallback(() => {
         setAnchorEl(null);
-    };
+    }, []);
 
-    const getSlideDirection = (theme: Theme) => {
-        return theme.direction === 'rtl' ? 'right' : 'left';
-    };
-    const handleLogout = () => {
+    const handleLogout = useCallback(() => {
         dispatch(authActions.logoutUser(navigate));
-    };
+    }, [dispatch, navigate]);
 
-
-
+    useSocketManager();
 
     return (
-        <Box sx={{ display: 'flex', minHeight: '100vh' }}>
-            <CssBaseline />
-            <AppBar
-                position="absolute"
-                sx={{
-                    width: { md: `calc(100% - ${drawerWidth}px)` },
-                    ml: { md: `${drawerWidth}px` },
-                }}
-            >
-                <Toolbar sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                    <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                        <IconButton
-                            color="inherit"
-                            aria-label="open drawer"
-                            edge="start"
-                            onClick={handleDrawerToggle}
-                            sx={{ mr: 2, display: { md: 'none' } }}
-                        >
-                            <MenuIcon />
-                        </IconButton>
-                        <Typography variant="h6" noWrap component="div">
-                            welcome {user?.fullname}
-                        </Typography>
-                    </Box>
-
-                    <Box sx={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center' }}>
-                        <Box sx={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center' }}>
-                            <IconButton
-                                color="inherit"
-                                aria-label="user menu"
-                                edge="start"
-                                onClick={handleNotificationsClick}
-                                sx={{ paddingRight: '2rem' }}
-                            >
-                                <NotificationsIcon />
-                            </IconButton>
-                            <IconButton
-                                color="inherit"
-                                aria-label="user menu"
-                                edge="start"
-                                onClick={handleAvatarClick}
-                                sx={{ padding: '0px' }}
-                            >
-                                <Avatar />
-                            </IconButton>
+        <>
+            <Box sx={styles.layoutWrapper}>
+                <CssBaseline />
+                <CustomDrawer
+                    location={location.pathname}
+                    collapsed={drawerCollapsed}
+                    handleDrawerCollapse={handleDrawerCollapse}
+                />
+                <Box id="layout-container" sx={styles.layoutContainer}>
+                    <Box sx={styles.layoutHeader}>
+                        <Box sx={styles.headerRow}>
+                            <Box sx={styles.headerLeft}>
+                                <Typography variant="h6" noWrap component="div">
+                                    Welcome {user?.fullname || 'Guest'}
+                                </Typography>
+                            </Box>
+                            <Box sx={styles.headerRight}>
+                                <IconButton sx={styles.notificationIcon} onClick={handleNotificationsClick}>
+                                    <NotificationsIcon />
+                                </IconButton>
+                                <IconButton sx={styles.avatarIcon} onClick={handleAvatarClick}>
+                                    <Avatar>{user?.fullname?.charAt(0).toUpperCase()}</Avatar>
+                                </IconButton>
+                                <Menu
+                                    anchorEl={anchorEl}
+                                    open={isUserMenuOpen}
+                                    onClose={handleMenuClose}
+                                    PaperProps={{
+                                        sx: {
+                                            width: '200px',
+                                            maxWidth: 'calc(100% - 48px)',
+                                        },
+                                    }}
+                                    anchorOrigin={{
+                                        vertical: 'bottom',
+                                        horizontal: 'right',
+                                    }}
+                                    transformOrigin={{
+                                        vertical: 'top',
+                                        horizontal: 'right',
+                                    }}
+                                >
+                                    <MenuItem onClick={() => {
+                                        handleMenuClose();
+                                        navigate(appRoutes.PROFILE);
+                                    }}>Profile</MenuItem>
+                                    <MenuItem onClick={() => {
+                                        handleMenuClose();
+                                        navigate(appRoutes.SETTINGS);
+                                    }}>Settings</MenuItem>
+                                    <MenuItem onClick={() => {
+                                        handleMenuClose();
+                                        handleLogout();
+                                    }}>Logout</MenuItem>
+                                </Menu>
+                                <Menu
+                                    anchorEl={notificationAnchorEl}
+                                    open={isNotificationMenuOpen}
+                                    onClose={handleNotificationsClose}
+                                    PaperProps={{
+                                        sx: {
+                                            width: '200px',
+                                            maxWidth: 'calc(100% - 48px)',
+                                        },
+                                    }}
+                                    anchorOrigin={{
+                                        vertical: 'bottom',
+                                        horizontal: 'right',
+                                    }}
+                                    transformOrigin={{
+                                        vertical: 'top',
+                                        horizontal: 'right',
+                                    }}
+                                >
+                                    <MenuItem onClick={() => {
+                                        handleNotificationsClose();
+                                        navigate(appRoutes.NOTIFICATIONS);
+                                    }}>Notifications</MenuItem>
+                                    <MenuItem onClick={handleNotificationsClose}>No new notifications</MenuItem>
+                                </Menu>
+                            </Box>
                         </Box>
-                        {/* Avatar dropdown menu */}
-                        <Menu
-                            anchorEl={anchorEl}
-                            open={open}
-                            onClose={handleMenuClose}
-                            PaperProps={{
-                                sx: {
-                                    width: '200px',
-                                    maxWidth: 'calc(100% - 48px)',
-                                },
-                            }}
-                        >
-                            <MenuItem onClick={() => {
-                                handleMenuClose();
-                                navigate('/profile');
-                            }}>Profile</MenuItem>
-                            <MenuItem onClick={() => {
-                                handleMenuClose();
-                                navigate('/settings');
-                            }}>Settings</MenuItem>
-                            <MenuItem onClick={() => {
-                                handleMenuClose();
-                                handleLogout()
-                            }}>Logout</MenuItem>
-                        </Menu>
-                        {/* Notification menu */}
-                        <Menu
-                            anchorEl={notificationAnchorEl}
-                            open={Boolean(notificationAnchorEl)}
-                            onClose={handleNotificationsClose}
-                            PaperProps={{
-                                sx: {
-                                    width: '200px',
-                                    maxWidth: 'calc(100% - 48px)',
-                                },
-                            }}
-                        >
-                            <MenuItem onClick={() => {
-                                handleNotificationsClose();
-                                navigate('/notifications');
-                            }}>Notifications</MenuItem>
-                        </Menu>
                     </Box>
-                </Toolbar>
-            </AppBar>
-            <Box
-                component="nav"
-                sx={{ width: { md: drawerWidth }, flexShrink: { md: 0 } }}
-                aria-label="mailbox folders"
-            >
-                <Drawer
-                    variant="temporary"
-                    open={mobileOpen}
-                    onTransitionEnd={handleDrawerTransitionEnd}
-                    onClose={handleDrawerClose}
-                    ModalProps={{
-                        keepMounted: true,
-                    }}
-                    anchor={theme.direction === 'rtl' ? 'left' : 'right'}
-                    SlideProps={{ direction: getSlideDirection(theme) }}
-                    sx={{
-                        display: { xs: 'block', md: 'none' },
-                        '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth },
-                    }}
-                >
-                    <CustomDrawer location={location.pathname} />
-                </Drawer>
-                <Drawer
-                    variant="permanent"
-                    sx={{
-                        zIndex: -1,
-                        display: { xs: 'none', md: 'block' },
-                        '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth },
-                    }}
-                    open
-                >
-                    <CustomDrawer location={location.pathname} />
-                </Drawer>
+                    <Box component="main" sx={styles.pageWrapper}>
+                        <Outlet />
+                    </Box>
+                </Box>
             </Box>
-            <Box
-                component="main"
-                sx={{ width: `calc(100% - ${drawerWidth}px)`, height: '90vh', flexGrow: 1 }}
-            >
-                <Toolbar />
-                <Outlet />
-            </Box>
-        </Box>
+        </>
     );
+}
+
+interface CustomDrawerProps {
+    location: string;
+    collapsed: boolean;
+    handleDrawerCollapse: () => void;
+    handleDrawerClose?: () => void;
+}
+
+enum SideBarState {
+    EXPANDED = 1,
+    COLLAPSED,
 }
 
 /**
  * CustomDrawer component renders the side navigation drawer with application routes based on the user's role.
  *
- * @param {{ location: string }} props - The props object containing the current location pathname.
+ * @param {CustomDrawerProps} props - The props object containing the current location pathname, collapsed state, and toggle function.
  * @returns {JSX.Element} The rendered drawer with navigation links.
  */
-const CustomDrawer = ({ location }) => {
+const CustomDrawer = React.memo(({ location, collapsed, handleDrawerCollapse, handleDrawerClose }: CustomDrawerProps) => {
     const theme = useTheme();
     const navigate = useNavigate();
-    const { user } = useSelector((state: RootState) => state.auth);
+    const user = useSelector((state: RootState) => state.auth.user);
+
+    const [sideBarState, setSideBarState] = React.useState<SideBarState>(SideBarState.EXPANDED);
+
+    const { sidebarItems, activeItem, activeItemPath, isItemActive } = useSidebarItems();
+
+    console.log(sidebarItems)
+
+
+    const menuRoutes = useMemo(() => {
+        return getSidebarRoutes(user?.role);
+    }, [user?.role]);
+
+
+    const toggleSideBar = () => {
+        setTimeout(() => {
+            if (sideBarState === SideBarState.EXPANDED) {
+                setSideBarState(SideBarState.COLLAPSED)
+                document.getElementById("layout-container")?.removeAttribute("style")
+            }
+            else if (sideBarState === SideBarState.COLLAPSED) {
+                setSideBarState(SideBarState.EXPANDED)
+                document.getElementById("layout-container")?.removeAttribute("style")
+            }
+        }, 150)
+    }
+
+    const handleNavigationClick = useCallback((path: string) => {
+        if (path !== appRoutes.ROOT) {
+            navigate(path);
+        }
+        if (handleDrawerClose) {
+            handleDrawerClose();
+        }
+    }, [navigate, handleDrawerClose]);
 
     return (
         <>
-            <Toolbar>
-                <Box sx={{ display: 'flex', alignItems: 'center', width: '100%', justifyContent: 'center' }}>
-                    <Typography variant="h5" sx={{ color: theme.palette.primary.main }}>ScholarSync</Typography>
-                    <SchoolIcon sx={{ fontSize: 48, color: theme.palette.primary.main }} />
-                </Box>
-            </Toolbar>
-            <Divider />
-            <List>
-                {routesWithSideMenu(user?.role).filter(route => route.authenticationRequired && route.isSideMenu).map((route) => (
-                    <ListItem
-                        key={route.id}
-                        disablePadding
-                        sx={{
-                            backgroundColor: route.path === location ? theme.palette.primary.main : 'inherit',
-                        }}
-                    >
-                        <ListItemButton onClick={() => route.path !== '/' && navigate(route.path)}>
-                            <ListItemIcon>
-                                {route.id % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-                            </ListItemIcon>
-                            <ListItemText primary={route.label} />
-                        </ListItemButton>
-                    </ListItem>
-                ))}
-            </List>
-            <Divider />
+            <Box sx={{ height: '100%', position: "relative" }} id="side-nav" className={`side-nav-bar ${SideBarState[sideBarState].toLowerCase()}`}>
+                <Toolbar sx={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    overflow: 'hidden',
+                    px: 2,
+                }}>
+                    <Box sx={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: collapsed ? 'center' : 'flex-start',
+                        flex: 1,
+                    }}>
+                        <Typography
+                            variant="h5"
+                            sx={{
+                                color: theme.palette.primary.main,
+                                whiteSpace: 'nowrap',
+                                overflow: 'hidden',
+                                textOverflow: 'ellipsis',
+                                mr: 1,
+                            }}
+                        >
+                            ScholarSync
+                        </Typography>
+                        <SchoolIcon
+                            sx={{
+                                fontSize: 40,
+                                color: theme.palette.primary.main,
+                                ...(collapsed && { ml: 0 })
+                            }}
+                        />
+                    </Box>
+                </Toolbar>
+                <Divider />
+                <List sx={{ flexGrow: 1, overflow: 'auto' }}>
+                    {menuRoutes.map((route) => {
+                        const IconComponent = routeIcons[route.path] || (route.id % 2 === 0 ? routeIcons.defaultEven : routeIcons.defaultOdd);
+                        return (
+                            <ListItem
+                                key={route.id}
+                                disablePadding
+                                sx={{
+                                    backgroundColor: location === route.path ? theme.palette.action.selected : 'inherit',
+                                    '&:hover': {
+                                        backgroundColor: location === route.path ? theme.palette.action.selected : theme.palette.action.hover,
+                                    },
+                                }}
+                            >
+                                <Tooltip
+                                    title={collapsed ? route.label : ''}
+                                    placement="right"
+                                    arrow
+                                    disableHoverListener={!collapsed}
+                                >
+                                    <ListItemButton
+                                        onClick={() => handleNavigationClick(route.path)}
+                                        sx={{
+                                            minHeight: 10,
+                                            height: 40,
+                                            justifyContent: collapsed ? 'center' : 'initial',
+                                            px: 2.5,
+                                            color: location === route.path ? theme.palette.primary.contrastText : theme.palette.text.primary,
+                                            '& .MuiListItemIcon-root': {
+                                                color: location === route.path ? theme.palette.primary.contrastText : theme.palette.action.active,
+                                            },
+                                        }}
+                                        selected={location === route.path}
+                                        aria-current={location === route.path ? 'page' : undefined}
+                                    >
+                                        <ListItemIcon
+                                            sx={{
+                                                minWidth: 0,
+                                                mr: collapsed ? 'auto' : 3,
+                                                justifyContent: 'center',
+                                            }}
+                                        >
+                                            <IconComponent />
+                                        </ListItemIcon>
+                                        <ListItemText
+                                            primary={route.label}
+                                            sx={{
+                                                opacity: collapsed ? 0 : 1,
+                                                display: collapsed ? 'none' : 'block',
+                                            }}
+                                        />
+                                    </ListItemButton>
+                                </Tooltip>
+                            </ListItem>
+                        );
+                    })}
+                </List>
+                <Box className={`sidebar-icon ${sideBarState === SideBarState.COLLAPSED ? "collapse" : "expand"}`} onClick={toggleSideBar}>k </Box>
+            </Box>
         </>
     );
-}
+});
