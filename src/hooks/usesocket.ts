@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../redux/store';
 import { connectSocket, socket } from '../utils/socket'; // Assuming @utils/socket resolves correctly
 import { setIsOptimistic, updateMsgConvo, updateTypingConvo } from '../redux/slices/chat.slice';
-import { ShowSnackbar, updateOnlineUsers } from '../redux/slices/authSlice';
+import { permissionSuccess, ShowSnackbar, updateOnlineUsers } from '../redux/slices/authSlice';
 import { GetConversations, GetMessages } from '../redux/actions/chat.actions';
 import { GetOnlineFriends } from '../redux/actions/userActions';
 
@@ -114,6 +114,11 @@ export const useSocketManager = () => {
         // Potentially clear chat state or show a dedicated UI for server shutdown
     }, [dispatch]);
 
+    const handlePermissionUpdted = useCallback((data) => {
+        console.log("📤 Received updated permissions from server:", data);
+        dispatch(permissionSuccess(data));
+    }, [dispatch]);
+
     // --- Main Effect for Socket Management ---
     useEffect(() => {
         // Set optimistic approach (if this is relevant to socket interactions)
@@ -138,6 +143,7 @@ export const useSocketManager = () => {
             socket.on("stop_typing", handleStopTyping);
             socket.on("message_sync", handleMessageSync);
             socket.on("server_shutdown", handleServerShutdown); // For graceful shutdown
+            socket.on("permissions_updated", handlePermissionUpdted); // For graceful shutdown
 
             // Return cleanup function for when the component unmounts or dependencies change
             return () => {
@@ -164,9 +170,7 @@ export const useSocketManager = () => {
         accessToken, // Re-run if access token changes (e.g., after refresh, or initial load)
         dispatch,
         user?._id,
-        activeConversation?._id, // Add this if you want `handleConnect` to react to active conversation changes
-        // Include all `handleX` functions as dependencies for `useEffect`
-        // as they are defined using `useCallback` and depend on `dispatch`
+        activeConversation?._id,
         handleConnect,
         handleConnectionEstablished,
         handleConnectError,

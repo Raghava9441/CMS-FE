@@ -63,6 +63,7 @@
     "simplebar-react": "^3.2.6",
     "socket.io-client": "^4.8.1",
     "stringz": "^2.1.0",
+    "vite-plugin-open-in-editor": "^0.0.4",
     "vite-plugin-react-click-to-component": "^3.0.0",
     "vite-plugin-svgr": "^4.3.0"
   },

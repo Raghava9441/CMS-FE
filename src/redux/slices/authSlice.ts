@@ -36,7 +36,7 @@ export interface User {
         notifications?: boolean;
         language?: string;
     };
-
+    _id: string;
 }
 
 interface AuthState {
@@ -134,6 +134,7 @@ const authSlice = createSlice({
             state.error = action.payload;
         },
         permissionSuccess(state, action) {
+            console.log("object", action)
             console.log(action.payload.permissions)
             state.permissions = action.payload.permissions
         },

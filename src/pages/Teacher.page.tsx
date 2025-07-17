@@ -9,15 +9,26 @@ import { TeacherActions } from "@redux/actions/teacherActions"
 import TeacherForm from "@components/Forms/Teacher.Form"
 import { usePaginationParams } from "@hooks/usePaginationParams"
 import { Params } from "@models/pagination.modals"
-import { Outlet, useLocation, useNavigate } from "react-router-dom"
+import { Outlet, useLocation, useNavigate, useParams } from "react-router-dom"
 import appRoutes from "@routes/routePaths"
+import { RouteConfig } from "@models/routes.types"
+import { useRouteData } from "@hooks/useRouteData"
 
+interface TeacherPageProps {
+    route: RouteConfig;
+    routeData?: any;
+    canActivate?: boolean;
+}
 
-
-function TeacherPage() {
+function TeacherPage({ route, routeData, canActivate }: TeacherPageProps) {
+    console.log("routeData", routeData)
+    console.log(canActivate)
     const navigate = useNavigate()
     const dispatch = useDispatch<AppDispatch>();
     const teachers = useSelector((state: RootState) => state.teacher.data);
+    const routeparams = useParams();
+    const { data, loading, error, refetch } = useRouteData(route, routeparams);
+    console.log("data", data)
 
     const columns: GridColDef[] = useMemo(() => [
         { field: 'name', headerName: 'Teacher Name', flex: 1, editable: true, headerClassName: 'theme--header' },
@@ -59,7 +70,7 @@ function TeacherPage() {
     const location = useLocation();
     const isViewingProfile = location.pathname.includes('/teachers/profile');
 
-    const { loading } = useSelector((state: RootState) => state.teacher);
+    // const { loading } = useSelector((state: RootState) => state.teacher);
 
     const fetchTeachersCallback = useCallback(
         (params: any) => {
@@ -79,6 +90,9 @@ function TeacherPage() {
         },
         fetchTeachersCallback
     );
+
+
+
 
     const onParamasChange = (params: Params) => {
         setParams(params);

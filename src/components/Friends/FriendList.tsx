@@ -1,6 +1,10 @@
 import AllChatElement from "@components/conversation/chat elements/AllChatElements";
-import { Stack, Typography } from "@mui/material";
+import Search from "@components/search/Search";
+import SearchIconWrapper from "@components/search/SearchIconWrapper";
+import StyledInputBase from "@components/search/StyledInputBase";
+import { Stack, Typography, useTheme } from "@mui/material";
 import { RootState } from "@redux/store"
+import { MagnifyingGlass } from "phosphor-react";
 import { useState } from "react";
 import { useSelector } from "react-redux"
 
@@ -9,10 +13,11 @@ import { useSelector } from "react-redux"
 const FriendList = () => {
 
     const { user, friends, isLoading } = useSelector((state: RootState) => state.auth);
-
+    const theme = useTheme();
     const [openDrawer, setOpenDrawer] = useState(false);
     const [selectedUserId, setSelectedUserId] = useState("");
-
+    const [searchTerm, setSearchTerm] = useState<string>("");
+    const [page, setPage] = useState<number>(1);
 
     const toggleDrawer = (selectedId) => {
         setOpenDrawer(!openDrawer);
@@ -20,10 +25,14 @@ const FriendList = () => {
         setSelectedUserId(selectedId);
     };
 
+    const handleSearch = (e) => {
+        setSearchTerm(e.target.value);
+        setPage(1);
+    };
     return (
         <Stack height={"100%"}>
             <Stack p={3} spacing={2} sx={{ height: "100%" }}>
-                <Stack direction={"row"} justifyContent={"space-between"}>
+                <Stack direction={"column"} justifyContent={"space-between"}>
                     <Typography component={"h1"} variant="h5">
                         Contacts
                     </Typography>
@@ -35,7 +44,7 @@ const FriendList = () => {
                     </IconButton> */}
 
                     {/* Search section */}
-                    {/* <Stack sx={{ width: "100%" }}>
+                    <Stack sx={{ width: "100%" }}>
                         <Search>
                             <SearchIconWrapper>
                                 <MagnifyingGlass color={theme.palette.primary.main} />
@@ -46,7 +55,7 @@ const FriendList = () => {
                                 onChange={(e) => handleSearch(e)}
                             />
                         </Search>
-                    </Stack> */}
+                    </Stack>
 
 
                     <Stack spacing={0.5}>

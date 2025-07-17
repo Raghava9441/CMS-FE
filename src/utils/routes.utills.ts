@@ -1,5 +1,6 @@
 import { RouteConfig } from "@models/routes.types";
 import { routeConfig } from "../config/routes.config";
+import { Permission } from "@models/Permission.types";
 
 export const findRouteByPath = (routes: RouteConfig[], path: string): RouteConfig | null => {
     for (const route of routes) {
@@ -127,13 +128,32 @@ export interface SidebarRoute {
     metadata?: any;
 }
 
-export const getSidebarRoutes = (role: string): SidebarRoute[] => {
+// Updated getSidebarRoutes function to work with the guard
+export const getSidebarRoutes = (role: string, permissions: Permission[]): SidebarRoute[] => {
     const result: SidebarRoute[] = [];
+
+    const hasResourcePermission = (resourceName: string): boolean => {
+        if (!resourceName) return true;
+        const permission = permissions.find(p => p.name === resourceName);
+        return permission ? permission.view : false;
+    };
 
     const traverse = (routes: RouteConfig[]) => {
         for (const route of routes) {
-            // Permission check
-            const allowed = !route.permission || route.permission.roles.includes(role);
+            // Role-based permission check
+            const roleAllowed = !route.permission?.roles || route.permission.roles.includes(role);
+
+            // Resource-based permission check
+            const resourceAllowed = hasResourcePermission(route.resourceName || '');
+
+            // Custom permission check
+            let customAllowed = true;
+            if (route.permission?.customCheck) {
+                // You might need to pass user object here
+                // customAllowed = route.permission.customCheck(user);
+            }
+
+            const allowed = roleAllowed && resourceAllowed && customAllowed;
 
             if (route.showInSidebar && allowed) {
                 result.push({
@@ -142,6 +162,7 @@ export const getSidebarRoutes = (role: string): SidebarRoute[] => {
                     label: route.metadata?.breadcrumb || route.id,
                     icon: route.metadata?.icon,
                     metadata: route.metadata,
+                    resourceName: route.resourceName,
                 });
             }
 

@@ -192,6 +192,8 @@ class SocketManager {
         // Debug events
         this.socket.on('message_from_server', this.handleServerMessage.bind(this));
 
+        this.socket.on('permissions_updated', this.handleparmissionsupdated.bind(this));
+
         // Heartbeat
         this.socket.on('pong', this.handlePong.bind(this));
     }
@@ -333,6 +335,10 @@ class SocketManager {
 
     private handleServerMessage(data: any): void {
         console.log('📤 Received response from server:', data);
+    }
+
+    private handleparmissionsupdated(data: any): void {
+        console.log('📤 Received updated permissions from server:', data);
     }
 
     private handlePong(): void {

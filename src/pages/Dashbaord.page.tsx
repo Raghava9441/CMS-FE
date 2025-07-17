@@ -111,10 +111,10 @@ function DashboardPage() {
     const [loading, setLoading] = useState(true);
     const location = useLocation();
     const currentRoute = findRouteByPath(routeConfig, location.pathname);
-    const { hasPermission, getResourcePermissions } = usePermissions();
-    const dashboardPermissions = getResourcePermissions('dashboard');
-    console.log(dashboardPermissions)
-    console.log(currentRoute)
+
+    const { hasViewPermission, hasDeletePermission } = usePermissions();
+    const dashboardPermissions = hasViewPermission('dashboard');
+    const dashboarddeletePermissions = hasDeletePermission('dashboard');
 
     const data = [
         {
@@ -174,7 +174,7 @@ function DashboardPage() {
                 Admin Dashboard
             </Typography>
 
-            <ConditionalComponent resource="dashboard" action="edit">
+            <ConditionalComponent resource="dashboard" action="edit" fallback={<div>you donot have a access of editing </div>}>
                 <button>Edit Dashboard Settings</button>
             </ConditionalComponent>
 

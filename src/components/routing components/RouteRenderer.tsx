@@ -12,7 +12,7 @@ const RouteRenderer: React.FC = () => {
                 key={route.id}
                 path={route.path}
                 index={route.index}
-                element={<ProductionRoute route={route} />}
+                element={<ProductionRoute route={route} useBlurOverlay={true} />}
             >
                 {route.children?.map(child => renderRoute(child))}
             </Route>

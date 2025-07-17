@@ -85,9 +85,9 @@ export const routeConfig: RouteConfig[] = [
             },
             {
                 id: 'Organizations',
+                resourceName: 'organizations',
                 path: appRoutes.ORGANIZATIONS,
                 component: lazy(() => import('../pages/Organizations')),
-                // index: true,
                 permission: {
                     roles: [ROLES.ADMIN, ROLES.ORGADMIN, ROLES.TEACHER, ROLES.STUDENT, ROLES.PARENT],
                 },
@@ -97,7 +97,6 @@ export const routeConfig: RouteConfig[] = [
                     icon: '🏠',
                 },
                 icon: '🏠',
-
                 children: [
                     {
                         id: 'organization-profile',
@@ -121,6 +120,7 @@ export const routeConfig: RouteConfig[] = [
             },
             {
                 id: 'teachers',
+                resourceName: 'teachers',
                 path: appRoutes.TEACHERS,
                 component: Teachers,
                 permission: {
@@ -132,6 +132,9 @@ export const routeConfig: RouteConfig[] = [
                     icon: '👨‍🏫',
                 },
                 showInSidebar: true,
+                guards: {
+
+                },
                 children: [
                     {
                         id: 'teacher-profile',
@@ -149,11 +152,17 @@ export const routeConfig: RouteConfig[] = [
                             dynamicBreadcrumb: (params) => `Teacher #${params.id}`,
                         },
                         showInSidebar: false,
+                        guards: {
+                            resolve: {
+                                //you can pass the function to get the api data in the component 
+                            }
+                        },
                     },
                 ],
             },
             {
                 id: 'students',
+                resourceName: 'students',
                 path: appRoutes.STUDENTS,
                 component: lazy(() => import('../pages/Student.page')),
                 permission: {
@@ -166,11 +175,28 @@ export const routeConfig: RouteConfig[] = [
                 },
                 showInSidebar: true,
                 children: [
-
+                    {
+                        id: 'student-profile',
+                        path: appRoutes.STUDENT_PROFILE,
+                        component: lazy(() => import('../components/student/StudentProfile')),
+                        isDynamic: true,
+                        paramKeys: ['id'],
+                        permission: {
+                            roles: [ROLES.ADMIN, ROLES.ORGADMIN, ROLES.TEACHER],
+                        },
+                        metadata: {
+                            title: 'Student Profile',
+                            breadcrumb: 'Profile',
+                            dynamicTitle: (params) => `Student: ${params.id}`,
+                            dynamicBreadcrumb: (params) => `Student #${params.id}`,
+                        },
+                        showInSidebar: false,
+                    },
                 ],
             },
             {
                 id: 'parents',
+                resourceName: 'parents',
                 path: appRoutes.PARENTS,
                 component: lazy(() => import('../pages/Parent.page')),
                 permission: {
@@ -188,6 +214,7 @@ export const routeConfig: RouteConfig[] = [
             },
             {
                 id: 'Exams',
+                resourceName: 'exams',
                 path: appRoutes.EXAM,
                 component: lazy(() => import('../pages/Exam.page')),
                 permission: {
@@ -205,6 +232,7 @@ export const routeConfig: RouteConfig[] = [
             },
             {
                 id: 'Attendance',
+                resourceName: 'attendance',
                 path: appRoutes.ATTENDANCE,
                 component: lazy(() => import('../pages/Attendance.page')),
                 permission: {
@@ -222,6 +250,7 @@ export const routeConfig: RouteConfig[] = [
             },
             {
                 id: 'Courses',
+                resourceName: 'courses',
                 path: appRoutes.COURSES,
                 component: lazy(() => import('../pages/Courses.page')),
                 permission: {
@@ -239,6 +268,7 @@ export const routeConfig: RouteConfig[] = [
             },
             {
                 id: 'Classes',
+                resourceName: 'classes',
                 path: appRoutes.CLASSES,
                 component: lazy(() => import('../pages/Classes.page')),
                 permission: {
@@ -256,6 +286,7 @@ export const routeConfig: RouteConfig[] = [
             },
             {
                 id: 'assignment',
+                resourceName: 'assignment',
                 path: appRoutes.ASSIGNMENT,
                 component: lazy(() => import('../pages/Assignment.page')),
                 permission: {
@@ -273,8 +304,9 @@ export const routeConfig: RouteConfig[] = [
             },
             {
                 id: 'conversations',
+                resourceName: 'conversations',
                 path: appRoutes.CONVERSATIONS,
-                component: lazy(() => import('../components/conversation/Conversation')),
+                component: lazy(() => import('../pages/Conversations.page')),
                 permission: {
                     roles: [ROLES.ADMIN, ROLES.ORGADMIN, ROLES.TEACHER],
                 },
@@ -290,6 +322,7 @@ export const routeConfig: RouteConfig[] = [
             },
             {
                 id: 'Friends',
+                resourceName: 'friends',
                 path: appRoutes.FRIENDS,
                 component: lazy(() => import('../pages/Friends.page')),
                 permission: {
@@ -307,6 +340,7 @@ export const routeConfig: RouteConfig[] = [
             },
             {
                 id: 'users',
+                resourceName: 'users',
                 path: appRoutes.USERS,
                 component: Users,
                 permission: {
@@ -324,6 +358,7 @@ export const routeConfig: RouteConfig[] = [
             },
             {
                 id: 'Settings',
+                resourceName: 'settings',
                 path: appRoutes.SETTINGS,
                 component: lazy(() => import('../pages/Settings.page')),
                 permission: {
@@ -342,6 +377,7 @@ export const routeConfig: RouteConfig[] = [
             {
                 id: 'Profile',
                 path: appRoutes.PROFILE,
+                resourceName: 'profile',
                 component: lazy(() => import('../pages/Profile.page')),
                 permission: {
                     roles: [ROLES.ADMIN, ROLES.ORGADMIN, ROLES.TEACHER],
@@ -356,13 +392,31 @@ export const routeConfig: RouteConfig[] = [
 
                 ],
             },
+            {
+                id: 'feature-flags',
+                resourceName: 'featureFlags',
+                path: appRoutes.FEATURE_FLAGS,
+                component: lazy(() => import('../pages/features.page')),
+                permission: {
+                    roles: [ROLES.ADMIN],
+                },
+                metadata: {
+                    title: 'featuer flags',
+                    breadcrumb: 'feaature flags',
+                    icon: '👨‍🏫',
+                },
+                showInSidebar: false,
+                children: [
+
+                ],
+            },
         ],
     },
 
     // Error routes
     {
         id: 'not-found',
-        path: appRoutes.NOT_FOUND,
+        path: "*",
         component: NotFound,
         metadata: {
             title: 'Page Not Found',

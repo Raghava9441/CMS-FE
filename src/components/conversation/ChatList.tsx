@@ -7,6 +7,10 @@ import { Fragment, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { SearchFriends } from "@redux/actions/userActions";
 import AllChatElement from "./chat elements/AllChatElements";
+import { MagnifyingGlass } from "phosphor-react";
+import Search from "@components/search/Search";
+import SearchIconWrapper from "@components/search/SearchIconWrapper";
+import StyledInputBase from "@components/search/StyledInputBase";
 
 
 function ChatsList() {
@@ -116,16 +120,16 @@ function ChatsList() {
 
                 {/* Search section */}
                 <Stack sx={{ width: "100%" }}>
-                    {/* <Search>
-            <SearchIconWrapper>
-              <MagnifyingGlass color={theme.palette.primary.main} />
-            </SearchIconWrapper>
-            <StyledInputBase
-              placeholder="Search..."
-              inputProps={{ "aria-label": "search" }}
-              onChange={(e) => handleSearch(e)}
-            />
-          </Search> */}
+                    <Search>
+                        <SearchIconWrapper>
+                            <MagnifyingGlass color={theme.palette.primary.main} />
+                        </SearchIconWrapper>
+                        <StyledInputBase
+                            placeholder="Search..."
+                            inputProps={{ "aria-label": "search" }}
+                            onChange={(e) => handleSearch(e)}
+                        />
+                    </Search>
                 </Stack>
 
                 {!searchTerm ? (
@@ -156,12 +160,11 @@ function ChatsList() {
                             className="scrollbar">
                             {isLoading ? MembersList.map((e) => {
                                 return (
-                                    // <AllChatElement
-                                    //     key={e._id}
-                                    //     {...e}
-                                    //     isLoading={isLoading}
-                                    // />
-                                    <>hey</>
+                                    <AllChatElement
+                                        key={e._id}
+                                        {...e}
+                                        isLoading={isLoading}
+                                    />
                                 );
                             }) : //Render contacts grouped by first letter
                                 Object.entries(groupedContacts).map(([letter, contacts]) => (
@@ -169,7 +172,7 @@ function ChatsList() {
                                         {/* {
                                             console.log(contacts)
                                         } */}
-                                        <Typography variant="subtitle2">{letter}</Typography>
+                                        {/* <Typography variant="subtitle2">{letter}</Typography> */}
                                         {contacts.map((contact) => (
                                             <AllChatElement
                                                 key={contact._id}

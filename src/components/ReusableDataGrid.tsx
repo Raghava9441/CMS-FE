@@ -27,6 +27,7 @@ import {
     GridSortModel,
 } from '@mui/x-data-grid';
 import { CircularProgress, IconButton, styled, Typography, useTheme, debounce } from '@mui/material';
+import { Person } from '@mui/icons-material';
 
 // Enhanced interfaces for server-side operations
 interface PaginationParams {
@@ -399,7 +400,7 @@ export const ReusableDataGrid: React.FC<ReusableDataGridProps> = ({
                                     color="inherit"
                                 />,
                                 <GridActionsCellItem
-                                    icon={<EditIcon />}
+                                    icon={<Person />}
                                     label="Edit"
                                     className="textPrimary"
                                     onClick={handleviewClick(id as string)}

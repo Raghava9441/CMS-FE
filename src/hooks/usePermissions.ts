@@ -1,20 +1,16 @@
+import { Permission } from '@models/Permission.types';
 import { RootState } from '@redux/store';
+import { hasDeletePermission, hasEditPermission, hasViewPermission } from '@utils/permissionUtils';
 import { useSelector } from 'react-redux';
-
 export const usePermissions = () => {
-    const permissions = useSelector((state: RootState) => state.auth.permissions);
-    const hasPermission = (resourceName: string, action: 'view' | 'edit' | 'delete'): boolean => {
-        const permission = permissions.find(p => p.name === resourceName);
-        return permission ? permission[action] : false;
-    };
-
-    const getResourcePermissions = (resourceName: string) => {
-        return permissions.find(p => p.name === resourceName);
-    };
+    const permissions = useSelector((state: RootState) => state.auth.permissions || []);
 
     return {
         permissions,
-        hasPermission,
-        getResourcePermissions
+        hasViewPermission: (resourceName: string) => hasViewPermission(permissions, resourceName),
+        hasEditPermission: (resourceName: string) => hasEditPermission(permissions, resourceName),
+        hasDeletePermission: (resourceName: string) => hasDeletePermission(permissions, resourceName),
+        getPermission: (resourceName: string) =>
+            permissions.find((p: Permission) => p.name === resourceName) || null,
     };
 };

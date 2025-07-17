@@ -36,6 +36,7 @@ import { useSocketManager } from '@hooks/usesocket';
 import { getSidebarRoutes } from '@utils/routes.utills';
 import { useRouteGuard } from '@hooks/useRouteGuard';
 import { useSidebarItems } from '@hooks/useSidebarItems';
+import { socketManager } from '../services/socketManager';
 
 // Define drawer widths as constants for better readability and maintainability
 const DRAWER_WIDTH = 240;
@@ -61,6 +62,8 @@ const routeIcons: { [key: string]: React.ElementType } = {
  */
 export default function MainLayout() {
     useRouteGuard();
+    useSocketManager();
+
 
     const styles = {
         layoutWrapper: {
@@ -76,7 +79,10 @@ export default function MainLayout() {
             minWidth: 0,
         },
         layoutHeader: {
+            width: "100%",
             height: '8%',
+            paddingX: "10px",
+            paddingY: "10px",
         },
         headerRow: {
             display: 'flex',
@@ -196,6 +202,12 @@ export default function MainLayout() {
             dispatch(GetConversations());
             dispatch(GetOnlineFriends());
         }
+        // if (isAuthenticated) {
+        //     socketManager.connect(accessToken);
+        // }
+        // return () => {
+        //     socketManager.disconnect();
+        // }
     }, [isAuthenticated, dispatch, navigate]);
 
     const handleDrawerClose = useCallback(() => {
@@ -237,7 +249,6 @@ export default function MainLayout() {
         dispatch(authActions.logoutUser(navigate));
     }, [dispatch, navigate]);
 
-    useSocketManager();
 
     return (
         <>
@@ -290,6 +301,10 @@ export default function MainLayout() {
                                         handleMenuClose();
                                         navigate(appRoutes.SETTINGS);
                                     }}>Settings</MenuItem>
+                                    <MenuItem onClick={() => {
+                                        handleMenuClose();
+                                        navigate(appRoutes.FEATURE_FLAGS);
+                                    }}>Feature control</MenuItem>
                                     <MenuItem onClick={() => {
                                         handleMenuClose();
                                         handleLogout();
@@ -354,17 +369,17 @@ const CustomDrawer = React.memo(({ location, collapsed, handleDrawerCollapse, ha
     const theme = useTheme();
     const navigate = useNavigate();
     const user = useSelector((state: RootState) => state.auth.user);
+    const Permissions = useSelector((state: RootState) => state.auth.permissions);
 
     const [sideBarState, setSideBarState] = React.useState<SideBarState>(SideBarState.EXPANDED);
 
     const { sidebarItems, activeItem, activeItemPath, isItemActive } = useSidebarItems();
 
-    console.log(sidebarItems)
 
 
     const menuRoutes = useMemo(() => {
-        return getSidebarRoutes(user?.role);
-    }, [user?.role]);
+        return getSidebarRoutes(user?.role, Permissions);
+    }, [user?.role, Permissions]);
 
 
     const toggleSideBar = () => {

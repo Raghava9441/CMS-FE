@@ -43,9 +43,23 @@ export const logoutUser = (navigate: NavigateFunction) => async (dispatch: AppDi
         );
     }
 };
+export const updatePermissions = (permissions: any, id: string) => async (dispatch: AppDispatch) => {
+    try {
+        await userApi.modifyPermissions(permissions, id);
+
+    } catch (error) {
+        dispatch(
+            ShowSnackbar({
+                severity: 'error',
+                message: error.response.data.data,
+            })
+        );
+    }
+};
 
 
 export const authActions = {
     loginUser,
-    logoutUser
+    logoutUser,
+    updatePermissions
 }

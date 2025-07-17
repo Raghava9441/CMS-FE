@@ -7,6 +7,7 @@ const appRoutes = {
     TEACHERS: "/CMS-FE/teachers",
     TEACHER_PROFILE: '/CMS-FE/teachers/profile/:id',
     STUDENTS: '/CMS-FE/students',
+    STUDENT_PROFILE: '/CMS-FE/students/profile/:id',
     PARENTS: '/CMS-FE/parents',
     PROFILE: '/CMS-FE/profile',
     TEACHER: '/CMS-FE/teacher',
@@ -24,6 +25,7 @@ const appRoutes = {
     CONVERSATIONS: '/CMS-FE/conversations',
     FRIENDS: '/CMS-FE/friends',
     DEPARTMENT: '/CMS-FE/department',
+    FEATURE_FLAGS: '/CMS-FE/feature-flags',
 
 
     NOT_FOUND: "/CMS-FE/_404",

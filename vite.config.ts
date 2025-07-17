@@ -9,6 +9,7 @@ import { reactClickToComponent } from "vite-plugin-react-click-to-component";
 import TurboConsole from 'unplugin-turbo-console/vite'
 import svgr from "vite-plugin-svgr";
 import richSvg from "vite-plugin-react-rich-svg";
+import openInEditor from 'vite-plugin-open-in-editor';
 // import { sentryVitePlugin } from '@sentry/vite-plugin'
 
 
@@ -35,7 +36,9 @@ export default defineConfig({
     },
   },
 
-  plugins: [react(), // sentryVitePlugin({
+  plugins: [react(),
+  openInEditor(),
+  // sentryVitePlugin({
   //   org: 'YOUR_ORG_SLUG',
   //   project: 'YOUR_PROJECT_SLUG',
   //   authToken: process.env.SENTRY_AUTH_TOKEN, // or use .env
@@ -76,7 +79,7 @@ export default defineConfig({
     project: "cms-fe"
   })],
 
-  base:'/CMS-FE/',
+  base: '/CMS-FE/',
 
   server: {
     port: 3000,

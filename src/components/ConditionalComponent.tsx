@@ -14,11 +14,23 @@ export const ConditionalComponent: React.FC<ConditionalComponentProps> = ({
     children,
     fallback = null
 }) => {
-    const { hasPermission } = usePermissions();
-
-    if (hasPermission(resource, action)) {
-        return <>{children}</>;
+    const { hasViewPermission, hasDeletePermission, hasEditPermission } = usePermissions();
+    if (action === "view") {
+        if (hasViewPermission(resource)) {
+            return <>{children}</>;
+        }
     }
+    if (action === "edit") {
+        if (hasEditPermission(resource)) {
+            return <>{children}</>;
+        }
+    }
+    if (action === "delete") {
 
+        if (hasDeletePermission(resource)) {
+            return <>{children}</>;
+        }
+    }
+    
     return <>{fallback}</>;
 };

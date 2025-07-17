@@ -111,7 +111,7 @@ export const userApi = {
 
     permissions: (id: string) => axiosInstance.get<ApiResponse<any>>(`/permissions/${id}`),
 
-    modifyPermissions: (permissions: any) => axiosInstance.patch<ApiResponse<any>>('user/permissions', permissions),
+    modifyPermissions: (permissions: any, id: string) => axiosInstance.patch<ApiResponse<any>>(`/permissions/${id}`, permissions),
 }
 
 export const teacherApi = {

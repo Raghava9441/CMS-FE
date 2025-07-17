@@ -1,5 +1,4 @@
 
-//general app
 import NoChat from "@assets/animations/NoChat";
 import ChatsList from "@components/conversation/ChatList";
 import Conversation from "@components/conversation/Conversation";

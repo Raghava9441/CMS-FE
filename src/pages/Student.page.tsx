@@ -9,11 +9,15 @@ import { StudentActions } from "@redux/actions/student.actions"
 import StudentForm from "@components/Forms/Student.Form"
 import { Params } from "@models/pagination.modals"
 import { usePaginationParams } from "@hooks/usePaginationParams"
+import { Outlet, useNavigate, useParams } from "react-router-dom"
+import appRoutes from "@routes/routePaths"
 
 
 function StudentPage() {
     const dispatch = useDispatch<AppDispatch>();
     const students = useSelector((state: RootState) => state.student.data);
+    const navigate = useNavigate()
+    const isViewingProfile = useParams().id !== undefined;
     // console.log(students)
     const columns: GridColDef[] = useMemo(() => [
         { field: 'name', headerName: 'Student Name', flex: 1, editable: true, headerClassName: 'theme--header' },
@@ -130,38 +134,49 @@ function StudentPage() {
     const handleOpen = () => setOpen(true);
 
     const handleClose = () => setOpen(false);
+    const onView = (id: string) => {
+        navigate(appRoutes.STUDENT_PROFILE.replace(":id", id))
+    }
+
     const totalRows = students?.totalStudents || 0;
-    
+
     return (
         <Box sx={{ width: '100%', height: '100%' }}>
-            <ReusableDataGrid
-                columns={columns}
-                onAdd={handleAdd}
-                onDelete={handleDelete}
-                onEdit={handleEdit}
-                rows={students?.students ?? []}
-                rowModesModel={rowModesModel}
-                setRowModesModel={setRowModesModel}
-                loading={loading}
-                reloadData={handleReloadData}
-                totalRows={totalRows}
-                paginationModel={{
-                    page: params.page - 1, // if DataGrid is 0-based
-                    pageSize: params.limit,
-                }}
-                onParamsChange={(params) => onParamasChange(params)}
-            />
-            <GenericModal
-                open={open}
-                onClose={handleClose}
-                title={modalTitle}
-            >
-                <StudentForm
-                    initialValues={selectedRow}
-                    onSubmit={handleSave}
-                    onClose={handleClose}
-                />
-            </GenericModal>
+            {isViewingProfile ? (
+                <Outlet />
+            ) : (
+                <>
+                    <ReusableDataGrid
+                        columns={columns}
+                        onAdd={handleAdd}
+                        onDelete={handleDelete}
+                        onEdit={handleEdit}
+                        rows={students?.students ?? []}
+                        rowModesModel={rowModesModel}
+                        setRowModesModel={setRowModesModel}
+                        loading={loading}
+                        reloadData={handleReloadData}
+                        totalRows={totalRows}
+                        paginationModel={{
+                            page: params.page - 1, // if DataGrid is 0-based
+                            pageSize: params.limit,
+                        }}
+                        onParamsChange={(params) => onParamasChange(params)}
+                        onView={onView}
+                    />
+                    <GenericModal
+                        open={open}
+                        onClose={handleClose}
+                        title={modalTitle}
+                    >
+                        <StudentForm
+                            initialValues={selectedRow}
+                            onSubmit={handleSave}
+                            onClose={handleClose}
+                        />
+                    </GenericModal>
+                </>
+            )}
         </Box>
     )
 }

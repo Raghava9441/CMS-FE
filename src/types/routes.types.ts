@@ -45,8 +45,9 @@ export interface RouteConfig {
     featureFlags?: string[];
     // Route Protection
     guards?: {
-        canActivate?: (context: any) => boolean | Promise<boolean>;
-        canDeactivate?: (context: any) => boolean | Promise<boolean>;
+        canView?: (context: any) => boolean | Promise<boolean>;
+        canEdit?: (context: any) => boolean | Promise<boolean>;
+        canDelete?: (context: any) => boolean | Promise<boolean>;
         resolve?: Record<string, (context: any) => any>;
     };
     resourceName?: string
