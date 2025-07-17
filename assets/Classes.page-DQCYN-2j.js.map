@@ -1,1 +1,0 @@
-{"version":3,"file":"Classes.page-DQCYN-2j.js","sources":["../../src/pages/Classes.page.tsx"],"sourcesContent":["\n\nfunction ClassesPage() {\n    return (\n        <div>ClassesPage</div>\n    )\n}\n\nexport default ClassesPage"],"names":["ClassesPage","jsx"],"mappings":"iXAEA,SAASA,GAAc,CAEf,OAAAC,EAAA,IAAC,OAAI,SAAW,aAAA,CAAA,CAExB"}

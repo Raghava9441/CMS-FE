@@ -1,2 +1,0 @@
-import{j as t}from"./index-CGCMCOQF.js";try{let e=typeof window<"u"?window:typeof global<"u"?global:typeof globalThis<"u"?globalThis:typeof self<"u"?self:{},n=new e.Error().stack;n&&(e._sentryDebugIds=e._sentryDebugIds||{},e._sentryDebugIds[n]="c2a29e34-8b3b-4b9e-8388-041d2ac76803",e._sentryDebugIdIdentifier="sentry-dbid-c2a29e34-8b3b-4b9e-8388-041d2ac76803")}catch{}function i({}){return t.jsx("div",{children:"OrganizationProfile"})}export{i as default};
-//# sourceMappingURL=OrganizationProfile-fXHQFPtA.js.map

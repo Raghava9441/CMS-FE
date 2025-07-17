@@ -1,1 +1,0 @@
-{"version":3,"file":"styled-D1FPqb-5.js","sources":["../../node_modules/@mui/system/styled/styled.js"],"sourcesContent":["import createStyled from \"../createStyled/index.js\";\nconst styled = createStyled();\nexport default styled;"],"names":["styled","createStyled"],"mappings":"kXACK,MAACA,EAASC,EAAY","x_google_ignoreList":[0]}

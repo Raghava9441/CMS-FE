@@ -1,2 +1,0 @@
-import{j as d}from"./index-CGCMCOQF.js";try{let e=typeof window<"u"?window:typeof global<"u"?global:typeof globalThis<"u"?globalThis:typeof self<"u"?self:{},n=new e.Error().stack;n&&(e._sentryDebugIds=e._sentryDebugIds||{},e._sentryDebugIds[n]="0a0ef54e-3b8c-4c59-843e-a08e4d6b203a",e._sentryDebugIdIdentifier="sentry-dbid-0a0ef54e-3b8c-4c59-843e-a08e4d6b203a")}catch{}function t({}){return d.jsx("div",{children:"TeacherProfile"})}export{t as default};
-//# sourceMappingURL=TeacherProfile-Bf208uoN.js.map

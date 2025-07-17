@@ -1,2 +1,0 @@
-import{j as n,ac as s}from"./index-CGCMCOQF.js";try{let e=typeof window<"u"?window:typeof global<"u"?global:typeof globalThis<"u"?globalThis:typeof self<"u"?self:{},t=new e.Error().stack;t&&(e._sentryDebugIds=e._sentryDebugIds||{},e._sentryDebugIds[t]="604c0223-e127-4be8-8f0a-51631644aa27",e._sentryDebugIdIdentifier="sentry-dbid-604c0223-e127-4be8-8f0a-51631644aa27")}catch{}function d({}){return n.jsx(s,{})}export{d as default};
-//# sourceMappingURL=UnAuthLayout-DRJv3Qri.js.map
