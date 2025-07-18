@@ -7,7 +7,16 @@ const Users = lazy(() => import('../pages/Users.page'));
 const Teachers = lazy(() => import('../pages/Teacher.page'));
 const Login = lazy(() => import('../pages/Login.page'));
 const NotFound = lazy(() => import('../pages/_404'));
-
+import DashboardIcon from '@mui/icons-material/Dashboard';
+import CorporateFareIcon from '@mui/icons-material/CorporateFare';
+import CastForEducationIcon from '@mui/icons-material/CastForEducation';
+import EscalatorWarningIcon from '@mui/icons-material/EscalatorWarning';
+import SupervisorAccountIcon from '@mui/icons-material/SupervisorAccount';
+import ContentPasteSearchIcon from '@mui/icons-material/ContentPasteSearch';
+import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet';
+import SmsIcon from '@mui/icons-material/Sms';
+import ClassIcon from '@mui/icons-material/Class';
+import Diversity2Icon from '@mui/icons-material/Diversity2';
 export const routeConfig: RouteConfig[] = [
     // Auth routes
     {
@@ -76,10 +85,10 @@ export const routeConfig: RouteConfig[] = [
                     permissions: [PERMISSIONS.VIEW, PERMISSIONS.EDIT],
                 },
                 metadata: {
-                    title: 'Dashboard - MyApp',
+                    title: 'Dashboard',
                     breadcrumb: 'Dashboard',
-                    icon: '🏠',
-                    description: ' here you cna find the all detials like studnet count ,male female attendance and upcomming events ',
+                    icon: DashboardIcon,
+                    description: 'Here you can find all details like student count, male female attendance, and upcoming events',
                 },
                 showInSidebar: true,
             },
@@ -92,9 +101,9 @@ export const routeConfig: RouteConfig[] = [
                     roles: [ROLES.ADMIN, ROLES.ORGADMIN, ROLES.TEACHER, ROLES.STUDENT, ROLES.PARENT],
                 },
                 metadata: {
-                    title: 'Organizations - MyApp',
+                    title: 'Organizations',
                     breadcrumb: 'Organizations',
-                    icon: '🏠',
+                    icon: CorporateFareIcon,
                 },
                 icon: '🏠',
                 children: [
@@ -109,6 +118,7 @@ export const routeConfig: RouteConfig[] = [
                         },
                         metadata: {
                             title: 'Organization Profile',
+                            icon: DashboardIcon,
                             breadcrumb: 'Profile',
                             dynamicTitle: (params) => `Organization: ${params.id}`,
                             dynamicBreadcrumb: (params) => `Organization #${params.id}`,
@@ -129,7 +139,7 @@ export const routeConfig: RouteConfig[] = [
                 metadata: {
                     title: 'Teachers',
                     breadcrumb: 'Teachers',
-                    icon: '👨‍🏫',
+                    icon: CastForEducationIcon,
                 },
                 showInSidebar: true,
                 guards: {
@@ -148,6 +158,7 @@ export const routeConfig: RouteConfig[] = [
                         metadata: {
                             title: 'Teacher Profile',
                             breadcrumb: 'Profile',
+                            icon: DashboardIcon,
                             dynamicTitle: (params) => `Teacher: ${params.id}`,
                             dynamicBreadcrumb: (params) => `Teacher #${params.id}`,
                         },
@@ -171,7 +182,7 @@ export const routeConfig: RouteConfig[] = [
                 metadata: {
                     title: 'StudentPage',
                     breadcrumb: 'Studnets',
-                    icon: '👨‍🏫',
+                    icon: SupervisorAccountIcon,
                 },
                 showInSidebar: true,
                 children: [
@@ -205,7 +216,7 @@ export const routeConfig: RouteConfig[] = [
                 metadata: {
                     title: 'ParentPage',
                     breadcrumb: 'parents',
-                    icon: '👨‍🏫',
+                    icon: EscalatorWarningIcon,
                 },
                 showInSidebar: true,
                 children: [
@@ -223,7 +234,7 @@ export const routeConfig: RouteConfig[] = [
                 metadata: {
                     title: 'ExamPage',
                     breadcrumb: 'Exams',
-                    icon: '👨‍🏫',
+                    icon: ContentPasteSearchIcon,
                 },
                 showInSidebar: true,
                 children: [
@@ -239,9 +250,9 @@ export const routeConfig: RouteConfig[] = [
                     roles: [ROLES.ADMIN, ROLES.ORGADMIN, ROLES.TEACHER],
                 },
                 metadata: {
-                    title: 'AttendancePage',
+                    title: 'Attendance',
                     breadcrumb: 'Attendance',
-                    icon: '👨‍🏫',
+                    icon: AccountBalanceWalletIcon,
                 },
                 showInSidebar: true,
                 children: [
@@ -259,7 +270,7 @@ export const routeConfig: RouteConfig[] = [
                 metadata: {
                     title: 'Courses',
                     breadcrumb: 'Courses',
-                    icon: '👨‍🏫',
+                    icon: DashboardIcon,
                 },
                 showInSidebar: true,
                 children: [
@@ -277,7 +288,7 @@ export const routeConfig: RouteConfig[] = [
                 metadata: {
                     title: 'Classes',
                     breadcrumb: 'Classes',
-                    icon: '👨‍🏫',
+                    icon: ClassIcon,
                 },
                 showInSidebar: true,
                 children: [
@@ -295,7 +306,7 @@ export const routeConfig: RouteConfig[] = [
                 metadata: {
                     title: 'Assignment',
                     breadcrumb: 'Assignment',
-                    icon: '👨‍🏫',
+                    icon: DashboardIcon,
                 },
                 showInSidebar: true,
                 children: [
@@ -313,7 +324,7 @@ export const routeConfig: RouteConfig[] = [
                 metadata: {
                     title: 'Conversations',
                     breadcrumb: 'conversations',
-                    icon: '👨‍🏫',
+                    icon: SmsIcon,
                 },
                 showInSidebar: true,
                 children: [
@@ -331,7 +342,7 @@ export const routeConfig: RouteConfig[] = [
                 metadata: {
                     title: 'Friends',
                     breadcrumb: 'Friends',
-                    icon: '👨‍🏫',
+                    icon: Diversity2Icon,
                 },
                 showInSidebar: true,
                 children: [
@@ -349,7 +360,7 @@ export const routeConfig: RouteConfig[] = [
                 metadata: {
                     title: 'Users',
                     breadcrumb: 'Users',
-                    icon: '👥',
+                    icon: DashboardIcon,
                 },
                 showInSidebar: true,
                 children: [
@@ -367,11 +378,67 @@ export const routeConfig: RouteConfig[] = [
                 metadata: {
                     title: 'Settings',
                     breadcrumb: 'Settings',
-                    icon: '👨‍🏫',
+                    icon: DashboardIcon,
                 },
                 showInSidebar: false,
                 children: [
-
+                    {
+                        id: 'settings-profile',
+                        path: appRoutes.SETTINGS_PROFILE,
+                        index: true,
+                        component: lazy(() => import('../components/settings/ProfileSettings')),
+                        permission: {
+                            roles: [ROLES.ADMIN, ROLES.ORGADMIN, ROLES.TEACHER, ROLES.STUDENT, ROLES.PARENT],
+                        },
+                        metadata: {
+                            title: 'Profile Settings',
+                            breadcrumb: 'Profile',
+                            // icon: AccountCircleIcon, 
+                        },
+                        showInSidebar: false, // Show this sub-setting in a potential nested sidebar or tab menu
+                    },
+                    {
+                        id: 'settings-notifications',
+                        path: appRoutes.SETTINGS_NOTIFICATIONS,
+                        component: lazy(() => import('../components/settings/NotificationSettings')),
+                        permission: {
+                            roles: [ROLES.ADMIN, ROLES.ORGADMIN, ROLES.TEACHER, ROLES.STUDENT, ROLES.PARENT],
+                        },
+                        metadata: {
+                            title: 'Notification Settings',
+                            breadcrumb: 'Notifications',
+                            // icon: NotificationsActiveIcon,
+                        },
+                        showInSidebar: false,
+                    },
+                    {
+                        id: 'settings-theme',
+                        path: appRoutes.SETTINGS_THEME,
+                        component: lazy(() => import('../components/settings/ThemeDisplaySettings')),
+                        permission: {
+                            roles: [ROLES.ADMIN, ROLES.ORGADMIN, ROLES.TEACHER, ROLES.STUDENT, ROLES.PARENT],
+                        },
+                        metadata: {
+                            title: 'Theme & Display',
+                            breadcrumb: 'Theme',
+                            // icon: PaletteIcon,
+                        },
+                        showInSidebar: false,
+                    },
+                    {
+                        id: 'settings-danger-zone',
+                        path: appRoutes.SETTINGS_DANGER_ZONE,
+                        component: lazy(() => import('../components/settings/DangerZoneSettings')),
+                        permission: {
+                            roles: [ROLES.ADMIN, ROLES.ORGADMIN], // Example: Only admins can access danger zone
+                        },
+                        metadata: {
+                            title: 'Danger Zone',
+                            breadcrumb: 'Danger Zone',
+                            // icon: WarningIcon,
+                        },
+                        showInSidebar: true,
+                    },
                 ],
             },
             {

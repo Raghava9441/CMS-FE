@@ -136,7 +136,7 @@ export default function SettingsPanel() {
                         </Box>
                     </Box>
                     {/* Direction Section */}
-                    <Box sx={{ paddingY: 2 }}>Direction</Box>
+                    {/* <Box sx={{ paddingY: 2 }}>Direction</Box>
                     <Box sx={{ backgroundColor: 'background.paper', mb: 2, display: 'flex', justifyContent: 'space-between', marginBottom: 3 }}>
                         <Box
                             onClick={() => handleDirectionChange('ltr')}
@@ -176,7 +176,7 @@ export default function SettingsPanel() {
                         >
                             <AlignHorizontalRightIcon fontSize='large' color={themeDirection === 'rtl' ? 'primary' : 'inherit'} />
                         </Box>
-                    </Box>
+                    </Box> */}
                     {/* Color Section */}
                     <Box sx={{ paddingY: 2 }}>Primary Color</Box>
                     <Box sx={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between', gap: 2, mb: 2 }}>

@@ -345,17 +345,10 @@ export const ReusableDataGrid: React.FC<ReusableDataGridProps> = ({
             sx={{
                 height: "100%",
                 '& .actions': {
-                    color: 'text.secondary',
+                    // color: 'text.secondary',
                 },
-                '& .textPrimary': {
-                    color: 'text.primary',
-                },
-                '& .theme--header': {
-                    backgroundColor: theme.palette.primary.main,
-                },
-                padding: 1,
-                width: "100%", // Changed to 100%
-                minWidth: 0, // Add min-width constraint
+                width: "100%",
+                minWidth: 0,
                 boxSizing: 'border-box'
             }}
         >
@@ -452,28 +445,15 @@ export const ReusableDataGrid: React.FC<ReusableDataGridProps> = ({
                 }}
                 loading={loading}
                 sx={{
-                    boxShadow: 2,
-                    border: 2,
-                    borderColor: 'primary.light',
+                    // boxShadow: 2,
+                    // border: 2,
+                    // borderColor: 'primary.light',
                     '& .MuiDataGrid-cell:hover': {
                         color: 'primary.main',
                     },
                     '& .theme--header': {
                         backgroundColor: theme.palette.primary.main,
-                        color: theme.palette.primary.contrastText, // Ensure text is visible
-                    },
-                    '& .MuiDataGrid-columnHeaders': {
-                        // minHeight: `$px !important`, // Use !important to override Material-UI's default
-                        // maxHeight: `${headerHeight}px !important`,
-                        height: `${6}px !important`,
-                        // lineHeight: `${headerHeight}px !important`, // Adjust line-height for vertical alignment
-                    },
-                    // Optional: Adjust column header cell padding if needed for smaller height
-                    '& .MuiDataGrid-columnHeaderTitleContainer': {
-                        padding: '0 0px', // Adjust padding as needed
-                    },
-                    '& .MuiDataGrid-virtualScroller': {
-                        minWidth: 0, // Important for nested scrolling
+                        color: theme.palette.primary.contrastText,
                     },
                 }}
             />

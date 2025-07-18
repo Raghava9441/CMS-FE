@@ -37,6 +37,8 @@ import { getSidebarRoutes } from '@utils/routes.utills';
 import { useRouteGuard } from '@hooks/useRouteGuard';
 import { useSidebarItems } from '@hooks/useSidebarItems';
 import { socketManager } from '../services/socketManager';
+import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
+import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 
 // Define drawer widths as constants for better readability and maintainability
 const DRAWER_WIDTH = 240;
@@ -83,6 +85,7 @@ export default function MainLayout() {
             height: '8%',
             paddingX: "10px",
             paddingY: "10px",
+            boxShadow: " -10px 0 5px -10px rgba(31, 30, 30, 0.5)"
         },
         headerRow: {
             display: 'flex',
@@ -108,7 +111,9 @@ export default function MainLayout() {
             maxWidth: 'calc(100% - 48px)',
         },
         pageWrapper: {
+            boxShadow: " -10px 0 5px -10px rgba(31, 30, 30, 0.5)",
             height: '92%',
+            // backgroundColor: theme."#fafafb",
         },
         drawerBox: {
             height: '100%',
@@ -406,7 +411,7 @@ const CustomDrawer = React.memo(({ location, collapsed, handleDrawerCollapse, ha
 
     return (
         <>
-            <Box sx={{ height: '100%', position: "relative" }} id="side-nav" className={`side-nav-bar ${SideBarState[sideBarState].toLowerCase()}`}>
+            <Box sx={{ height: '100%', position: "relative", }} id="side-nav" className={`side-nav-bar ${SideBarState[sideBarState].toLowerCase()}`}>
                 <Toolbar sx={{
                     display: 'flex',
                     alignItems: 'center',
@@ -419,19 +424,21 @@ const CustomDrawer = React.memo(({ location, collapsed, handleDrawerCollapse, ha
                         alignItems: 'center',
                         justifyContent: collapsed ? 'center' : 'flex-start',
                         flex: 1,
-                    }}>
-                        <Typography
-                            variant="h5"
-                            sx={{
-                                color: theme.palette.primary.main,
-                                whiteSpace: 'nowrap',
-                                overflow: 'hidden',
-                                textOverflow: 'ellipsis',
-                                mr: 1,
-                            }}
-                        >
-                            ScholarSync
-                        </Typography>
+                    }}>{
+                            sideBarState !== SideBarState.COLLAPSED && <Typography
+                                variant="h5"
+                                sx={{
+                                    color: theme.palette.primary.main,
+                                    whiteSpace: 'nowrap',
+                                    overflow: 'hidden',
+                                    textOverflow: 'ellipsis',
+                                    mr: 1,
+                                }}
+                            >
+                                ScholarSync
+                            </Typography>
+                        }
+
                         <SchoolIcon
                             sx={{
                                 fontSize: 40,
@@ -442,16 +449,20 @@ const CustomDrawer = React.memo(({ location, collapsed, handleDrawerCollapse, ha
                     </Box>
                 </Toolbar>
                 <Divider />
-                <List sx={{ flexGrow: 1, overflow: 'auto' }}>
+                <List sx={{ flexGrow: 1, gap: 1, overflow: 'auto', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
                     {menuRoutes.map((route) => {
-                        const IconComponent = routeIcons[route.path] || (route.id % 2 === 0 ? routeIcons.defaultEven : routeIcons.defaultOdd);
+                        const IconComponent = route.metadata?.icon
                         return (
                             <ListItem
                                 key={route.id}
                                 disablePadding
                                 sx={{
+                                    width: '80%',
                                     backgroundColor: location === route.path ? theme.palette.action.selected : 'inherit',
+                                    // paddingX: '10px',
+                                    borderRadius: '10px',
                                     '&:hover': {
+                                        borderRadius: '10px',
                                         backgroundColor: location === route.path ? theme.palette.action.selected : theme.palette.action.hover,
                                     },
                                 }}
@@ -467,7 +478,7 @@ const CustomDrawer = React.memo(({ location, collapsed, handleDrawerCollapse, ha
                                         sx={{
                                             minHeight: 10,
                                             height: 40,
-                                            justifyContent: collapsed ? 'center' : 'initial',
+                                            justifyContent: sideBarState === SideBarState.COLLAPSED ? 'center' : 'initial',
                                             px: 2.5,
                                             color: location === route.path ? theme.palette.primary.contrastText : theme.palette.text.primary,
                                             '& .MuiListItemIcon-root': {
@@ -480,26 +491,35 @@ const CustomDrawer = React.memo(({ location, collapsed, handleDrawerCollapse, ha
                                         <ListItemIcon
                                             sx={{
                                                 minWidth: 0,
-                                                mr: collapsed ? 'auto' : 3,
                                                 justifyContent: 'center',
                                             }}
                                         >
-                                            <IconComponent />
+                                            {
+                                                IconComponent && <IconComponent fontSize="medium" sx={{ color: theme.palette.primary.main, mr: 1 }} />
+                                            }
                                         </ListItemIcon>
-                                        <ListItemText
-                                            primary={route.label}
-                                            sx={{
-                                                opacity: collapsed ? 0 : 1,
-                                                display: collapsed ? 'none' : 'block',
-                                            }}
-                                        />
+                                        {
+                                            sideBarState !== SideBarState.COLLAPSED && <ListItemText
+                                                primary={route.label}
+                                                sx={{
+                                                    color: theme.palette.primary.main,
+                                                }}
+                                            />
+                                        }
+
                                     </ListItemButton>
                                 </Tooltip>
                             </ListItem>
                         );
                     })}
                 </List>
-                <Box className={`sidebar-icon ${sideBarState === SideBarState.COLLAPSED ? "collapse" : "expand"}`} onClick={toggleSideBar}>k </Box>
+                <Box className={`sidebar-icon ${sideBarState === SideBarState.COLLAPSED ? "collapse" : "expand"}`} onClick={toggleSideBar}>
+                    {sideBarState === SideBarState.COLLAPSED ? (
+                        <ArrowForwardIosIcon />
+                    ) : (
+                        <ArrowBackIosIcon />
+                    )}
+                </Box>
             </Box>
         </>
     );

@@ -124,8 +124,8 @@ export interface SidebarRoute {
     id: string;
     path: string;
     label: string;
-    icon?: string;
     metadata?: any;
+    resourceName?: string
 }
 
 // Updated getSidebarRoutes function to work with the guard
@@ -159,8 +159,7 @@ export const getSidebarRoutes = (role: string, permissions: Permission[]): Sideb
                 result.push({
                     id: route.id,
                     path: route.path,
-                    label: route.metadata?.breadcrumb || route.id,
-                    icon: route.metadata?.icon,
+                    label: route.metadata?.title ? route.metadata.title : route.id,
                     metadata: route.metadata,
                     resourceName: route.resourceName,
                 });

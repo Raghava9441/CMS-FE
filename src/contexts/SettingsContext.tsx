@@ -141,7 +141,7 @@ export interface SettingsProviderProps {
 function SettingsProvider({ children }: { children: React.ReactNode }) {
     const [settings, setSettings] = useLocalStorage('settings', {
         themeMode: 'light',
-        themeDirection: 'ltr',
+        themeDirection: 'rtl',
         themeColor: 'default',
         themeStretch: false,
     });

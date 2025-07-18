@@ -5,6 +5,7 @@ import {
     Typography,
     IconButton,
     Divider,
+    Avatar,
 } from "@mui/material";
 
 import { VideoCamera, Phone, XCircle } from "phosphor-react";
@@ -55,15 +56,15 @@ const ConversationHeader = ({ otherUser }) => {
                             variant="dot"
                         >
                             {/* {getAvatar(otherUser?.avatar, otherUser?.firstName, theme)} */}
-                            <div>avatar</div>
+                            <Avatar />
                         </StyledBadge>
                     ) : (
                         // getAvatar(otherUser?.avatar, otherUser?.firstName, theme)
-                        <div>avatar</div>
+                        <Avatar />
                     )}
 
                     <Stack spacing={0.2}>
-                        <Typography variant="subtitle2">{`${otherUser?.firstName} ${otherUser?.lastName}`}</Typography>
+                        <Typography variant="subtitle2">{`${otherUser?.fullname}`}</Typography>
                         <Typography variant="caption" sx={{ textTransform: "capitalize" }}>
                             {otherUser?.onlineStatus}
                         </Typography>
