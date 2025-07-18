@@ -1,0 +1,2 @@
+import{j as n}from"./index-DGxU0oL6.js";try{let e=typeof window<"u"?window:typeof global<"u"?global:typeof globalThis<"u"?globalThis:typeof self<"u"?self:{},d=new e.Error().stack;d&&(e._sentryDebugIds=e._sentryDebugIds||{},e._sentryDebugIds[d]="2822e273-8f03-41a7-9f1a-2430cdd1201f",e._sentryDebugIdIdentifier="sentry-dbid-2822e273-8f03-41a7-9f1a-2430cdd1201f")}catch{}function f(){return n.jsx("div",{children:"ExamPage"})}export{f as default};
+//# sourceMappingURL=Exam.page-Dbu2nHIX.js.map
