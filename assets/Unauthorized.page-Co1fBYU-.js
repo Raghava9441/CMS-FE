@@ -1,2 +1,0 @@
-import{j as n}from"./index-DGxU0oL6.js";try{let e=typeof window<"u"?window:typeof global<"u"?global:typeof globalThis<"u"?globalThis:typeof self<"u"?self:{},d=new e.Error().stack;d&&(e._sentryDebugIds=e._sentryDebugIds||{},e._sentryDebugIds[d]="61d5d621-9fd6-4b31-810c-628ecaac2714",e._sentryDebugIdIdentifier="sentry-dbid-61d5d621-9fd6-4b31-810c-628ecaac2714")}catch{}function r({}){return n.jsx("div",{children:"UnauthorizedPage"})}export{r as default};
-//# sourceMappingURL=Unauthorized.page-Co1fBYU-.js.map

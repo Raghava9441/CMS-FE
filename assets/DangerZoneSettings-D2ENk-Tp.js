@@ -1,0 +1,2 @@
+import{j as t}from"./index-B6Q5p1mB.js";try{let e=typeof window<"u"?window:typeof global<"u"?global:typeof globalThis<"u"?globalThis:typeof self<"u"?self:{},n=new e.Error().stack;n&&(e._sentryDebugIds=e._sentryDebugIds||{},e._sentryDebugIds[n]="0e2763aa-676e-44ff-9459-93b41b2147b2",e._sentryDebugIdIdentifier="sentry-dbid-0e2763aa-676e-44ff-9459-93b41b2147b2")}catch{}function s({}){return t.jsx("div",{children:"DangerZoneSettings"})}export{s as default};
+//# sourceMappingURL=DangerZoneSettings-D2ENk-Tp.js.map

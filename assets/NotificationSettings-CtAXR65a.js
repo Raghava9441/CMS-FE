@@ -1,2 +1,0 @@
-import{j as d}from"./index-DGxU0oL6.js";try{let e=typeof window<"u"?window:typeof global<"u"?global:typeof globalThis<"u"?globalThis:typeof self<"u"?self:{},t=new e.Error().stack;t&&(e._sentryDebugIds=e._sentryDebugIds||{},e._sentryDebugIds[t]="53d87fa9-218a-410d-87cc-d3a76cd1c396",e._sentryDebugIdIdentifier="sentry-dbid-53d87fa9-218a-410d-87cc-d3a76cd1c396")}catch{}function i({}){return d.jsx("div",{children:"NotificationSettings"})}export{i as default};
-//# sourceMappingURL=NotificationSettings-CtAXR65a.js.map
