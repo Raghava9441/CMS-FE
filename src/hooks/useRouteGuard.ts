@@ -25,7 +25,7 @@ export const useRouteGuard = () => {
     };
 
     const checkPermissions = (route: RouteConfig): boolean => {
-        console.log(route.permission)
+        // console.log(route.permission)
         if (!route.permission && !route.resourceName) return true;
 
         // Check resource-based permissions first (if resourceName exists)

@@ -1,15 +1,15 @@
 import { GridColDef, GridRowId, GridRowModesModel } from '@mui/x-data-grid'
-import { useCallback, useMemo, useState } from 'react'
+import { lazy, Suspense, useCallback, useMemo, useState } from 'react'
 import { Box } from '@mui/material'
 import { AppDispatch, RootState } from '@redux/store'
 import { useDispatch, useSelector } from 'react-redux'
 import { hasPermission } from "@utils/auth.ts";
-import OrganizationForm from "@components/Forms/OrganizationForm.tsx";
-import GenericModal from "@components/GenericModal.tsx";
 import { organizationActions } from "@redux/actions/organization.actions.ts";
 import { ReusableDataGrid } from "@components/ReusableDataGrid.tsx";
 import { Params } from '@models/pagination.modals'
 import { usePaginationParams } from '@hooks/usePaginationParams'
+const OrganizationForm = lazy(() => import("@components/Forms/OrganizationForm"));
+const GenericModal = lazy(() => import("@components/GenericModal"));
 
 /**
  * Organizations component displays a data grid of organizations with CRUD operations.
@@ -171,17 +171,23 @@ function Organizations() {
                 }}
                 onParamsChange={(params) => onParamasChange(params)}
             />
-            <GenericModal
-                open={open}
-                onClose={handleClose}
-                title={modalTitle}
-            >
-                <OrganizationForm
-                    initialValues={selectedRow}
-                    onSubmit={handleSave}
-                    onClose={handleClose}
-                />
-            </GenericModal>
+            {open && (
+                <Suspense fallback={<div>Loading modal...</div>}>
+                    <GenericModal
+                        open={open}
+                        onClose={handleClose}
+                        title={modalTitle}
+                    >
+                        <Suspense fallback={<div>Loading form...</div>}>
+                            <OrganizationForm
+                                initialValues={selectedRow}
+                                onSubmit={handleSave}
+                                onClose={handleClose}
+                            />
+                        </Suspense>
+                    </GenericModal>
+                </Suspense>
+            )}
         </Box>
     );
 }

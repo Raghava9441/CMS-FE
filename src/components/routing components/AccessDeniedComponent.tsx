@@ -1,4 +1,5 @@
 import { RouteConfig } from '@models/routes.types';
+import { Box } from '@mui/material';
 
 type Props = {
     route: RouteConfig;
@@ -6,7 +7,9 @@ type Props = {
 
 function AccessDeniedComponent({ route }: Props) {
     return (
-        <div>AccessDeniedComponent</div>
+        <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '100%' }}>
+            
+        </Box>
     )
 }
 

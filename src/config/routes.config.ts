@@ -17,6 +17,7 @@ import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet';
 import SmsIcon from '@mui/icons-material/Sms';
 import ClassIcon from '@mui/icons-material/Class';
 import Diversity2Icon from '@mui/icons-material/Diversity2';
+import { teacherApi } from '@api/api';
 export const routeConfig: RouteConfig[] = [
     // Auth routes
     {
@@ -77,12 +78,15 @@ export const routeConfig: RouteConfig[] = [
                 path: appRoutes.DASHBOARD,
                 resourceName: 'dashboard',
                 component:
-                    // lazy(() => import('../components/routing components/DefaultLoadingComponent')),
                     lazy(() => import('../pages/Dashbaord.page')),
                 index: true,
                 permission: {
                     roles: [ROLES.ADMIN, ROLES.ORGADMIN, ROLES.TEACHER, ROLES.STUDENT, ROLES.PARENT],
                     permissions: [PERMISSIONS.VIEW, PERMISSIONS.EDIT],
+                        //custom check 
+                    // customCheck: (user) => {
+                    //     return user.role === ROLES.ADMIN;
+                    // }
                 },
                 metadata: {
                     title: 'Dashboard',
@@ -91,6 +95,8 @@ export const routeConfig: RouteConfig[] = [
                     description: 'Here you can find all details like student count, male female attendance, and upcoming events',
                 },
                 showInSidebar: true,
+
+
             },
             {
                 id: 'Organizations',
@@ -161,11 +167,14 @@ export const routeConfig: RouteConfig[] = [
                             icon: DashboardIcon,
                             dynamicTitle: (params) => `Teacher: ${params.id}`,
                             dynamicBreadcrumb: (params) => `Teacher #${params.id}`,
+
                         },
                         showInSidebar: false,
                         guards: {
                             resolve: {
                                 //you can pass the function to get the api data in the component 
+                                getTeacherById: (context) => teacherApi.getTeacherById(context.params.id),
+
                             }
                         },
                     },

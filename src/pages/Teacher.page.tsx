@@ -4,15 +4,15 @@ import { Box } from "@mui/material"
 import { GridColDef, GridRowModesModel } from "@mui/x-data-grid"
 import { useDispatch, useSelector } from "react-redux"
 import { AppDispatch, RootState } from "@redux/store"
-import { useCallback, useEffect, useMemo, useState } from "react"
+import { lazy, Suspense, useCallback, useEffect, useMemo, useState } from "react"
 import { TeacherActions } from "@redux/actions/teacherActions"
-import TeacherForm from "@components/Forms/Teacher.Form"
 import { usePaginationParams } from "@hooks/usePaginationParams"
 import { Params } from "@models/pagination.modals"
 import { Outlet, useLocation, useNavigate, useParams } from "react-router-dom"
 import appRoutes from "@routes/routePaths"
 import { RouteConfig } from "@models/routes.types"
 import { useRouteData } from "@hooks/useRouteData"
+const TeacherForm = lazy(() => import("@components/Forms/Teacher.Form"));
 
 interface TeacherPageProps {
     route: RouteConfig;
@@ -33,7 +33,6 @@ function TeacherPage({ route, routeData, canActivate }: TeacherPageProps) {
     const columns: GridColDef[] = useMemo(() => [
         { field: 'name', headerName: 'Teacher Name', flex: 1, editable: true, headerClassName: 'theme--header' },
         { field: 'phone', headerName: 'Contact Phone', flex: 1, editable: true, headerClassName: 'theme--header' },
-        { field: 'subjects', headerName: 'Subjects', flex: 1, editable: true, headerClassName: 'theme--header' },
         {
             field: 'qualifications',
             headerName: 'Qualifications',
@@ -41,15 +40,16 @@ function TeacherPage({ route, routeData, canActivate }: TeacherPageProps) {
             editable: true,
             headerClassName: 'theme--header'
         },
-        // { field: 'experience', headerName: 'Experience', flex: 1, editable: true, headerClassName: 'theme--header' },
-        // { field: 'officeHours', headerName: 'Office Hours', flex: 1, editable: true, headerClassName: 'theme--header' },
-        {
-            field: 'coursesTaught',
-            headerName: 'Courses Taught',
-            flex: 1,
-            editable: true,
-            headerClassName: 'theme--header'
-        },
+        { field: 'officeHours', headerName: 'Office Hours', flex: 1, editable: true, headerClassName: 'theme--header' },
+
+        { field: 'experience', headerName: 'Experience', flex: 1, editable: true, headerClassName: 'theme--header' },
+        // {
+        //     field: 'coursesTaught',
+        //     headerName: 'Courses Taught',
+        //     flex: 1,
+        //     editable: true,
+        //     headerClassName: 'theme--header'
+        // },
         // {
         //     field: 'performanceReviews',
         //     headerName: 'Performance Reviews',
@@ -58,8 +58,8 @@ function TeacherPage({ route, routeData, canActivate }: TeacherPageProps) {
         //     headerClassName: 'theme--header'
         // },
         // { field: 'specialResponsibilities', headerName: 'Special Responsibilities', flex: 1, editable: true, headerClassName: 'theme--header' },
-        { field: 'createdAt', headerName: 'Created At', flex: 1, editable: false, headerClassName: 'theme--header' },
-        { field: 'updatedAt', headerName: 'Updated At', flex: 1, editable: false, headerClassName: 'theme--header' },
+        // { field: 'createdAt', headerName: 'Created At', flex: 1, editable: false, headerClassName: 'theme--header' },
+        // { field: 'updatedAt', headerName: 'Updated At', flex: 1, editable: false, headerClassName: 'theme--header' },
     ], []);
 
     const [rowModesModel, setRowModesModel] = useState<GridRowModesModel>({});
@@ -163,11 +163,15 @@ function TeacherPage({ route, routeData, canActivate }: TeacherPageProps) {
                         onView={handleView}
                     />
                     <GenericModal open={open} onClose={handleClose} title={modalTitle}>
-                        <TeacherForm
-                            initialValues={selectedRow}
-                            onSubmit={handleSave}
-                            onClose={handleClose}
-                        />
+                        {
+                            open && <Suspense fallback={<div>Loading form...</div>}>
+                                <TeacherForm
+                                    initialValues={selectedRow}
+                                    onSubmit={handleSave}
+                                    onClose={handleClose}
+                                />
+                            </Suspense>
+                        }
                     </GenericModal>
                 </>
             )}

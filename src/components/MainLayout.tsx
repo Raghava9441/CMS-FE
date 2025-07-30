@@ -204,8 +204,8 @@ export default function MainLayout() {
         if (!isAuthenticated) {
             navigate(appRoutes.LOGIN);
         } else {
-            dispatch(GetConversations());
-            dispatch(GetOnlineFriends());
+            // dispatch(GetConversations());
+            // dispatch(GetOnlineFriends());
         }
         // if (isAuthenticated) {
         //     socketManager.connect(accessToken);

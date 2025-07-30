@@ -21,6 +21,7 @@ function StudentPage() {
     // console.log(students)
     const columns: GridColDef[] = useMemo(() => [
         { field: 'name', headerName: 'Student Name', flex: 1, editable: true, headerClassName: 'theme--header' },
+        { field: 'email', headerName: 'Email', flex: 1, editable: true, headerClassName: 'theme--header' },
         { field: 'phone', headerName: 'Contact Phone', flex: 1, editable: true, headerClassName: 'theme--header' },
         // {
         //     field: 'organizationId',
@@ -31,10 +32,32 @@ function StudentPage() {
         // },
         {
             field: 'enrolledCoursesIds',
-            headerName: 'Enrolled Courses',
+            headerName: 'Enrolled Courses Count',
             flex: 1,
             editable: true,
-            headerClassName: 'theme--header'
+            headerClassName: 'theme--header',
+            renderCell: (params) => {
+                // params.value is the emergencyContacts array
+                if (!Array.isArray(params.value)) return '';
+                // Join all phone numbers with a comma
+                return params.value.length
+            }
+        },
+        {
+            field: 'dateOfBirth',
+            headerName: 'Date Of Birth',
+            flex: 1,
+            editable: false,
+            headerClassName: 'theme--header',
+            renderCell: (params) => {
+                if (!params.value) return '';
+                const date = new Date(params.value);
+                // Format as DD/MM/YYYY
+                const day = String(date.getDate()).padStart(2, '0');
+                const month = String(date.getMonth() + 1).padStart(2, '0');
+                const year = date.getFullYear();
+                return `${day}/${month}/${year}`;
+            }
         },
         // {
         //     field: 'currentClassId',
@@ -45,14 +68,19 @@ function StudentPage() {
         // },
         // {field: 'dateOfBirth', headerName: 'Date of Birth', flex: 1, editable: true, headerClassName: 'theme--header'},
         // {field: 'address', headerName: 'Address', flex: 1, editable: true, headerClassName: 'theme--header'},
-        { field: 'email', headerName: 'Email', flex: 1, editable: true, headerClassName: 'theme--header' },
-        {
-            field: 'emergencyContacts',
-            headerName: 'Emergency Contacts',
-            flex: 1,
-            editable: true,
-            headerClassName: 'theme--header'
-        },
+        // {
+        //     field: 'emergencyContacts',
+        //     headerName: 'Emergency Contacts',
+        //     flex: 1,
+        //     editable: true,
+        //     headerClassName: 'theme--header',
+        //     renderCell: (params) => {
+        //         // params.value is the emergencyContacts array
+        //         if (!Array.isArray(params.value)) return '';
+        //         // Join all phone numbers with a comma
+        //         return params.value.map(contact => contact.phone).filter(Boolean).join(', ');
+        //     }
+        // },
         // {
         //     field: 'enrollmentDate',
         //     headerName: 'Enrollment Date',
@@ -60,15 +88,15 @@ function StudentPage() {
         //     editable: true,
         //     headerClassName: 'theme--header'
         // },
-        {
-            field: 'graduationDate',
-            headerName: 'Graduation Date',
-            flex: 1,
-            editable: true,
-            headerClassName: 'theme--header'
-        },
-        { field: 'createdAt', headerName: 'Created At', flex: 1, editable: false, headerClassName: 'theme--header' },
-        { field: 'updatedAt', headerName: 'Updated At', flex: 1, editable: false, headerClassName: 'theme--header' },
+        // {
+        //     field: 'graduationDate',
+        //     headerName: 'Graduation Date',
+        //     flex: 1,
+        //     editable: true,
+        //     headerClassName: 'theme--header'
+        // },
+        // { field: 'createdAt', headerName: 'Created At', flex: 1, editable: false, headerClassName: 'theme--header' },
+        // { field: 'updatedAt', headerName: 'Updated At', flex: 1, editable: false, headerClassName: 'theme--header' },
     ], []);
 
     const [rowModesModel, setRowModesModel] = useState<GridRowModesModel>({});

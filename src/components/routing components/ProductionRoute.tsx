@@ -16,6 +16,8 @@ import {
     SvgIcon,
 } from "@mui/material";
 import ReportProblemOutlinedIcon from "@mui/icons-material/ReportProblemOutlined";
+import { useParams } from "react-router-dom";
+import DefaultErrorComponent from "./DefaultErrorComponent";
 
 const BlurOverlay: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     return (
@@ -92,9 +94,14 @@ export const ProductionRoute: React.FC<{
     params?: any;
     useBlurOverlay?: boolean;
 }> = ({ route, params = {}, useBlurOverlay = false }) => {
+    const urlParams = useParams();
+
+    // Use passed params or fallback to URL params
+    // If params is passed and not empty, use it; otherwise use URL params
+    const routeParams = (params && Object.keys(params).length > 0) ? params : urlParams;
     const Layout = route.layout;
     const { canActivateRoute } = useRouteGuard();
-    const { data, loading, error, refetch } = useRouteData(route, params);
+    const { data, loading, error, refetch } = useRouteData(route, routeParams);
 
     // Check if user can activate this route
     const canActivate = canActivateRoute(route);
@@ -107,9 +114,14 @@ export const ProductionRoute: React.FC<{
 
     // Handle error state
     if (error) {
+        if (error.response.data.statusCode === 403) {
+            return <BlurOverlay>
+                {/* <AccessDeniedComponent route={route} /> */}
+            </BlurOverlay>
+        }
         return (
             <ErrorBoundary route={route}>
-                <ErrorComponent error={error} retry={refetch} />
+                <DefaultErrorComponent error={error} retry={refetch} errorId={new Date().getTime().toString()} />
             </ErrorBoundary>
         );
     }
