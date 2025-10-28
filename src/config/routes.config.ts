@@ -474,7 +474,8 @@ export const routeConfig: RouteConfig[] = [
                 path: appRoutes.FEATURE_FLAGS,
                 component: lazy(() => import('../pages/features.page')),
                 permission: {
-                    roles: [ROLES.ADMIN],
+                    roles: [ROLES.ADMIN,ROLES.ORGADMIN],
+                    permissions: [PERMISSIONS.VIEW, PERMISSIONS.EDIT],
                 },
                 metadata: {
                     title: 'featuer flags',

@@ -6,7 +6,7 @@ import AppContainer from './AppContainer.tsx'
 import { Provider } from 'react-redux'
 import store, { persistor } from './redux/store/index.ts'
 import '~console/theme-detect'
-import * as Sentry from "@sentry/react";
+// import * as Sentry from "@sentry/react";
 import { PersistGate } from 'redux-persist/integration/react'
 
 // Sentry.init({

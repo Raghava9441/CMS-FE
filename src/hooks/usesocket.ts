@@ -20,14 +20,11 @@ export const useSocketManager = () => {
     const { accessToken, user } = useSelector((state: RootState) => state.auth);
     const { activeConversation } = useSelector((state: RootState) => state.chat);
 
-    // --- Socket Event Handlers ---
-
     const handleConnect = useCallback(() => {
         console.log("Socket connected successfully");
         if (user?._id) {
             socket.emit("user_online", { user_id: user._id });
         }
-        // Re-sync active conversation messages on reconnect
         if (activeConversation?._id) {
             console.log("Syncing messages for active conversation:", activeConversation._id);
             dispatch(GetMessages(activeConversation._id));
@@ -111,7 +108,6 @@ export const useSocketManager = () => {
             message: "Chat server is shutting down. You may be disconnected.",
             duration: 0 // Keep open indefinitely until user acknowledges or reconnects
         }));
-        // Potentially clear chat state or show a dedicated UI for server shutdown
     }, [dispatch]);
 
     const handlePermissionUpdted = useCallback((data) => {
@@ -121,7 +117,6 @@ export const useSocketManager = () => {
 
     // --- Main Effect for Socket Management ---
     useEffect(() => {
-        // Set optimistic approach (if this is relevant to socket interactions)
         dispatch(setIsOptimistic({ isOptimistic: true }));
 
         // Only connect if not already connected and accessToken is available
@@ -131,7 +126,6 @@ export const useSocketManager = () => {
         }
 
         if (socket) {
-            // Register event listeners
             socket.on("connect", handleConnect);
             socket.on("connection_established", handleConnectionEstablished);
             socket.on("connect_error", handleConnectError);
@@ -145,7 +139,6 @@ export const useSocketManager = () => {
             socket.on("server_shutdown", handleServerShutdown); // For graceful shutdown
             socket.on("permissions_updated", handlePermissionUpdted); // For graceful shutdown
 
-            // Return cleanup function for when the component unmounts or dependencies change
             return () => {
                 console.log("Cleaning up socket listeners...");
                 socket.off("connect", handleConnect);
@@ -167,7 +160,7 @@ export const useSocketManager = () => {
             };
         }
     }, [
-        accessToken, // Re-run if access token changes (e.g., after refresh, or initial load)
+        accessToken,
         dispatch,
         user?._id,
         activeConversation?._id,
@@ -183,8 +176,7 @@ export const useSocketManager = () => {
         handleMessageSync,
         handleServerShutdown
     ]);
-
-    // You can expose any state or functions if needed by components using this hook
+    
     return {
         // e.g., isSocketConnected: socket?.connected,
     };

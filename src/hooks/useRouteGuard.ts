@@ -17,8 +17,8 @@ export const useRouteGuard = () => {
 
     const hasResourcePermission = (resourceName: string, permissionType: 'view' | 'edit' | 'delete' = 'view'): boolean => {
         if (!resourceName) return true;
-
-        const permission = permissions.find((p: Permission) => p.name === resourceName);
+console.log(permissions)
+        const permission = permissions?.find((p: Permission) => p.name === resourceName);
         if (!permission) return false;
 
         return permission[permissionType];

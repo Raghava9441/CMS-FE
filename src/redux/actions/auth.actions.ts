@@ -5,7 +5,8 @@ import { AppDispatch, persistor } from "../store";
 import appRoutes from "../../routes/routePaths";
 
 
-export const loginUser = (user: { email: string, password: string }, navigate: NavigateFunction) => async (dispatch: AppDispatch) => {
+export const loginUser = (user: { email: string, password: string }, navigate: NavigateFunction) => {
+    return async (dispatch: AppDispatch) => {
     try {
         dispatch(loginUserStart());
         const response = await userApi.login(user);
@@ -23,6 +24,7 @@ export const loginUser = (user: { email: string, password: string }, navigate: N
             })
         );
     }
+};
 };
 
 export const logoutUser = (navigate: NavigateFunction) => async (dispatch: AppDispatch) => {

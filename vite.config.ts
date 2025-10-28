@@ -1,4 +1,4 @@
-import { sentryVitePlugin } from "@sentry/vite-plugin";
+// import { sentryVitePlugin } from "@sentry/vite-plugin";
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import path from 'path';
@@ -9,7 +9,7 @@ import { reactClickToComponent } from "vite-plugin-react-click-to-component";
 import TurboConsole from 'unplugin-turbo-console/vite'
 import svgr from "vite-plugin-svgr";
 import richSvg from "vite-plugin-react-rich-svg";
-import openInEditor from 'vite-plugin-open-in-editor';
+// import openInEditor from 'vite-plugin-open-in-editor';
 // import { sentryVitePlugin } from '@sentry/vite-plugin'
 
 
@@ -37,7 +37,7 @@ export default defineConfig({
   },
 
   plugins: [react(),
-  openInEditor(),
+  // openInEditor(),
   // sentryVitePlugin({
   //   org: 'YOUR_ORG_SLUG',
   //   project: 'YOUR_PROJECT_SLUG',
@@ -74,10 +74,12 @@ export default defineConfig({
     }
   }), // alt+right click to see  where the component is locatedd in the code base
   // ValidateEnv({ configFile: 'config/env' })
-  reactClickToComponent(), sentryVitePlugin({
-    org: "full-stack-developer-0t",
-    project: "cms-fe"
-  })],
+  reactClickToComponent(), 
+  // sentryVitePlugin({
+  //   org: "full-stack-developer-0t",
+  //   project: "cms-fe"
+  // })
+],
 
   base: '/CMS-FE/',
 
