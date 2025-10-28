@@ -1,2 +1,0 @@
-import{j as t}from"./index-B6Q5p1mB.js";try{let e=typeof window<"u"?window:typeof global<"u"?global:typeof globalThis<"u"?globalThis:typeof self<"u"?self:{},n=new e.Error().stack;n&&(e._sentryDebugIds=e._sentryDebugIds||{},e._sentryDebugIds[n]="7e73d5fa-f3f6-4196-a2a1-cc05b644fc8a",e._sentryDebugIdIdentifier="sentry-dbid-7e73d5fa-f3f6-4196-a2a1-cc05b644fc8a")}catch{}function f({}){return t.jsx("div",{children:"StudentProfile"})}export{f as default};
-//# sourceMappingURL=StudentProfile-B4KDsfBN.js.map

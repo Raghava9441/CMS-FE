@@ -1,2 +1,0 @@
-import{j as d,a7 as n}from"./index-B6Q5p1mB.js";try{let e=typeof window<"u"?window:typeof global<"u"?global:typeof globalThis<"u"?globalThis:typeof self<"u"?self:{},t=new e.Error().stack;t&&(e._sentryDebugIds=e._sentryDebugIds||{},e._sentryDebugIds[t]="8be31927-08b9-4e07-bd40-7f890d7cd487",e._sentryDebugIdIdentifier="sentry-dbid-8be31927-08b9-4e07-bd40-7f890d7cd487")}catch{}function o({}){return d.jsx(n,{})}export{o as default};
-//# sourceMappingURL=UnAuthLayout-BaCQnFfV.js.map

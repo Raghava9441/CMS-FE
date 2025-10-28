@@ -1,2 +1,0 @@
-import{j as n}from"./index-B6Q5p1mB.js";try{let e=typeof window<"u"?window:typeof global<"u"?global:typeof globalThis<"u"?globalThis:typeof self<"u"?self:{},d=new e.Error().stack;d&&(e._sentryDebugIds=e._sentryDebugIds||{},e._sentryDebugIds[d]="b0a5cb1d-0a5e-45e5-8daa-243addf32ed7",e._sentryDebugIdIdentifier="sentry-dbid-b0a5cb1d-0a5e-45e5-8daa-243addf32ed7")}catch{}function i({}){return n.jsx("div",{children:"ProfileSettings"})}export{i as default};
-//# sourceMappingURL=ProfileSettings-Bf6fonyg.js.map
