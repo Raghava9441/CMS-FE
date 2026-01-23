@@ -8,6 +8,7 @@ import parentReducer from '../slices/parent.slice';
 import chatreducer from '../slices/chat.slice';
 import friendsReducer from '../slices/Friends.slice';
 import examReducer from '../slices/exam.slice';
+import attendanceReducer from '../slices/attendance.slice';
 import { thunk } from 'redux-thunk';
 import { persistReducer, persistStore } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
@@ -22,6 +23,7 @@ const rootReducer = combineReducers({
     chat: chatreducer,
     Friends: friendsReducer,
     exam: examReducer,
+    attendance: attendanceReducer,
 });
 
 const persistConfig = {

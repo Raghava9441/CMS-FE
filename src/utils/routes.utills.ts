@@ -147,7 +147,7 @@ export const getSidebarRoutes = (role: string, permissions: Permission[]): Sideb
             const resourceAllowed = hasResourcePermission(route.resourceName || '');
 
             // Custom permission check
-            let customAllowed = true;
+            const customAllowed = true;
             if (route.permission?.customCheck) {
                 // You might need to pass user object here
                 // customAllowed = route.permission.customCheck(user);

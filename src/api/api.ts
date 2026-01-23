@@ -6,6 +6,7 @@ import { Student, StudentApiResponse } from "../types/student.models";
 import { Parent, ParentApiResponse } from "../types/parent.models";
 import { Course, CourseApiResponse } from "@models/course.modals";
 import { IDepartment, IDepartmentApiResponse, IDepartmentApiResponseData } from "@models/department.modals";
+import { Attendance, AttendanceApiResponse, AttendanceStatsApiResponse, BulkMarkAttendanceData, BulkDeleteAttendanceData } from "../types/attendance.models";
 
 export const AsyncorganizationApi = {
     /**
@@ -144,6 +145,24 @@ export const courseApi = {
     createCourse: (course: Course) => axiosInstance.post<CourseApiResponse<Course>>('/courses', course),
     updateCourse: (course: Course) => axiosInstance.put<CourseApiResponse<Course>>('/courses', course),
     deleteCourse: (id: string) => axiosInstance.delete<CourseApiResponse<Course>>(`/courses/${id}`),
+}
+
+export const attendanceApi = {
+    getAttendances: (params: string) => axiosInstance.get<AttendanceApiResponse<Attendance[]>>(`/attendances?${params}`),
+    getAttendanceById: (id: string) => axiosInstance.get<AttendanceApiResponse<Attendance>>(`/attendances/${id}`),
+    createAttendance: (attendance: Omit<Attendance, 'createdAt' | 'updatedAt'>) => axiosInstance.post<AttendanceApiResponse<Attendance>>('/attendances', attendance),
+    updateAttendance: (attendance: Omit<Attendance, 'createdAt' | 'updatedAt'>, id: string) => axiosInstance.put<AttendanceApiResponse<Attendance>>(`/attendances/${id}`, attendance),
+    deleteAttendance: (id: string) => axiosInstance.delete<AttendanceApiResponse<Attendance>>(`/attendances/${id}`),
+    getAttendanceByStudent: (studentId: string, params: string) => axiosInstance.get<AttendanceApiResponse<Attendance[]>>(`/attendances/student/${studentId}?${params}`),
+    getAttendanceByClass: (classId: string, params: string) => axiosInstance.get<AttendanceApiResponse<Attendance[]>>(`/attendances/class/${classId}?${params}`),
+    getAttendanceByDate: (date: string, params: string) => axiosInstance.get<AttendanceApiResponse<Attendance[]>>(`/attendances/date/${date}?${params}`),
+    getStudentAttendanceStats: (studentId: string, params: string) => axiosInstance.get<AttendanceStatsApiResponse>(`/attendances/stats/student/${studentId}?${params}`),
+    getClassAttendanceStats: (classId: string, params: string) => axiosInstance.get<AttendanceStatsApiResponse>(`/attendances/stats/class/${classId}?${params}`),
+    markBulkAttendance: (data: BulkMarkAttendanceData) => axiosInstance.post<AttendanceApiResponse<Attendance[]>>('/attendances/mark-bulk', data),
+    createBulkAttendances: (file: FormData) => axiosInstance.post<AttendanceApiResponse<Attendance[]>>('/attendances/bulk', file, {
+        headers: { 'Content-Type': 'multipart/form-data' }
+    }),
+    deleteBulkAttendances: (data: BulkDeleteAttendanceData) => axiosInstance.delete<AttendanceApiResponse<Attendance[]>>('/attendances/bulk', { data }),
 }
 
 export const MessageApi = {

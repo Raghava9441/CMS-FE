@@ -62,7 +62,7 @@ const slice = createSlice({
             const conversation = {
                 ...action.payload.conversation,
             };
-            let newConvos = [...state.conversations].filter(
+            const newConvos = [...state.conversations].filter(
                 (e) => e._id !== conversation._id
             );
             newConvos.unshift(conversation);
@@ -136,7 +136,7 @@ const slice = createSlice({
                     const conversation = {
                         ...action.payload.message.conversation,
                     };
-                    let newConvos = [...state.conversations].filter(
+                    const newConvos = [...state.conversations].filter(
                         (e) => e._id !== conversation._id
                     );
                     newConvos.unshift(conversation);
