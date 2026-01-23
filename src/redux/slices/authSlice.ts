@@ -78,7 +78,7 @@ const initialState: AuthState = {
     showFriendsMenu: false,
     searchCount: null,
     isLoading: false,
-    permissions: {}
+    permissions: JSON.parse(localStorage.getItem("permissions") || '{}')
 };
 
 // Create the auth slice
@@ -136,6 +136,7 @@ const authSlice = createSlice({
         permissionSuccess(state, action) {
             console.log("object", action)
             console.log(action.payload.permissions)
+            localStorage.setItem("permissions", JSON.stringify(action.payload.permissions))
             state.permissions = action.payload.permissions
         },
         openSnackbar(state, action) {

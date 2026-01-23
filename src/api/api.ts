@@ -1,4 +1,4 @@
-import { ApiResponse, Organization } from "../types/organization.modal";
+import { Organization } from "../types/organization.modal";
 import axiosInstance from "../utils/axiosInstance";
 import { User } from "../types/user.modals";
 import { Teacher, TeacherApiResponse } from "../types/teacher.modals";
@@ -182,6 +182,16 @@ export const departmentApi = {
     deleteDepartment: (id: string) => axiosInstance.delete<IDepartmentApiResponse<IDepartmentApiResponseData<any>>>(`/departments/${id}`),
 }
 
+import { ApiResponse, Exam } from "../types/exam.modal";
+
+export const examApi = {
+    getExams: (params: string) => axiosInstance.get<ApiResponse<Exam[]>>(`/exams?${params}`),
+    getExamById: (id: string) => axiosInstance.get<ApiResponse<Exam>>(`/exams/${id}`),
+    createExam: (exam: Exam) => axiosInstance.post<ApiResponse<Exam>>('/exams', exam),
+    updateExam: (exam: Omit<Exam, 'createdAt' | 'updatedAt'>, _id: string) => axiosInstance.put<ApiResponse<Exam>>(`/exams/${_id}`, exam),
+    deleteExam: (id: string) => axiosInstance.delete<ApiResponse<Exam>>(`/exams/${id}`),
+}
+
 // TODO:types need to implimnet for each api call to be able to use them
 // export const classApi = {
 //     getClasses: () => axiosInstance.get<ClassApiResponse<Class[]>>('/classes'),
@@ -199,13 +209,7 @@ export const departmentApi = {
 //     deleteAttendance: (id: string) => axiosInstance.delete<AttendanceApiResponse<Attendance>>(`/attendance/${id}`),
 // }
 
-// export const examApi = {
-//     getExams: () => axiosInstance.get<ExamApiResponse<Exam[]>>('/exams'),
-//     getExamById: (id: string) => axiosInstance.get<ExamApiResponse<Exam>>(`/exams/${id}`),
-//     createExam: (exam: Exam) => axiosInstance.post<ExamApiResponse<Exam>>('/exams', exam),
-//     updateExam: (exam: Exam) => axiosInstance.put<ExamApiResponse<Exam>>('/exams', exam),
-//     deleteExam: (id: string) => axiosInstance.delete<ExamApiResponse<Exam>>(`/exams/${id}`),
-// }
+
 
 // export const assignmentApi = {
 //     getAssignments: () => axiosInstance.get<AssignmentApiResponse<Assignment[]>>('/assignments'),

@@ -17,7 +17,6 @@ export const useRouteGuard = () => {
 
     const hasResourcePermission = (resourceName: string, permissionType: 'view' | 'edit' | 'delete' = 'view'): boolean => {
         if (!resourceName) return true;
-console.log(permissions)
         const permission = permissions?.find((p: Permission) => p.name === resourceName);
         if (!permission) return false;
 
@@ -68,12 +67,12 @@ console.log(permissions)
     };
 
     useEffect(() => {
-        const currentRoute = findRouteByPath(routeConfig, location.pathname);
+        // const currentRoute = findRouteByPath(routeConfig, location.pathname);
 
-        if (!currentRoute) {
-            navigate(appRoutes.NOT_FOUND);
-            return;
-        }
+        // if (!currentRoute) {
+        //     navigate(appRoutes.NOT_FOUND);
+        //     return;
+        // }
 
         // Check authentication
         if (!isAuthenticated && !isPublicRoute(location.pathname)) {
