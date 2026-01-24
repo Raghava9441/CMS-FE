@@ -9,7 +9,7 @@ export interface RouteMetadata {
     description?: string;
     keywords?: string[];
     breadcrumb?: string;
-    icon?: React.ReactNode;
+    icon?: React.ElementType;
     hideInMenu?: boolean;
     hideInBreadcrumb?: boolean;
     order?: number;

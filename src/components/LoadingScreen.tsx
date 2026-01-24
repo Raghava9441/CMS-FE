@@ -1,7 +1,7 @@
-import { Box, Stack, useTheme } from "@mui/material";
+import { Stack, useTheme } from "@mui/material";
 import SchoolIcon from '@mui/icons-material/School';
 
-const LoadingScreen = ({ fromChat }: { fromChat: boolean }) => {
+const LoadingScreen = ({ fromChat = false }: { fromChat?: boolean }) => {
     // using theme
     const theme = useTheme();
 

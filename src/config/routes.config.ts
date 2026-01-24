@@ -17,6 +17,8 @@ import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet';
 import SmsIcon from '@mui/icons-material/Sms';
 import ClassIcon from '@mui/icons-material/Class';
 import Diversity2Icon from '@mui/icons-material/Diversity2';
+import AssignmentIcon from '@mui/icons-material/Assignment';
+import MenuBookIcon from '@mui/icons-material/MenuBook';
 import { teacherApi } from '@api/api';
 export const routeConfig: RouteConfig[] = [
     // Auth routes
@@ -189,8 +191,8 @@ export const routeConfig: RouteConfig[] = [
                     roles: [ROLES.ADMIN, ROLES.ORGADMIN, ROLES.TEACHER],
                 },
                 metadata: {
-                    title: 'StudentPage',
-                    breadcrumb: 'Studnets',
+                    title: 'Students',
+                    breadcrumb: 'Students',
                     icon: SupervisorAccountIcon,
                 },
                 showInSidebar: true,
@@ -279,7 +281,7 @@ export const routeConfig: RouteConfig[] = [
                 metadata: {
                     title: 'Courses',
                     breadcrumb: 'Courses',
-                    icon: DashboardIcon,
+                    icon: MenuBookIcon,
                 },
                 showInSidebar: true,
                 children: [
@@ -315,7 +317,7 @@ export const routeConfig: RouteConfig[] = [
                 metadata: {
                     title: 'Assignment',
                     breadcrumb: 'Assignment',
-                    icon: DashboardIcon,
+                    icon: AssignmentIcon,
                 },
                 showInSidebar: true,
                 children: [
@@ -478,9 +480,9 @@ export const routeConfig: RouteConfig[] = [
                     permissions: [PERMISSIONS.VIEW, PERMISSIONS.EDIT],
                 },
                 metadata: {
-                    title: 'featuer flags',
-                    breadcrumb: 'feaature flags',
-                    icon: '👨‍🏫',
+                    title: 'Feature Flags',
+                    breadcrumb: 'Feature Flags',
+                    icon: '🚩',
                 },
                 showInSidebar: false,
                 children: [
