@@ -33,11 +33,8 @@ axiosInstance.interceptors.request.use(
     (config) => {
         // Ensure these are set for every request
         config.withCredentials = true;
-        config.headers = {
-            ...config.headers,
-            'Accept': 'application/json',
-            'Content-Type': 'application/json',
-        };
+        config.headers.set('Accept', 'application/json');
+        config.headers.set('Content-Type', 'application/json');
         return config;
     },
     (error) => {
@@ -50,6 +47,12 @@ let refreshingTokenInProgress = false;
 axiosInstance.interceptors.response.use(
     (response) => response,
     async (error) => {
+        // Handle canceled requests specially
+        if (axios.isCancel(error)) {
+            console.log('Request canceled:', error.message);
+            return Promise.reject(new ApiError(499, 'Request canceled'));
+        }
+
         if (error?.config?.url?.includes("refresh-token")) {
             return Promise.reject(error);
         }

@@ -7,267 +7,147 @@ import { Parent, ParentApiResponse } from "../types/parent.models";
 import { Course, CourseApiResponse } from "@models/course.modals";
 import { IDepartment, IDepartmentApiResponse, IDepartmentApiResponseData } from "@models/department.modals";
 import { Attendance, AttendanceApiResponse, AttendanceStatsApiResponse, BulkMarkAttendanceData, BulkDeleteAttendanceData } from "../types/attendance.models";
+import { abortManager } from "../utils/abortControllerManager";
 
 export const AsyncorganizationApi = {
-    /**
-     * Fetches a list of organizations.
-     * @param {any} params - Query parameters for filtering or pagination (e.g., `?limit=10&page=1`).
-     * @returns {Promise<ApiResponse<Organization[]>>} A promise that resolves to an API response containing an array of organizations.
-     */
-    getOrganizations: (params: any) => axiosInstance.get<ApiResponse<Organization[]>>(`/organizations?${params}`),
 
-    /**
-     * Fetches a single organization by its ID.
-     * @param {string} id - The unique identifier of the organization.
-     * @returns {Promise<ApiResponse<Organization>>} A promise that resolves to an API response containing a single organization.
-     */
-    getOrganizationById: (id: string) => axiosInstance.get<ApiResponse<Organization>>(`/organizations/${id}`),
+    getOrganizations: (params: any, signal?: AbortSignal) => axiosInstance.get<ApiResponse<Organization[]>>(`/organizations?${params}`, { signal: abortManager.getSignal('getOrganizations') }),
 
-    /**
-     * Creates a new organization.
-     * @param {Omit<Organization, 'createdAt' | 'updatedAt'>} organization - The organization data to create, excluding `createdAt` and `updatedAt` fields.
-     * @returns {Promise<ApiResponse<Organization>>} A promise that resolves to an API response containing the newly created organization.
-     */
-    createOrganization: (organization: Omit<Organization, 'createdAt' | 'updatedAt'>) => axiosInstance.post<ApiResponse<Organization>>(`/organizations`, organization),
+    getOrganizationById: (id: string, signal?: AbortSignal) => axiosInstance.get<ApiResponse<Organization>>(`/organizations/${id}`, { signal: abortManager.getSignal(`getOrganizationById-${id}`) }),
 
-    /**
-     * Updates an existing organization.
-     * @param {Omit<Organization, 'createdAt' | 'updatedAt'>} organization - The updated organization data, excluding `createdAt` and `updatedAt` fields.
-     * @param {string} _id - The unique identifier of the organization to update.
-     * @returns {Promise<ApiResponse<Organization>>} A promise that resolves to an API response containing the updated organization.
-     */
-    updateOrganization: (organization: Omit<Organization, 'createdAt' | 'updatedAt'>, _id: string) => axiosInstance.put<ApiResponse<Organization>>(`/organizations/${_id}`, organization),
 
-    /**
-     * Deletes an organization by its ID.
-     * @param {string} id - The unique identifier of the organization to delete.
-     * @returns {Promise<ApiResponse<Organization>>} A promise that resolves to an API response indicating success or failure.
-     */
-    deleteOrganization: (id: string) => axiosInstance.delete<ApiResponse<Organization>>(`/organizations/${id}`)
+    createOrganization: (organization: Omit<Organization, 'createdAt' | 'updatedAt'>, signal?: AbortSignal) => axiosInstance.post<ApiResponse<Organization>>(`/organizations`, organization, { signal: abortManager.getSignal('createOrganization') }),
+
+
+    updateOrganization: (organization: Omit<Organization, 'createdAt' | 'updatedAt'>, _id: string, signal?: AbortSignal) => axiosInstance.put<ApiResponse<Organization>>(`/organizations/${_id}`, organization, { signal: abortManager.getSignal('updateOrganization') }),
+
+    deleteOrganization: (id: string, signal?: AbortSignal) => axiosInstance.delete<ApiResponse<Organization>>(`/organizations/${id}`, { signal: abortManager.getSignal('deleteOrganization') })
 }
 
 
 export const userApi = {
-    /**
-     * Fetches a list of users.
-     * @param {any} params - Query parameters for filtering or pagination (e.g., `?role=student`).
-     * @returns {Promise<ApiResponse<User[]>>} A promise that resolves to an API response containing an array of users.
-     */
-    getusers: (params: any) => axiosInstance.get<ApiResponse<User[]>>(`/user?${params}`),
 
-    /**
-     * Fetches a single user by their ID.
-     * @param {string} id - The unique identifier of the user.
-     * @returns {Promise<ApiResponse<User>>} A promise that resolves to an API response containing a single user.
-     */
-    getUserById: (id: string) => axiosInstance.get<ApiResponse<User>>(`/user/${id}`),
+    getusers: (params: any, signal?: AbortSignal) => axiosInstance.get<ApiResponse<User[]>>(`/user?${params}`, { signal: abortManager.getSignal('getusers') }),
 
-    /**
-     * Creates a new user.
-     * @param {Omit<User, 'password' | 'accessToken' | 'refreshToken'>} user - The user data to create, excluding sensitive fields like password and tokens.
-     * @returns {Promise<ApiResponse<User>>} A promise that resolves to an API response containing the newly created user.
-     */
-    createUser: (user: Omit<User, 'password' | 'accessToken' | 'refreshToken'>) => axiosInstance.post<ApiResponse<User>>('/user', user),
+    getUserById: (id: string, signal?: AbortSignal) => axiosInstance.get<ApiResponse<User>>(`/user/${id}`, { signal: abortManager.getSignal(`getUserById-${id}`) }),
 
-    /**
-     * Updates an existing user.
-     * @param {Omit<User, 'password' | 'accessToken' | 'refreshToken'>} user - The updated user data, excluding sensitive fields. The `_id` field within the user object is used for identification.
-     * @returns {Promise<ApiResponse<User>>} A promise that resolves to an API response containing the updated user.
-     */
-    updateUser: (user: Omit<User, 'password' | 'accessToken' | 'refreshToken'>) => axiosInstance.put<ApiResponse<User>>(`/user/${user._id}`, user),
+    createUser: (user: Omit<User, 'password' | 'accessToken' | 'refreshToken'>, signal?: AbortSignal) => axiosInstance.post<ApiResponse<User>>('/user', user, { signal: abortManager.getSignal('createUser') }),
 
-    /**
-     * Deletes a user by their ID.
-     * @param {string} id - The unique identifier of the user to delete.
-     * @returns {Promise<ApiResponse<User>>} A promise that resolves to an API response indicating success or failure.
-     */
-    deleteUser: (id: string) => axiosInstance.delete<ApiResponse<User>>(`/organizations/${id}`), // Note: Path seems incorrect, should likely be `/user/${id}`
+    updateUser: (user: Omit<User, 'password' | 'accessToken' | 'refreshToken'>, signal?: AbortSignal) => axiosInstance.put<ApiResponse<User>>(`/user/${user._id}`, user, { signal: abortManager.getSignal(`updateUser-${user._id}`) }),
 
-    /**
-     * Authenticates a user and provides access tokens.
-     * @param {{ email: string, password: string }} credentials - User's email and password.
-     * @returns {Promise<ApiResponse<User>>} A promise that resolves to an API response containing user data, including access and refresh tokens.
-     */
-    login: (credentials: { email: string, password: string }) => axiosInstance.post<ApiResponse<User>>('user/auth/login', credentials),
+    deleteUser: (id: string, signal?: AbortSignal) => axiosInstance.delete<ApiResponse<User>>(`/organizations/${id}`, { signal: abortManager.getSignal(`deleteUser-${id}`) }), // Note: Path seems incorrect, should likely be `/user/${id}`
 
-    /**
-     * Logs out the current user, invalidating their session.
-     * @returns {Promise<ApiResponse<any>>} A promise that resolves to an API response indicating successful logout.
-     */
-    logout: () => axiosInstance.post<ApiResponse<any>>('user/auth/logout'),
+    login: (credentials: { email: string, password: string }, signal?: AbortSignal) => axiosInstance.post<ApiResponse<User>>('user/auth/login', credentials, { signal: abortManager.getSignal('login') }),
 
-    /**
-     * Registers a new user.
-     * @param {{ email: string, password: string }} user - The email and password for the new user.
-     * @returns {Promise<ApiResponse<User>>} A promise that resolves to an API response containing the newly registered user data.
-     */
-    register: (user: { email: string, password: string }) => axiosInstance.post<ApiResponse<User>>('user/auth/register', user),
+    logout: (signal?: AbortSignal) => axiosInstance.post<ApiResponse<any>>('user/auth/logout', {}, { signal: abortManager.getSignal('logout') }),
 
-    /**
-     * Refreshes the access token using a provided refresh token.
-     * @param {string} refreshToken - The refresh token obtained during login.
-     * @returns {Promise<ApiResponse<{ accessToken: string, newRefreshToken: string }>>} A promise that resolves to an API response containing a new access token and potentially a new refresh token.
-     */
-    refreshAccessToken: (refreshToken: string) => axiosInstance.post<ApiResponse<{ accessToken: string, newRefreshToken: string }>>('user/auth/refresh', { refreshToken }),
+    register: (user: { email: string, password: string }, signal?: AbortSignal) => axiosInstance.post<ApiResponse<User>>('user/auth/register', user, { signal: abortManager.getSignal('register') }),
 
-    permissions: (id: string) => axiosInstance.get<ApiResponse<any>>(`/permissions/${id}`),
+    refreshAccessToken: (refreshToken: string, signal?: AbortSignal) => axiosInstance.post<ApiResponse<{ accessToken: string, newRefreshToken: string }>>('user/auth/refresh', { refreshToken }, { signal: abortManager.getSignal('refreshAccessToken') }),
 
-    modifyPermissions: (permissions: any, id: string) => axiosInstance.patch<ApiResponse<any>>(`/permissions/${id}`, permissions),
+    permissions: (id: string, signal?: AbortSignal) => axiosInstance.get<ApiResponse<any>>(`/permissions/${id}`, { signal: abortManager.getSignal(`permissions-${id}`) }),
+
+    modifyPermissions: (permissions: any, id: string, signal?: AbortSignal) => axiosInstance.patch<ApiResponse<any>>(`/permissions/${id}`, permissions, { signal: abortManager.getSignal(`modifyPermissions-${id}`) }),
 }
 
 export const teacherApi = {
-    getTeachers: (params: string) => axiosInstance.get<TeacherApiResponse<Teacher[]>>(`/teachers?${params}`),
-    getTeacherById: (id: string) => axiosInstance.get<TeacherApiResponse<Teacher>>(`/teachers/${id}`),
-    createTeacher: (teacher: Teacher) => axiosInstance.post<TeacherApiResponse<Teacher>>('/teachers', teacher),
-    updateTeacher: (teacher: Omit<Teacher, 'createdAt' | 'updatedAt'>, _id: string) => axiosInstance.put<TeacherApiResponse<Teacher>>(`/teachers/${_id}`, teacher),
-    deleteTeacher: (id: string) => axiosInstance.delete<TeacherApiResponse<Teacher>>(`/teachers/${id}`),
+    getTeachers: (params: string, signal?: AbortSignal) => axiosInstance.get<TeacherApiResponse<Teacher[]>>(`/teachers?${params}`, {
+        signal: abortManager.getSignal('getTeachers')
+    }),
+    getTeacherById: (id: string, signal?: AbortSignal) => axiosInstance.get<TeacherApiResponse<Teacher>>(`/teachers/${id}`, { signal }),
+    createTeacher: (teacher: Teacher, signal?: AbortSignal) => axiosInstance.post<TeacherApiResponse<Teacher>>('/teachers', teacher, { signal }),
+    updateTeacher: (teacher: Omit<Teacher, 'createdAt' | 'updatedAt'>, _id: string, signal?: AbortSignal) => axiosInstance.put<TeacherApiResponse<Teacher>>(`/teachers/${_id}`, teacher, { signal }),
+    deleteTeacher: (id: string, signal?: AbortSignal) => axiosInstance.delete<TeacherApiResponse<Teacher>>(`/teachers/${id}`, { signal }),
 }
 
 export const studentApi = {
-    getStudents: (queryParams: string) => axiosInstance.get<StudentApiResponse<Student[]>>(`/students?${queryParams}`),
-    getStudentById: (id: string) => axiosInstance.get<StudentApiResponse<Student>>(`/students/${id}`),
-    createStudent: (student: Student) => axiosInstance.post<StudentApiResponse<Student>>('/students', student),
-    updateStudent: (student: Student) => axiosInstance.put<StudentApiResponse<Student>>('/students', student),
-    deleteStudent: (id: string) => axiosInstance.delete<StudentApiResponse<Student>>(`/students/${id}`),
+    getStudents: (queryParams: string, signal?: AbortSignal) => axiosInstance.get<StudentApiResponse<Student[]>>(`/students?${queryParams}`, { signal: abortManager.getSignal('getStudents') }),
+    getStudentById: (id: string, signal?: AbortSignal) => axiosInstance.get<StudentApiResponse<Student>>(`/students/${id}`, { signal: abortManager.getSignal(`getStudentById-${id}`)  }),
+    createStudent: (student: Student, signal?: AbortSignal) => axiosInstance.post<StudentApiResponse<Student>>('/students', student, { signal: abortManager.getSignal('createStudent') }),
+    updateStudent: (student: Student, signal?: AbortSignal) => axiosInstance.put<StudentApiResponse<Student>>('/students', student, { signal: abortManager.getSignal(`updateStudent-${student._id}`) }),
+    deleteStudent: (id: string, signal?: AbortSignal) => axiosInstance.delete<StudentApiResponse<Student>>(`/students/${id}`, { signal: abortManager.getSignal(`deleteStudent-${id}`) }),
 }
 
 export const parentApi = {
-    getParents: (queryParams: string) => axiosInstance.get<ParentApiResponse<Parent[]>>(`/parents?${queryParams}`),
-    getParentById: (id: string) => axiosInstance.get<ParentApiResponse<Parent>>(`/parents/${id}`),
-    createParent: (parent: Parent) => axiosInstance.post<ParentApiResponse<Parent>>('/parents', parent),
-    updateParent: (parent: Parent) => axiosInstance.put<ParentApiResponse<Parent>>('/parents', parent),
-    deleteParent: (id: string) => axiosInstance.delete<ParentApiResponse<Parent>>(`/parents/${id}`),
+    getParents: (queryParams: string, signal?: AbortSignal) => axiosInstance.get<ParentApiResponse<Parent[]>>(`/parents?${queryParams}`, { signal }),
+    getParentById: (id: string, signal?: AbortSignal) => axiosInstance.get<ParentApiResponse<Parent>>(`/parents/${id}`, { signal }),
+    createParent: (parent: Parent, signal?: AbortSignal) => axiosInstance.post<ParentApiResponse<Parent>>('/parents', parent, { signal }),
+    updateParent: (parent: Parent, signal?: AbortSignal) => axiosInstance.put<ParentApiResponse<Parent>>('/parents', parent, { signal }),
+    deleteParent: (id: string, signal?: AbortSignal) => axiosInstance.delete<ParentApiResponse<Parent>>(`/parents/${id}`, { signal }),
 }
 
 export const courseApi = {
-    getCourses: () => axiosInstance.get<CourseApiResponse<Course[]>>('/courses'),
-    getCourseById: (id: string) => axiosInstance.get<CourseApiResponse<Course>>(`/courses/${id}`),
-    createCourse: (course: Course) => axiosInstance.post<CourseApiResponse<Course>>('/courses', course),
-    updateCourse: (course: Course) => axiosInstance.put<CourseApiResponse<Course>>('/courses', course),
-    deleteCourse: (id: string) => axiosInstance.delete<CourseApiResponse<Course>>(`/courses/${id}`),
-}
-
-export const attendanceApi = {
-    getAttendances: (params: string) => axiosInstance.get<AttendanceApiResponse<Attendance[]>>(`/attendances?${params}`),
-    getAttendanceById: (id: string) => axiosInstance.get<AttendanceApiResponse<Attendance>>(`/attendances/${id}`),
-    createAttendance: (attendance: Omit<Attendance, 'createdAt' | 'updatedAt'>) => axiosInstance.post<AttendanceApiResponse<Attendance>>('/attendances', attendance),
-    updateAttendance: (attendance: Omit<Attendance, 'createdAt' | 'updatedAt'>, id: string) => axiosInstance.put<AttendanceApiResponse<Attendance>>(`/attendances/${id}`, attendance),
-    deleteAttendance: (id: string) => axiosInstance.delete<AttendanceApiResponse<Attendance>>(`/attendances/${id}`),
-    getAttendanceByStudent: (studentId: string, params: string) => axiosInstance.get<AttendanceApiResponse<Attendance[]>>(`/attendances/student/${studentId}?${params}`),
-    getAttendanceByClass: (classId: string, params: string) => axiosInstance.get<AttendanceApiResponse<Attendance[]>>(`/attendances/class/${classId}?${params}`),
-    getAttendanceByDate: (date: string, params: string) => axiosInstance.get<AttendanceApiResponse<Attendance[]>>(`/attendances/date/${date}?${params}`),
-    getStudentAttendanceStats: (studentId: string, params: string) => axiosInstance.get<AttendanceStatsApiResponse>(`/attendances/stats/student/${studentId}?${params}`),
-    getClassAttendanceStats: (classId: string, params: string) => axiosInstance.get<AttendanceStatsApiResponse>(`/attendances/stats/class/${classId}?${params}`),
-    markBulkAttendance: (data: BulkMarkAttendanceData) => axiosInstance.post<AttendanceApiResponse<Attendance[]>>('/attendances/mark-bulk', data),
-    createBulkAttendances: (file: FormData) => axiosInstance.post<AttendanceApiResponse<Attendance[]>>('/attendances/bulk', file, {
-        headers: { 'Content-Type': 'multipart/form-data' }
-    }),
-    deleteBulkAttendances: (data: BulkDeleteAttendanceData) => axiosInstance.delete<AttendanceApiResponse<Attendance[]>>('/attendances/bulk', { data }),
+    getCourses: (signal?: AbortSignal) => axiosInstance.get<CourseApiResponse<Course[]>>('/courses', { signal }),
+    getCourseById: (id: string, signal?: AbortSignal) => axiosInstance.get<CourseApiResponse<Course>>(`/courses/${id}`, { signal }),
+    createCourse: (course: Course, signal?: AbortSignal) => axiosInstance.post<CourseApiResponse<Course>>('/courses', course, { signal }),
+    updateCourse: (course: Course, signal?: AbortSignal) => axiosInstance.put<CourseApiResponse<Course>>('/courses', course, { signal }),
+    deleteCourse: (id: string, signal?: AbortSignal) => axiosInstance.delete<CourseApiResponse<Course>>(`/courses/${id}`, { signal }),
 }
 
 export const MessageApi = {
-    sendMessage: (payload) => axiosInstance.post('/message/send-message', payload),
-    getMessages: (convo_id: string) => axiosInstance.get(`/message/get-messages/${convo_id}`),
+    sendMessage: (payload, signal?: AbortSignal) => axiosInstance.post('/message/send-message', payload, { signal }),
+    getMessages: (convo_id: string, signal?: AbortSignal) => axiosInstance.get(`/message/get-messages/${convo_id}`, { signal }),
 }
 
 export const ConversationApi = {
-    createOrOpenConversation: (payload: any) => axiosInstance.post('/conversation/create-open-conversation', payload),
-    getConversation: () => axiosInstance.get(`/conversation/get-conversations`),
+    createOrOpenConversation: (payload: any, signal?: AbortSignal) => axiosInstance.post('/conversation/create-open-conversation', payload, { signal }),
+    getConversation: (signal?: AbortSignal) => axiosInstance.get(`/conversation/get-conversations`, { signal }),
 }
 
 export const FriendRequest = {
-    sendRequest: (payload: any) => axiosInstance.post('/friends/send-request', payload),
-    getConversation: () => axiosInstance.post(`/friends/cancel-request`),
-    acceptRejectRequest: (data) => axiosInstance.post(`/friends/accept-reject-request`, data),
-    cancelRequest: (data: any) => axiosInstance.post(`/friends/cancel-request`, data),
-    getFriends: () => axiosInstance.get(`/friends/get-friends`),
-    getOnlineFriends: () => axiosInstance.get(`/friends/online-friends`),
-    getSentRequests: () => axiosInstance.get(`/friends/get-sent-requests`),
-    removeFriend: () => axiosInstance.get(`/friends/search`),
-    searchFriends: (query: string) => axiosInstance.get(`/friends/get-requests${query}`),
-    GetFriendRequests: () => axiosInstance.get(`/friends/get-requests`),
-    GetOrganizationUsers: () => axiosInstance.get(`/friends/get-orgusers`),
+    sendRequest: (payload: any, signal?: AbortSignal) => axiosInstance.post('/friends/send-request', payload, { signal }),
+    getConversation: (signal?: AbortSignal) => axiosInstance.post(`/friends/cancel-request`, {}, { signal }),
+    acceptRejectRequest: (data, signal?: AbortSignal) => axiosInstance.post(`/friends/accept-reject-request`, data, { signal }),
+    cancelRequest: (data: any, signal?: AbortSignal) => axiosInstance.post(`/friends/cancel-request`, data, { signal }),
+    getFriends: (signal?: AbortSignal) => axiosInstance.get(`/friends/get-friends`, { signal }),
+    getOnlineFriends: (signal?: AbortSignal) => axiosInstance.get(`/friends/online-friends`, { signal }),
+    getSentRequests: (signal?: AbortSignal) => axiosInstance.get(`/friends/get-sent-requests`, { signal }),
+    removeFriend: (signal?: AbortSignal) => axiosInstance.get(`/friends/search`, { signal }),
+    searchFriends: (query: string, signal?: AbortSignal) => axiosInstance.get(`/friends/get-requests${query}`, { signal }),
+    GetFriendRequests: (signal?: AbortSignal) => axiosInstance.get(`/friends/get-requests`, { signal }),
+    GetOrganizationUsers: (signal?: AbortSignal) => axiosInstance.get(`/friends/get-orgusers`, { signal }),
 }
 
 export const DashboardApi = {
-    getDashboardData: () => axiosInstance.get(`/dashboard`),
+    getDashboardData: (signal?: AbortSignal) => axiosInstance.get(`/dashboard`, { signal }),
 }
 
 export const departmentApi = {
-    getDepartments: () => axiosInstance.get<IDepartmentApiResponse<IDepartmentApiResponseData<IDepartment[]>>>(`/departments`),
-    getDepartmentById: (id: string) => axiosInstance.get<IDepartmentApiResponse<IDepartmentApiResponseData<IDepartment>>>(`/departments/${id}`),
-    createDepartment: (department: IDepartment) => axiosInstance.post<IDepartmentApiResponse<IDepartmentApiResponseData<IDepartment>>>('/departments', department),
-    updateDepartment: (department: Omit<IDepartment, 'createdAt' | 'updatedAt'>) => axiosInstance.put<IDepartmentApiResponse<IDepartmentApiResponseData<IDepartment>>>(`/departments/${department._id}`, department),
-    deleteDepartment: (id: string) => axiosInstance.delete<IDepartmentApiResponse<IDepartmentApiResponseData<any>>>(`/departments/${id}`),
+    getDepartments: (signal?: AbortSignal) => axiosInstance.get<IDepartmentApiResponse<IDepartmentApiResponseData<IDepartment[]>>>(`/departments`, { signal }),
+    getDepartmentById: (id: string, signal?: AbortSignal) => axiosInstance.get<IDepartmentApiResponse<IDepartmentApiResponseData<IDepartment>>>(`/departments/${id}`, { signal }),
+    createDepartment: (department: IDepartment, signal?: AbortSignal) => axiosInstance.post<IDepartmentApiResponse<IDepartmentApiResponseData<IDepartment>>>('/departments', department, { signal }),
+    updateDepartment: (department: Omit<IDepartment, 'createdAt' | 'updatedAt'>, signal?: AbortSignal) => axiosInstance.put<IDepartmentApiResponse<IDepartmentApiResponseData<IDepartment>>>(`/departments/${department._id}`, department, { signal }),
+    deleteDepartment: (id: string, signal?: AbortSignal) => axiosInstance.delete<IDepartmentApiResponse<IDepartmentApiResponseData<any>>>(`/departments/${id}`, { signal }),
 }
 
 import { ApiResponse, Exam } from "../types/exam.modal";
 
 export const examApi = {
-    getExams: (params: string) => axiosInstance.get<ApiResponse<Exam[]>>(`/exams?${params}`),
-    getExamById: (id: string) => axiosInstance.get<ApiResponse<Exam>>(`/exams/${id}`),
-    createExam: (exam: Exam) => axiosInstance.post<ApiResponse<Exam>>('/exams', exam),
-    updateExam: (exam: Omit<Exam, 'createdAt' | 'updatedAt'>, _id: string) => axiosInstance.put<ApiResponse<Exam>>(`/exams/${_id}`, exam),
-    deleteExam: (id: string) => axiosInstance.delete<ApiResponse<Exam>>(`/exams/${id}`),
+    getExams: (params: string, signal?: AbortSignal) => axiosInstance.get<ApiResponse<Exam[]>>(`/exams?${params}`, { signal }),
+    getExamById: (id: string, signal?: AbortSignal) => axiosInstance.get<ApiResponse<Exam>>(`/exams/${id}`, { signal }),
+    createExam: (exam: Exam, signal?: AbortSignal) => axiosInstance.post<ApiResponse<Exam>>('/exams', exam, { signal }),
+    updateExam: (exam: Omit<Exam, 'createdAt' | 'updatedAt'>, _id: string, signal?: AbortSignal) => axiosInstance.put<ApiResponse<Exam>>(`/exams/${_id}`, exam, { signal }),
+    deleteExam: (id: string, signal?: AbortSignal) => axiosInstance.delete<ApiResponse<Exam>>(`/exams/${id}`, { signal }),
 }
 
-// TODO:types need to implimnet for each api call to be able to use them
-// export const classApi = {
-//     getClasses: () => axiosInstance.get<ClassApiResponse<Class[]>>('/classes'),
-//     getClassById: (id: string) => axiosInstance.get<ClassApiResponse<Class>>(`/classes/${id}`),
-//     createClass: (classData: Class) => axiosInstance.post<ClassApiResponse<Class>>('/classes', classData),
-//     updateClass: (classData: Class) => axiosInstance.put<ClassApiResponse<Class>>('/classes', classData),
-//     deleteClass: (id: string) => axiosInstance.delete<ClassApiResponse<Class>>(`/classes/${id}`),
-// }
-
-// export const attendanceApi = {
-//     getAttendance: () => axiosInstance.get<AttendanceApiResponse<Attendance[]>>('/attendance'),
-//     getAttendanceById: (id: string) => axiosInstance.get<AttendanceApiResponse<Attendance>>(`/attendance/${id}`),
-//     createAttendance: (attendance: Attendance) => axiosInstance.post<AttendanceApiResponse<Attendance>>('/attendance', attendance),
-//     updateAttendance: (attendance: Attendance) => axiosInstance.put<AttendanceApiResponse<Attendance>>('/attendance', attendance),
-//     deleteAttendance: (id: string) => axiosInstance.delete<AttendanceApiResponse<Attendance>>(`/attendance/${id}`),
-// }
-
-
-
-// export const assignmentApi = {
-//     getAssignments: () => axiosInstance.get<AssignmentApiResponse<Assignment[]>>('/assignments'),
-//     getAssignmentById: (id: string) => axiosInstance.get<AssignmentApiResponse<Assignment>>(`/assignments/${id}`),
-//     createAssignment: (assignment: Assignment) => axiosInstance.post<AssignmentApiResponse<Assignment>>('/assignments', assignment),
-//     updateAssignment: (assignment: Assignment) => axiosInstance.put<AssignmentApiResponse<Assignment>>('/assignments', assignment),
-//     deleteAssignment: (id: string) => axiosInstance.delete<AssignmentApiResponse<Assignment>>(`/assignments/${id}`),
-// }
-
-// export const eventApi = {
-//     getEvents: () => axiosInstance.get<EventApiResponse<Event[]>>('/events'),
-//     getEventById: (id: string) => axiosInstance.get<EventApiResponse<Event>>(`/events/${id}`),
-//     createEvent: (event: Event) => axiosInstance.post<EventApiResponse<Event>>('/events', event),
-//     updateEvent: (event: Event) => axiosInstance.put<EventApiResponse<Event>>('/events', event),
-//     deleteEvent: (id: string) => axiosInstance.delete<EventApiResponse<Event>>(`/events/${id}`),
-// }
-
-// export const courseScheduleApi = {
-//     getCourseSchedule: () => axiosInstance.get<CourseScheduleApiResponse<CourseSchedule[]>>('/course-schedule'),
-//     getCourseScheduleById: (id: string) => axiosInstance.get<CourseScheduleApiResponse<CourseSchedule>>(`/course-schedule/${id}`),
-//     createCourseSchedule: (courseSchedule: CourseSchedule) => axiosInstance.post<CourseScheduleApiResponse<CourseSchedule>>('/course-schedule', courseSchedule),
-//     updateCourseSchedule: (courseSchedule: CourseSchedule) => axiosInstance.put<CourseScheduleApiResponse<CourseSchedule>>('/course-schedule', courseSchedule),
-//     deleteCourseSchedule: (id: string) => axiosInstance.delete<CourseScheduleApiResponse<CourseSchedule>>(`/course-schedule/${id}`),
-// }
-
-// export const courseScheduleClassApi = {
-//     getCourseScheduleClasses: () => axiosInstance.get<CourseScheduleClassApiResponse<CourseScheduleClass[]>>('/course-schedule-classes'),
-//     getCourseScheduleClassById: (id: string) => axiosInstance.get<CourseScheduleClassApiResponse<CourseScheduleClass>>(`/course-schedule-classes/${id}`),
-//     createCourseScheduleClass: (courseScheduleClass: CourseScheduleClass) => axiosInstance.post<CourseScheduleClassApiResponse<CourseScheduleClass>>('/course-schedule-classes', courseScheduleClass),
-//     updateCourseScheduleClass: (courseScheduleClass: CourseScheduleClass) => axiosInstance.put<CourseScheduleClassApiResponse<CourseScheduleClass>>('/course-schedule-classes', courseScheduleClass),
-//     deleteCourseScheduleClass: (id: string) => axiosInstance.delete<CourseScheduleClassApiResponse<CourseScheduleClass>>(`/course-schedule-classes/${id}`),
-// }
-
-// export const courseScheduleAttendanceApi = {
-//     getCourseScheduleAttendance: () => axiosInstance.get<CourseScheduleAttendanceApiResponse<CourseScheduleAttendance[]>>('/course-schedule-attendance'),
-//     getCourseScheduleAttendanceById: (id: string) => axiosInstance.get<CourseScheduleAttendanceApiResponse<CourseScheduleAttendance>>(`/course-schedule-attendance/${id}`),
-//     createCourseScheduleAttendance: (courseScheduleAttendance: CourseScheduleAttendance) => axiosInstance.post<CourseScheduleAttendanceApiResponse<CourseScheduleAttendance>>('/course-schedule-attendance', courseScheduleAttendance),
-//     updateCourseScheduleAttendance: (courseScheduleAttendance: CourseScheduleAttendance) => axiosInstance.put<CourseScheduleAttendanceApiResponse<CourseScheduleAttendance>>('/course-schedule-attendance', courseScheduleAttendance),
-//     deleteCourseScheduleAttendance: (id: string) => axiosInstance.delete<CourseScheduleAttendanceApiResponse<CourseScheduleAttendance>>(`/course-schedule-attendance/${id}`),
-// }
-
-//i want to impliment video chat implementation
+export const attendanceApi = {
+    getAttendances: (params: string, signal?: AbortSignal) => axiosInstance.get<AttendanceApiResponse<Attendance[]>>(`/attendance?${params}`, { signal: abortManager.getSignal('getAttendances')  }),
+    getAttendanceById: (id: string, signal?: AbortSignal) => axiosInstance.get<AttendanceApiResponse<Attendance>>(`/attendance/${id}`, { signal: abortManager.getSignal(`getAttendanceById-${id}`) }),
+    createAttendance: (attendance: Attendance, signal?: AbortSignal) => axiosInstance.post<AttendanceApiResponse<Attendance>>('/attendance', attendance, { signal: abortManager.getSignal('createAttendance') }),
+    updateAttendance: (attendance: Omit<Attendance, 'createdAt' | 'updatedAt'>, _id: string, signal?: AbortSignal) => axiosInstance.put<AttendanceApiResponse<Attendance>>(`/attendance/${_id}`, attendance, { signal: abortManager.getSignal(`updateAttendance-${_id}`) }),
+    deleteAttendance: (id: string, signal?: AbortSignal) => axiosInstance.delete<AttendanceApiResponse<Attendance>>(`/attendance/${id}`, { signal: abortManager.getSignal(`deleteAttendance-${id}`) }),
+    getAttendanceByStudent: (studentId: string, params: string, signal?: AbortSignal) => axiosInstance.get<AttendanceApiResponse<Attendance[]>>(`/attendance/student/${studentId}?${params}`, { signal: abortManager.getSignal(`getAttendanceByStudent-${studentId}`) }),
+    getAttendanceByClass: (classId: string, params: string, signal?: AbortSignal) => axiosInstance.get<AttendanceApiResponse<Attendance[]>>(`/attendance/class/${classId}?${params}`, { signal: abortManager.getSignal(`getAttendanceByClass-${classId}`) }),
+    getAttendanceByDate: (date: string, params: string, signal?: AbortSignal) => axiosInstance.get<AttendanceApiResponse<Attendance[]>>(`/attendance/date/${date}?${params}`, { signal: abortManager.getSignal(`getAttendanceByDate-${date}`) }),
+    getStudentAttendanceStats: (studentId: string, params: string, signal?: AbortSignal) => axiosInstance.get<AttendanceStatsApiResponse>(`/attendance/stats/student/${studentId}?${params}`, { signal: abortManager.getSignal(`getStudentAttendanceStats-${studentId}`) }),
+    getClassAttendanceStats: (classId: string, params: string, signal?: AbortSignal) => axiosInstance.get<AttendanceStatsApiResponse>(`/attendance/stats/class/${classId}?${params}`, { signal: abortManager.getSignal(`getClassAttendanceStats-${classId}`) }),
+    markBulkAttendance: (data: BulkMarkAttendanceData, signal?: AbortSignal) => axiosInstance.post<AttendanceApiResponse<Attendance[]>>('/attendance/bulk/mark', data, { signal: abortManager.getSignal('markBulkAttendance') }),
+    createBulkAttendances: (formData: FormData, signal?: AbortSignal) => axiosInstance.post<AttendanceApiResponse<Attendance[]>>('/attendance/bulk/create', formData, {
+        signal: abortManager.getSignal('createBulkAttendances'),
+        headers: { 'Content-Type': 'multipart/form-data' }
+    }),
+    deleteBulkAttendances: (data: BulkDeleteAttendanceData, signal?: AbortSignal) => axiosInstance.delete<AttendanceApiResponse<any>>('/attendance/bulk/delete', {
+        signal: abortManager.getSignal('deleteBulkAttendances'),
+        data
+    }),
+}
