@@ -7,6 +7,10 @@ import DeleteIcon from '@mui/icons-material/DeleteOutlined';
 import SaveIcon from '@mui/icons-material/Save';
 import CancelIcon from '@mui/icons-material/Close';
 import CachedIcon from '@mui/icons-material/Cached';
+import FirstPageIcon from '@mui/icons-material/FirstPage';
+import LastPageIcon from '@mui/icons-material/LastPage';
+import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
+import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import {
     GridRowsProp,
     GridRowModesModel,
@@ -26,7 +30,7 @@ import {
     GridFilterModel,
     GridSortModel,
 } from '@mui/x-data-grid';
-import { CircularProgress, IconButton, styled, Typography, useTheme, debounce } from '@mui/material';
+import { CircularProgress, IconButton, styled, Typography, useTheme, debounce, TablePagination } from '@mui/material';
 import { Person } from '@mui/icons-material';
 
 // Enhanced interfaces for server-side operations
@@ -98,6 +102,138 @@ function CustomLoadingOverlay() {
     );
 }
 
+// Custom pagination component with custom icons
+// function CustomPagination({ paginationModel, pageSizeOptions, rowCount, onPaginationModelChange }: any) {
+//     const theme = useTheme();
+
+//     // Handle page change
+//     const handlePageChange = (event: React.MouseEvent<HTMLButtonElement> | null, newPage: number) => {
+//         onPaginationModelChange({
+//             ...paginationModel,
+//             page: newPage,
+//         });
+//     };
+
+//     // Handle page size change
+//     const handlePageSizeChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+//         onPaginationModelChange({
+//             ...paginationModel,
+//             pageSize: parseInt(event.target.value, 10),
+//             page: 0, // Reset to first page when changing page size
+//         });
+//     };
+
+//     return (
+//         <TablePagination
+//             component="div"
+//             count={rowCount}
+//             page={paginationModel.page}
+//             onPageChange={handlePageChange}
+//             rowsPerPage={paginationModel.pageSize}
+//             onRowsPerPageChange={handlePageSizeChange}
+//             rowsPerPageOptions={pageSizeOptions}
+//             nextIconButtonProps={{
+//                 'aria-label': 'next page',
+//                 sx: {
+//                     '&:hover': {
+//                         backgroundColor: theme.palette.primary.light,
+//                         color: theme.palette.primary.contrastText,
+//                     },
+//                 },
+//             }}
+//             backIconButtonProps={{
+//                 'aria-label': 'previous page',
+//                 sx: {
+//                     '&:hover': {
+//                         backgroundColor: theme.palette.primary.light,
+//                         color: theme.palette.primary.contrastText,
+//                     },
+//                 },
+//             }}
+//             ActionsComponent={(props) => (
+//                 <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+//                     <IconButton
+//                         onClick={(e) => {
+//                             props.onPageChange(e, 0);
+//                         }}
+//                         disabled={props.page === 0}
+//                         sx={{
+//                             '&:hover': {
+//                                 backgroundColor: theme.palette.primary.light,
+//                                 color: theme.palette.primary.contrastText,
+//                             },
+//                         }}
+//                         size="small"
+//                     >
+//                         <FirstPageIcon fontSize="small" />
+//                     </IconButton>
+//                     <IconButton
+//                         onClick={(e) => {
+//                             props.onPageChange(e, props.page - 1);
+//                         }}
+//                         disabled={props.page === 0}
+//                         sx={{
+//                             '&:hover': {
+//                                 backgroundColor: theme.palette.primary.light,
+//                                 color: theme.palette.primary.contrastText,
+//                             },
+//                         }}
+//                         size="small"
+//                     >
+//                         <ChevronLeftIcon fontSize="small" />
+//                     </IconButton>
+//                     <IconButton
+//                         onClick={(e) => {
+//                             props.onPageChange(e, props.page + 1);
+//                         }}
+//                         disabled={props.page >= Math.ceil(props.count / props.rowsPerPage) - 1}
+//                         sx={{
+//                             '&:hover': {
+//                                 backgroundColor: theme.palette.primary.light,
+//                                 color: theme.palette.primary.contrastText,
+//                             },
+//                         }}
+//                         size="small"
+//                     >
+//                         <ChevronRightIcon fontSize="small" />
+//                     </IconButton>
+//                     <IconButton
+//                         onClick={(e) => {
+//                             props.onPageChange(e, Math.ceil(props.count / props.rowsPerPage) - 1);
+//                         }}
+//                         disabled={props.page >= Math.ceil(props.count / props.rowsPerPage) - 1}
+//                         sx={{
+//                             '&:hover': {
+//                                 backgroundColor: theme.palette.primary.light,
+//                                 color: theme.palette.primary.contrastText,
+//                             },
+//                         }}
+//                         size="small"
+//                     >
+//                         <LastPageIcon fontSize="small" />
+//                     </IconButton>
+//                 </Box>
+//             )}
+//             sx={{
+//                 '& .MuiTablePagination-root': {
+//                     margin: 0,
+//                 },
+//                 '& .MuiTablePagination-toolbar': {
+//                     minHeight: 'auto',
+//                 },
+//                 '& .MuiTablePagination-selectLabel, & .MuiTablePagination-displayedRows': {
+//                     fontSize: '0.875rem',
+//                     color: theme.palette.text.secondary,
+//                 },
+//                 '& .MuiTablePagination-select': {
+//                     padding: '4px 8px',
+//                     fontSize: '0.875rem',
+//                 },
+//             }}
+//         />
+//     );
+// }
+
 interface EditToolbarProps {
     onAdd: () => void;
     reloadData?: () => void;
@@ -141,7 +277,10 @@ function EditToolbar({
     // Cleanup debounced function on unmount
     React.useEffect(() => {
         return () => {
-            debouncedSearch;
+            // Cleanup debounced function if it has a cancel method
+            if (typeof debouncedSearch === 'function' && 'cancel' in debouncedSearch) {
+                debouncedSearch.cancel();
+            }
         };
     }, [debouncedSearch]);
 
@@ -151,7 +290,8 @@ function EditToolbar({
             justifyContent: 'space-between',
             alignItems: 'center',
             padding: 1,
-            gap: 1
+            gap: 1,
+            border:'none'
         }}>
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                 {enableSearch && (
@@ -349,7 +489,8 @@ export const ReusableDataGrid: React.FC<ReusableDataGridProps> = ({
                 },
                 width: "100%",
                 minWidth: 0,
-                boxSizing: 'border-box'
+                boxSizing: 'border-box',
+                border:'none'
             }}
         >
             <DataGrid
@@ -429,7 +570,6 @@ export const ReusableDataGrid: React.FC<ReusableDataGridProps> = ({
                 // Server-side filtering
                 filterMode={enableFilters ? "server" : "client"}
                 onFilterModelChange={handleFilterModelChange}
-
                 slots={{
                     toolbar: () => (
                         <EditToolbar
@@ -441,19 +581,26 @@ export const ReusableDataGrid: React.FC<ReusableDataGridProps> = ({
                             searchPlaceholder={searchPlaceholder}
                         />
                     ),
-                    loadingOverlay: CustomLoadingOverlay
+                    loadingOverlay: CustomLoadingOverlay,
+                    // pagination: CustomPagination,
                 }}
                 loading={loading}
                 sx={{
-                    // boxShadow: 2,
-                    // border: 2,
-                    // borderColor: 'primary.light',
+                    border: 'none',
+                    borderRadius: '12px',
+                    overflow: 'hidden',
                     '& .MuiDataGrid-cell:hover': {
                         color: 'primary.main',
                     },
                     '& .theme--header': {
                         backgroundColor: theme.palette.primary.main,
                         color: theme.palette.primary.contrastText,
+                    },
+                    '& .MuiDataGrid-footerContainer': {
+                        borderTop: `1px solid ${theme.palette.divider}`,
+                        backgroundColor: theme.palette.background.paper,
+                        borderRadius: '0 0 12px 12px',
+                        padding: '8px 16px',
                     },
                 }}
             />

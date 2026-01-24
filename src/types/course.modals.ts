@@ -2,12 +2,29 @@
 // Define the Course interface
 export interface Course {
     _id?: string; // Optional _id for ObjectId
+    subjectsIds: string[];
+    teacherIds: string[];
+    studentsEnrolled: string[];
+    organizationId: string;
     name: string;
+    code: string;
     description: string;
-    courseType: string;
-    organizationId: string; // Use string for ObjectId reference to Organization
-    createdAt?: Date; // Timestamp for when the course was created
-    updatedAt?: Date; // Timestamp for when the course was last updated
+    startDate: string;
+    endDate: string;
+    schedule: string;
+    credits: number;
+    prerequisites: string[];
+    location: string;
+    fee: number;
+    textbooks: any[];
+    syllabus: string;
+    assignments: any[];
+    gradingScheme: string;
+    resources: { title: string; url: string; _id?: string }[];
+    feedback: any[];
+    createdAt?: string;
+    updatedAt?: string;
+    __v?: number;
 }
 
 // Define the CourseApiResponseData interface

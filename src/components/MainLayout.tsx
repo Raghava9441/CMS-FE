@@ -22,7 +22,7 @@ import MailIcon from '@mui/icons-material/Mail';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import { Outlet, useNavigate, useLocation } from 'react-router-dom';
-import { Avatar, Menu, MenuItem, Theme, useTheme, Tooltip } from '@mui/material';
+import { Avatar, Menu, MenuItem, Theme, useTheme, Tooltip, Badge } from '@mui/material';
 import { AppDispatch, RootState } from '../redux/store';
 import { useDispatch, useSelector } from 'react-redux';
 import appRoutes from '../routes/routePaths';
@@ -39,6 +39,9 @@ import { useSidebarItems } from '@hooks/useSidebarItems';
 import { socketManager } from '../services/socketManager';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
+import DashboardHeader from './DashboardHeader';
+import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
+
 
 // Define drawer widths as constants for better readability and maintainability
 const DRAWER_WIDTH = 240;
@@ -83,9 +86,10 @@ export default function MainLayout() {
         layoutHeader: {
             width: "100%",
             height: '8%',
-            paddingX: "10px",
-            paddingY: "10px",
-            boxShadow: " -10px 0 5px -10px rgba(31, 30, 30, 0.5)"
+            paddingX: "25px",
+            paddingY: "5px",
+            boxShadow: " -10px 0 5px -10px rgba(31, 30, 30, 0.5)",
+            // backgroundColor:"red"
         },
         headerRow: {
             display: 'flex',
@@ -93,8 +97,8 @@ export default function MainLayout() {
             alignItems: 'center',
         },
         headerLeft: {
-            display: 'flex',
-            alignItems: 'center',
+            // display: 'flex',
+            // alignItems: 'center',
         },
         headerRight: {
             display: 'flex',
@@ -113,6 +117,7 @@ export default function MainLayout() {
         pageWrapper: {
             boxShadow: " -10px 0 5px -10px rgba(31, 30, 30, 0.5)",
             height: '92%',
+            paddingX: "25px",
             // backgroundColor: theme."#fafafb",
         },
         drawerBox: {
@@ -271,75 +276,97 @@ export default function MainLayout() {
                                 <Typography variant="h6" noWrap component="div">
                                     Welcome {user?.fullname || 'Guest'}
                                 </Typography>
+                                <Typography variant="body2" color="text.secondary">
+                                    {"Manage and monitor teacher performance and profiles."}
+                                </Typography>
                             </Box>
-                            <Box sx={styles.headerRight}>
-                                <IconButton sx={styles.notificationIcon} onClick={handleNotificationsClick}>
-                                    <NotificationsIcon />
+
+
+                            <Box display="flex" alignItems="center" gap={2} >
+                                <IconButton>
+                                    <Badge color="error" variant="dot">
+                                        <NotificationsNoneIcon />
+                                    </Badge>
                                 </IconButton>
-                                <IconButton sx={styles.avatarIcon} onClick={handleAvatarClick}>
-                                    <Avatar>{user?.fullname?.charAt(0).toUpperCase()}</Avatar>
-                                </IconButton>
-                                <Menu
-                                    anchorEl={anchorEl}
-                                    open={isUserMenuOpen}
-                                    onClose={handleMenuClose}
-                                    PaperProps={{
-                                        sx: {
-                                            width: '200px',
-                                            maxWidth: 'calc(100% - 48px)',
-                                        },
-                                    }}
-                                    anchorOrigin={{
-                                        vertical: 'bottom',
-                                        horizontal: 'right',
-                                    }}
-                                    transformOrigin={{
-                                        vertical: 'top',
-                                        horizontal: 'right',
-                                    }}
-                                >
-                                    <MenuItem onClick={() => {
-                                        handleMenuClose();
-                                        navigate(appRoutes.PROFILE);
-                                    }}>Profile</MenuItem>
-                                    <MenuItem onClick={() => {
-                                        handleMenuClose();
-                                        navigate(appRoutes.SETTINGS);
-                                    }}>Settings</MenuItem>
-                                    <MenuItem onClick={() => {
-                                        handleMenuClose();
-                                        navigate(appRoutes.FEATURE_FLAGS);
-                                    }}>Feature control</MenuItem>
-                                    <MenuItem onClick={() => {
-                                        handleMenuClose();
-                                        handleLogout();
-                                    }}>Logout</MenuItem>
-                                </Menu>
-                                <Menu
-                                    anchorEl={notificationAnchorEl}
-                                    open={isNotificationMenuOpen}
-                                    onClose={handleNotificationsClose}
-                                    PaperProps={{
-                                        sx: {
-                                            width: '200px',
-                                            maxWidth: 'calc(100% - 48px)',
-                                        },
-                                    }}
-                                    anchorOrigin={{
-                                        vertical: 'bottom',
-                                        horizontal: 'right',
-                                    }}
-                                    transformOrigin={{
-                                        vertical: 'top',
-                                        horizontal: 'right',
-                                    }}
-                                >
-                                    <MenuItem onClick={() => {
-                                        handleNotificationsClose();
-                                        navigate(appRoutes.NOTIFICATIONS);
-                                    }}>Notifications</MenuItem>
-                                    <MenuItem onClick={handleNotificationsClose}>No new notifications</MenuItem>
-                                </Menu>
+
+                                <Box display="flex" alignItems="center" gap={1}>
+                                    <Avatar
+                                        sx={{
+                                            bgcolor: "#2ecc71",
+                                            width: 36,
+                                            height: 36,
+                                            fontSize: 14,
+                                        }}
+                                        onClick={handleAvatarClick}
+                                    >
+
+                                    </Avatar>
+                                    <Typography variant="body2" fontWeight={500}>
+                                        {/* {name} */}
+                                    </Typography>
+
+                                    <Menu
+                                        anchorEl={anchorEl}
+                                        open={isUserMenuOpen}
+                                        onClose={handleMenuClose}
+                                        PaperProps={{
+                                            sx: {
+                                                width: '200px',
+                                                maxWidth: 'calc(100% - 48px)',
+                                            },
+                                        }}
+                                        anchorOrigin={{
+                                            vertical: 'bottom',
+                                            horizontal: 'right',
+                                        }}
+                                        transformOrigin={{
+                                            vertical: 'top',
+                                            horizontal: 'right',
+                                        }}
+                                    >
+                                        <MenuItem onClick={() => {
+                                            handleMenuClose();
+                                            navigate(appRoutes.PROFILE);
+                                        }}>Profile</MenuItem>
+                                        <MenuItem onClick={() => {
+                                            handleMenuClose();
+                                            navigate(appRoutes.SETTINGS);
+                                        }}>Settings</MenuItem>
+                                        <MenuItem onClick={() => {
+                                            handleMenuClose();
+                                            navigate(appRoutes.FEATURE_FLAGS);
+                                        }}>Feature control</MenuItem>
+                                        <MenuItem onClick={() => {
+                                            handleMenuClose();
+                                            handleLogout();
+                                        }}>Logout</MenuItem>
+                                    </Menu>
+                                    <Menu
+                                        anchorEl={notificationAnchorEl}
+                                        open={isNotificationMenuOpen}
+                                        onClose={handleNotificationsClose}
+                                        PaperProps={{
+                                            sx: {
+                                                width: '200px',
+                                                maxWidth: 'calc(100% - 48px)',
+                                            },
+                                        }}
+                                        anchorOrigin={{
+                                            vertical: 'bottom',
+                                            horizontal: 'right',
+                                        }}
+                                        transformOrigin={{
+                                            vertical: 'top',
+                                            horizontal: 'right',
+                                        }}
+                                    >
+                                        <MenuItem onClick={() => {
+                                            handleNotificationsClose();
+                                            navigate(appRoutes.NOTIFICATIONS);
+                                        }}>Notifications</MenuItem>
+                                        <MenuItem onClick={handleNotificationsClose}>No new notifications</MenuItem>
+                                    </Menu>
+                                </Box>
                             </Box>
                         </Box>
                     </Box>
@@ -424,8 +451,17 @@ const CustomDrawer = React.memo(({ location, collapsed, handleDrawerCollapse, ha
                         alignItems: 'center',
                         justifyContent: collapsed ? 'center' : 'flex-start',
                         flex: 1,
-                    }}>{
-                            sideBarState !== SideBarState.COLLAPSED && <Typography
+                    }}>
+                        <SchoolIcon
+                            sx={{
+                                fontSize: 40,
+                                color: theme.palette.primary.main,
+                                ...(collapsed && { ml: 0 })
+                            }}
+                        />
+                        {
+                            sideBarState !== SideBarState.COLLAPSED &&
+                            <Typography
                                 variant="h5"
                                 sx={{
                                     color: theme.palette.primary.main,
@@ -435,17 +471,11 @@ const CustomDrawer = React.memo(({ location, collapsed, handleDrawerCollapse, ha
                                     mr: 1,
                                 }}
                             >
-                                ScholarSync
+                                Scholar Sync
                             </Typography>
                         }
 
-                        <SchoolIcon
-                            sx={{
-                                fontSize: 40,
-                                color: theme.palette.primary.main,
-                                ...(collapsed && { ml: 0 })
-                            }}
-                        />
+
                     </Box>
                 </Toolbar>
                 <Divider />

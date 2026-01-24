@@ -49,10 +49,11 @@ function TeacherProfile({ routeData }: Props) {
         return <div>Loading teacher data...</div>;
     }
 
-    const { userDetails, qualifications, experience, officeHours, researchInterests, publications, professionalMemberships, teachingPhilosophy, subjects, departments } = teacherData;
+    const { userDetails, qualifications, experience, officeHours, researchInterests, publications, professionalMemberships, teachingPhilosophy, subjects, departments } = teacherData.data.data;
+    console.log("🚀 ~ userDetails:", userDetails)
 
     return (
-        <Container maxWidth="lg" sx={{ py: 4 }}>
+        <Container maxWidth="lg" sx={{ py: 4, width: '100%', height: '100%', overflowY: 'scroll' }}>
             {/* Header Section */}
             <Paper sx={{ p: 4, mb: 3, bgcolor: "background.paper" }}>
                 <Grid container spacing={4} alignItems="center">

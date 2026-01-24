@@ -16,6 +16,7 @@ const appRoutes = {
     ATTENDANCE: '/CMS-FE/attendance',
     CLASSES: '/CMS-FE/classes',
     COURSES: '/CMS-FE/courses',
+    COURSE_DETAILS: '/CMS-FE/courses/:id',
     EVENTS: '/CMS-FE/events',
     EXAM: '/CMS-FE/exam',
     NOTIFICATIONS: '/CMS-FE/notifications',

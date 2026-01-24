@@ -131,18 +131,18 @@ export const examApi = {
 }
 
 export const attendanceApi = {
-    getAttendances: (params: string, signal?: AbortSignal) => axiosInstance.get<AttendanceApiResponse<Attendance[]>>(`/attendance?${params}`, { signal: abortManager.getSignal('getAttendances')  }),
-    getAttendanceById: (id: string, signal?: AbortSignal) => axiosInstance.get<AttendanceApiResponse<Attendance>>(`/attendance/${id}`, { signal: abortManager.getSignal(`getAttendanceById-${id}`) }),
-    createAttendance: (attendance: Attendance, signal?: AbortSignal) => axiosInstance.post<AttendanceApiResponse<Attendance>>('/attendance', attendance, { signal: abortManager.getSignal('createAttendance') }),
+    getAttendances: (params: string, signal?: AbortSignal) => axiosInstance.get<AttendanceApiResponse<Attendance[]>>(`/attendances?${params}`, { signal: abortManager.getSignal('getAttendances')  }),
+    getAttendanceById: (id: string, signal?: AbortSignal) => axiosInstance.get<AttendanceApiResponse<Attendance>>(`/attendances/${id}`, { signal: abortManager.getSignal(`getAttendanceById-${id}`) }),
+    createAttendance: (attendance: Attendance, signal?: AbortSignal) => axiosInstance.post<AttendanceApiResponse<Attendance>>('/attendances', attendance, { signal: abortManager.getSignal('createAttendance') }),
     updateAttendance: (attendance: Omit<Attendance, 'createdAt' | 'updatedAt'>, _id: string, signal?: AbortSignal) => axiosInstance.put<AttendanceApiResponse<Attendance>>(`/attendance/${_id}`, attendance, { signal: abortManager.getSignal(`updateAttendance-${_id}`) }),
-    deleteAttendance: (id: string, signal?: AbortSignal) => axiosInstance.delete<AttendanceApiResponse<Attendance>>(`/attendance/${id}`, { signal: abortManager.getSignal(`deleteAttendance-${id}`) }),
-    getAttendanceByStudent: (studentId: string, params: string, signal?: AbortSignal) => axiosInstance.get<AttendanceApiResponse<Attendance[]>>(`/attendance/student/${studentId}?${params}`, { signal: abortManager.getSignal(`getAttendanceByStudent-${studentId}`) }),
-    getAttendanceByClass: (classId: string, params: string, signal?: AbortSignal) => axiosInstance.get<AttendanceApiResponse<Attendance[]>>(`/attendance/class/${classId}?${params}`, { signal: abortManager.getSignal(`getAttendanceByClass-${classId}`) }),
-    getAttendanceByDate: (date: string, params: string, signal?: AbortSignal) => axiosInstance.get<AttendanceApiResponse<Attendance[]>>(`/attendance/date/${date}?${params}`, { signal: abortManager.getSignal(`getAttendanceByDate-${date}`) }),
-    getStudentAttendanceStats: (studentId: string, params: string, signal?: AbortSignal) => axiosInstance.get<AttendanceStatsApiResponse>(`/attendance/stats/student/${studentId}?${params}`, { signal: abortManager.getSignal(`getStudentAttendanceStats-${studentId}`) }),
-    getClassAttendanceStats: (classId: string, params: string, signal?: AbortSignal) => axiosInstance.get<AttendanceStatsApiResponse>(`/attendance/stats/class/${classId}?${params}`, { signal: abortManager.getSignal(`getClassAttendanceStats-${classId}`) }),
-    markBulkAttendance: (data: BulkMarkAttendanceData, signal?: AbortSignal) => axiosInstance.post<AttendanceApiResponse<Attendance[]>>('/attendance/bulk/mark', data, { signal: abortManager.getSignal('markBulkAttendance') }),
-    createBulkAttendances: (formData: FormData, signal?: AbortSignal) => axiosInstance.post<AttendanceApiResponse<Attendance[]>>('/attendance/bulk/create', formData, {
+    deleteAttendance: (id: string, signal?: AbortSignal) => axiosInstance.delete<AttendanceApiResponse<Attendance>>(`/attendances/${id}`, { signal: abortManager.getSignal(`deleteAttendance-${id}`) }),
+    getAttendanceByStudent: (studentId: string, params: string, signal?: AbortSignal) => axiosInstance.get<AttendanceApiResponse<Attendance[]>>(`/attendances/student/${studentId}?${params}`, { signal: abortManager.getSignal(`getAttendanceByStudent-${studentId}`) }),
+    getAttendanceByClass: (classId: string, params: string, signal?: AbortSignal) => axiosInstance.get<AttendanceApiResponse<Attendance[]>>(`/attendances/class/${classId}?${params}`, { signal: abortManager.getSignal(`getAttendanceByClass-${classId}`) }),
+    getAttendanceByDate: (date: string, params: string, signal?: AbortSignal) => axiosInstance.get<AttendanceApiResponse<Attendance[]>>(`/attendances/date/${date}?${params}`, { signal: abortManager.getSignal(`getAttendanceByDate-${date}`) }),
+    getStudentAttendanceStats: (studentId: string, params: string, signal?: AbortSignal) => axiosInstance.get<AttendanceStatsApiResponse>(`/attendances/stats/student/${studentId}?${params}`, { signal: abortManager.getSignal(`getStudentAttendanceStats-${studentId}`) }),
+    getClassAttendanceStats: (classId: string, params: string, signal?: AbortSignal) => axiosInstance.get<AttendanceStatsApiResponse>(`/attendances/stats/class/${classId}?${params}`, { signal: abortManager.getSignal(`getClassAttendanceStats-${classId}`) }),
+    markBulkAttendance: (data: BulkMarkAttendanceData, signal?: AbortSignal) => axiosInstance.post<AttendanceApiResponse<Attendance[]>>('/attendances/bulk/mark', data, { signal: abortManager.getSignal('markBulkAttendance') }),
+    createBulkAttendances: (formData: FormData, signal?: AbortSignal) => axiosInstance.post<AttendanceApiResponse<Attendance[]>>('/attendances/bulk/create', formData, {
         signal: abortManager.getSignal('createBulkAttendances'),
         headers: { 'Content-Type': 'multipart/form-data' }
     }),

@@ -19,7 +19,7 @@ import ClassIcon from '@mui/icons-material/Class';
 import Diversity2Icon from '@mui/icons-material/Diversity2';
 import AssignmentIcon from '@mui/icons-material/Assignment';
 import MenuBookIcon from '@mui/icons-material/MenuBook';
-import { teacherApi } from '@api/api';
+import { courseApi, teacherApi } from '@api/api';
 export const routeConfig: RouteConfig[] = [
     // Auth routes
     {
@@ -85,7 +85,7 @@ export const routeConfig: RouteConfig[] = [
                 permission: {
                     roles: [ROLES.ADMIN, ROLES.ORGADMIN, ROLES.TEACHER, ROLES.STUDENT, ROLES.PARENT],
                     permissions: [PERMISSIONS.VIEW, PERMISSIONS.EDIT],
-                        //custom check 
+                    //custom check 
                     // customCheck: (user) => {
                     //     return user.role === ROLES.ADMIN;
                     // }
@@ -234,18 +234,64 @@ export const routeConfig: RouteConfig[] = [
 
                 ],
             },
+
+
             {
-                id: 'Exams',
-                resourceName: 'exams',
-                path: appRoutes.EXAM,
-                component: lazy(() => import('../pages/Exam.page')),
+                id: 'Courses',
+                resourceName: 'courses',
+                path: appRoutes.COURSES,
+                component: lazy(() => import('../pages/Courses.page')),
                 permission: {
                     roles: [ROLES.ADMIN, ROLES.ORGADMIN, ROLES.TEACHER],
                 },
                 metadata: {
-                    title: 'ExamPage',
-                    breadcrumb: 'Exams',
-                    icon: ContentPasteSearchIcon,
+                    title: 'Courses',
+                    breadcrumb: 'Courses',
+                    icon: MenuBookIcon,
+                },
+                showInSidebar: true,
+                children: [
+                    {
+                        id: 'course-details',
+                        resourceName: 'courses',
+                        path: appRoutes.COURSE_DETAILS,
+                        component: lazy(() => import('../pages/CourseDetails.page')),
+                        isDynamic: true,
+                        paramKeys: ['id'],
+                        permission: {
+                            roles: [ROLES.ADMIN, ROLES.ORGADMIN, ROLES.TEACHER],
+                        },
+                        metadata: {
+                            title: 'Course Details',
+                            breadcrumb: 'Course Details',
+                            icon: MenuBookIcon,
+                            dynamicTitle: (params) => `Course: ${params.id}`,
+                            dynamicBreadcrumb: (params) => `Course #${params.id}`,
+                        },
+                        showInSidebar: false,
+                        guards: {
+                            resolve: {
+                                //you can pass the function to get the api data in the component 
+                                getCourseById: (context) => courseApi.getCourseById(context.params.id),
+
+                            }
+                        },
+                    },
+                ]
+            },
+
+            {
+                id: 'Classes',
+                resourceName: 'classes',
+                path: appRoutes.CLASSES,
+                component: lazy(() => import('../pages/Classes.page')),
+                permission: {
+                    roles: [ROLES.ADMIN, ROLES.ORGADMIN, ROLES.TEACHER],
+                },
+                metadata: {
+                    title: 'Classes',
+                    breadcrumb: 'Classes',
+                    icon: ClassIcon,
                 },
                 showInSidebar: true,
                 children: [
@@ -271,44 +317,8 @@ export const routeConfig: RouteConfig[] = [
                 ],
             },
             {
-                id: 'Courses',
-                resourceName: 'courses',
-                path: appRoutes.COURSES,
-                component: lazy(() => import('../pages/Courses.page')),
-                permission: {
-                    roles: [ROLES.ADMIN, ROLES.ORGADMIN, ROLES.TEACHER],
-                },
-                metadata: {
-                    title: 'Courses',
-                    breadcrumb: 'Courses',
-                    icon: MenuBookIcon,
-                },
-                showInSidebar: true,
-                children: [
-
-                ],
-            },
-            {
-                id: 'Classes',
-                resourceName: 'classes',
-                path: appRoutes.CLASSES,
-                component: lazy(() => import('../pages/Classes.page')),
-                permission: {
-                    roles: [ROLES.ADMIN, ROLES.ORGADMIN, ROLES.TEACHER],
-                },
-                metadata: {
-                    title: 'Classes',
-                    breadcrumb: 'Classes',
-                    icon: ClassIcon,
-                },
-                showInSidebar: true,
-                children: [
-
-                ],
-            },
-            {
-                id: 'assignment',
-                resourceName: 'assignment',
+                id: 'assignments',
+                resourceName: 'assignments',
                 path: appRoutes.ASSIGNMENT,
                 component: lazy(() => import('../pages/Assignment.page')),
                 permission: {
@@ -318,6 +328,24 @@ export const routeConfig: RouteConfig[] = [
                     title: 'Assignment',
                     breadcrumb: 'Assignment',
                     icon: AssignmentIcon,
+                },
+                showInSidebar: true,
+                children: [
+
+                ],
+            },
+            {
+                id: 'Exams',
+                resourceName: 'exams',
+                path: appRoutes.EXAM,
+                component: lazy(() => import('../pages/Exam.page')),
+                permission: {
+                    roles: [ROLES.ADMIN, ROLES.ORGADMIN, ROLES.TEACHER],
+                },
+                metadata: {
+                    title: 'ExamPage',
+                    breadcrumb: 'Exams',
+                    icon: ContentPasteSearchIcon,
                 },
                 showInSidebar: true,
                 children: [
@@ -476,7 +504,7 @@ export const routeConfig: RouteConfig[] = [
                 path: appRoutes.FEATURE_FLAGS,
                 component: lazy(() => import('../pages/features.page')),
                 permission: {
-                    roles: [ROLES.ADMIN,ROLES.ORGADMIN],
+                    roles: [ROLES.ADMIN, ROLES.ORGADMIN],
                     permissions: [PERMISSIONS.VIEW, PERMISSIONS.EDIT],
                 },
                 metadata: {
