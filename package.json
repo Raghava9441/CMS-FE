@@ -9,10 +9,22 @@
     ]
   },
   "scripts": {
-    "dev": "vite",
-    "build": "vite build",
+    "dev": "vite --mode development",
+    "dev:dev": "vite --mode development",
+    "dev:qa": "vite --mode qa",
+    "dev:beta": "vite --mode beta",
+    "dev:prod": "vite --mode production",
+    "build": "vite build --mode production",
+    "build:dev": "vite build --mode development",
+    "build:qa": "vite build --mode qa",
+    "build:beta": "vite build --mode beta",
+    "build:prod": "vite build --mode production",
     "lint": "eslint .",
     "preview": "vite preview",
+    "preview:dev": "vite preview --mode development",
+    "preview:qa": "vite preview --mode qa",
+    "preview:beta": "vite preview --mode beta",
+    "preview:prod": "vite preview --mode production",
     "docs": "typedoc --options typedoc.json",
     "predeploy": "npm run build",
     "deploy": "gh-pages -d dist",
@@ -67,7 +79,8 @@
     "stringz": "^2.1.0",
     "vite-plugin-open-in-editor": "^0.0.4",
     "vite-plugin-react-click-to-component": "^3.0.0",
-    "vite-plugin-svgr": "^4.3.0"
+    "vite-plugin-svgr": "^4.3.0",
+    "zod": "^3.25.76"
   },
   "devDependencies": {
     "@eslint/js": "^9.9.0",

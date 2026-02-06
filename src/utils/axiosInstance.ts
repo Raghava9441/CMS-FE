@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { userApi } from '@api/api';
+import { envConfig } from "../config/env.config";
 
 export interface ApiErrorResponse {
     statusCode: number;
@@ -20,7 +21,7 @@ export class ApiError extends Error {
     }
 }
 export const axiosInstance = axios.create({
-    baseURL: import.meta.env.VITE_APP_API_ORIGIN as string,
+    baseURL: envConfig.VITE_APP_API_ORIGIN,
     withCredentials: true,
     headers: {
         "Content-Type": "application/json",
