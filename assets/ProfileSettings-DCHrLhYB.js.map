@@ -1,0 +1,1 @@
+{"version":3,"file":"ProfileSettings-DCHrLhYB.js","sources":["../../src/components/settings/ProfileSettings.tsx"],"sourcesContent":["\n\nfunction ProfileSettings() {\n    return (\n        <div>ProfileSettings</div>\n    )\n}\n\nexport default ProfileSettings"],"names":["ProfileSettings","jsx"],"mappings":"wCAEA,SAASA,GAAkB,CAEnB,OAAAC,EAAA,IAAC,OAAI,SAAe,iBAAA,CAAA,CAE5B"}
