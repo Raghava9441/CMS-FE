@@ -4,6 +4,7 @@ import { TextField, Grid, Button, Box, Select, MenuItem, FormControl, InputLabel
 import dayjs, { Dayjs } from 'dayjs';
 import { RootState } from '../../redux/store';
 import { useSelector } from 'react-redux';
+import GranularErrorBoundary from '@components/Granularerrorboundary ';
 interface TeacherFormValues {
     _id: string;
     userId: string;
@@ -79,154 +80,159 @@ const TeacherForm: React.FC<TeacherFormProps> = ({ initialValues, onSubmit, onCl
     };
 
     return (
-        <form onSubmit={handleSubmit(onSubmitForm)}>
-            <Grid container spacing={2}>
-                <Grid item xs={12} md={6}>
-                    <Controller
-                        name="userId"
-                        control={control}
-                        rules={{ required: 'User ID is required' }}
-                        render={({ field }) => (
-                            <FormControl fullWidth margin="normal" error={!!errors.userId}>
-                                <InputLabel>User ID</InputLabel>
-                                <Select
+        <GranularErrorBoundary
+            level="component"
+            componentName="Statistics"
+            isolate={true}
+        >
+            <form onSubmit={handleSubmit(onSubmitForm)}>
+                <Grid container spacing={2}>
+                    <Grid item xs={12} md={6}>
+                        <Controller
+                            name="userId"
+                            control={control}
+                            rules={{ required: 'User ID is required' }}
+                            render={({ field }) => (
+                                <FormControl fullWidth margin="normal" error={!!errors.userId}>
+                                    <InputLabel>User ID</InputLabel>
+                                    <Select
+                                        {...field}
+                                        label="User ID"
+                                        renderValue={(selected) => (
+                                            <Typography variant="body2">
+                                                {users?.find(user => user._id === selected)?.username}
+                                            </Typography>
+                                        )}
+                                    >
+                                        {users?.map((user) => (
+                                            <MenuItem key={user._id} value={user._id}>
+                                                {user.username}
+                                            </MenuItem>
+                                        ))}
+                                    </Select>
+                                    <FormHelperText>{errors.userId?.message}</FormHelperText>
+                                </FormControl>
+                            )}
+                        />
+                    </Grid>
+                    <Grid item xs={12} md={6}>
+                        <Controller
+                            name="name"
+                            control={control}
+                            rules={{ required: 'Name is required' }}
+                            render={({ field }) => (
+                                <TextField
                                     {...field}
-                                    label="User ID"
-                                    renderValue={(selected) => (
-                                        <Typography variant="body2">
-                                            {users?.find(user => user._id === selected)?.username}
-                                        </Typography>
-                                    )}
-                                >
-                                    {users?.map((user) => (
-                                        <MenuItem key={user._id} value={user._id}>
-                                            {user.username}
-                                        </MenuItem>
-                                    ))}
-                                </Select>
-                                <FormHelperText>{errors.userId?.message}</FormHelperText>
-                            </FormControl>
-                        )}
-                    />
-                </Grid>
-                <Grid item xs={12} md={6}>
-                    <Controller
-                        name="name"
-                        control={control}
-                        rules={{ required: 'Name is required' }}
-                        render={({ field }) => (
-                            <TextField
-                                {...field}
-                                label="Name"
-                                fullWidth
-                                margin="normal"
-                                error={!!errors.name}
-                                helperText={errors.name?.message}
-                            />
-                        )}
-                    />
-                </Grid>
-                <Grid item xs={12} md={6}>
-                    <Controller
-                        name="phone"
-                        control={control}
-                        rules={{
-                            required: 'Phone is required',
-                            pattern: {
-                                value: /^[0-9]{10}$/,
-                                message: "Invalid phone number"
-                            }
-                        }}
-                        render={({ field }) => (
-                            <TextField
-                                {...field}
-                                label="Phone Number"
-                                fullWidth
-                                margin="normal"
-                                error={!!errors.phone}
-                                helperText={errors.phone?.message}
-                            />
-                        )}
-                    />
-                </Grid>
-                <Grid item xs={12} md={6}>
-                    <Controller
-                        name="email"
-                        control={control}
-                        rules={{
-                            required: 'Email is required',
-                            pattern: {
-                                value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                                message: "Invalid email address"
-                            }
-                        }}
-                        render={({ field }) => (
-                            <TextField
-                                {...field}
-                                label="Email"
-                                fullWidth
-                                margin="normal"
-                                error={!!errors.email}
-                                helperText={errors.email?.message}
-                            />
-                        )}
-                    />
-                </Grid>
-                <Grid item xs={12} md={6}>
-                    <Controller
-                        name="phone"
-                        control={control}
-                        rules={{
-                            pattern: {
-                                value: /^[0-9]{10}$/,
-                                message: "Invalid phone number"
-                            }
-                        }}
-                        render={({ field }) => (
-                            <TextField
-                                {...field}
-                                label="Phone Number"
-                                fullWidth
-                                margin="normal"
-                                error={!!errors.phone}
-                                helperText={errors.phone?.message}
-                            />
-                        )}
-                    />
-                </Grid>
-                <Grid item xs={12} md={6}>
-                    <Controller
-                        name="organizationId"
-                        control={control}
-                        rules={{ required: 'Organization is required' }}
-                        render={({ field }) => (
-                            <FormControl fullWidth margin="normal" error={!!errors.organizationId}>
-                                <InputLabel>Organization</InputLabel>
-                                <Select
+                                    label="Name"
+                                    fullWidth
+                                    margin="normal"
+                                    error={!!errors.name}
+                                    helperText={errors.name?.message}
+                                />
+                            )}
+                        />
+                    </Grid>
+                    <Grid item xs={12} md={6}>
+                        <Controller
+                            name="phone"
+                            control={control}
+                            rules={{
+                                required: 'Phone is required',
+                                pattern: {
+                                    value: /^[0-9]{10}$/,
+                                    message: "Invalid phone number"
+                                }
+                            }}
+                            render={({ field }) => (
+                                <TextField
                                     {...field}
-                                    label="Organization"
-                                    renderValue={(selected) => (
-                                        <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
-                                            {selected.map((value) => (
-                                                <Typography key={value} component="span" variant="body2">
-                                                    {organizations?.find(org => org.id === value)?.name}
-                                                </Typography>
-                                            ))}
-                                        </Box>
-                                    )}
-                                >
-                                    {organizations?.map((org) => (
-                                        <MenuItem key={org.id} value={org.id}>
-                                            {org.name}
-                                        </MenuItem>
-                                    ))}
-                                </Select>
-                                <FormHelperText>{errors.organizationId?.message}</FormHelperText>
-                            </FormControl>
-                        )}
-                    />
-                </Grid>
-                {/* <Grid item xs={12} md={6}>
+                                    label="Phone Number"
+                                    fullWidth
+                                    margin="normal"
+                                    error={!!errors.phone}
+                                    helperText={errors.phone?.message}
+                                />
+                            )}
+                        />
+                    </Grid>
+                    <Grid item xs={12} md={6}>
+                        <Controller
+                            name="email"
+                            control={control}
+                            rules={{
+                                required: 'Email is required',
+                                pattern: {
+                                    value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                                    message: "Invalid email address"
+                                }
+                            }}
+                            render={({ field }) => (
+                                <TextField
+                                    {...field}
+                                    label="Email"
+                                    fullWidth
+                                    margin="normal"
+                                    error={!!errors.email}
+                                    helperText={errors.email?.message}
+                                />
+                            )}
+                        />
+                    </Grid>
+                    <Grid item xs={12} md={6}>
+                        <Controller
+                            name="phone"
+                            control={control}
+                            rules={{
+                                pattern: {
+                                    value: /^[0-9]{10}$/,
+                                    message: "Invalid phone number"
+                                }
+                            }}
+                            render={({ field }) => (
+                                <TextField
+                                    {...field}
+                                    label="Phone Number"
+                                    fullWidth
+                                    margin="normal"
+                                    error={!!errors.phone}
+                                    helperText={errors.phone?.message}
+                                />
+                            )}
+                        />
+                    </Grid>
+                    <Grid item xs={12} md={6}>
+                        <Controller
+                            name="organizationId"
+                            control={control}
+                            rules={{ required: 'Organization is required' }}
+                            render={({ field }) => (
+                                <FormControl fullWidth margin="normal" error={!!errors.organizationId}>
+                                    <InputLabel>Organization</InputLabel>
+                                    <Select
+                                        {...field}
+                                        label="Organization"
+                                        renderValue={(selected) => (
+                                            <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
+                                                {selected.map((value) => (
+                                                    <Typography key={value} component="span" variant="body2">
+                                                        {organizations?.find(org => org.id === value)?.name}
+                                                    </Typography>
+                                                ))}
+                                            </Box>
+                                        )}
+                                    >
+                                        {organizations?.map((org) => (
+                                            <MenuItem key={org.id} value={org.id}>
+                                                {org.name}
+                                            </MenuItem>
+                                        ))}
+                                    </Select>
+                                    <FormHelperText>{errors.organizationId?.message}</FormHelperText>
+                                </FormControl>
+                            )}
+                        />
+                    </Grid>
+                    {/* <Grid item xs={12} md={6}>
                     <Controller
                         name="departments"
                         control={control}
@@ -259,7 +265,7 @@ const TeacherForm: React.FC<TeacherFormProps> = ({ initialValues, onSubmit, onCl
                         )}
                     />
                 </Grid> */}
-                {/* <Grid item xs={12} md={6}>
+                    {/* <Grid item xs={12} md={6}>
                     <Controller
                         name="subjects"
                         control={control}
@@ -292,58 +298,58 @@ const TeacherForm: React.FC<TeacherFormProps> = ({ initialValues, onSubmit, onCl
                         )}
                     />
                 </Grid> */}
-                <Grid item xs={12} md={6}>
-                    <Controller
-                        name="qualifications"
-                        control={control}
-                        rules={{ required: 'Qualifications is required' }}
-                        render={({ field }) => (
-                            <TextField
-                                {...field}
-                                label="Qualifications"
-                                fullWidth
-                                margin="normal"
-                                error={!!errors.qualifications}
-                                helperText={errors.qualifications?.message}
-                            />
-                        )}
-                    />
-                </Grid>
-                <Grid item xs={12} md={6}>
-                    <Controller
-                        name="experience"
-                        control={control}
-                        rules={{ required: 'Experience is required' }}
-                        render={({ field }) => (
-                            <TextField
-                                {...field}
-                                label="Experience"
-                                fullWidth
-                                margin="normal"
-                                error={!!errors.experience}
-                                helperText={errors.experience?.message}
-                            />
-                        )}
-                    />
-                </Grid>
-                <Grid item xs={12} md={6}>
-                    <Controller
-                        name="officeHours"
-                        control={control}
-                        rules={{ required: 'Office Hours is required' }}
-                        render={({ field }) => (
-                            <TextField
-                                {...field}
-                                label="Office Hours"
-                                fullWidth
-                                margin="normal"
-                                error={!!errors.officeHours}
-                                helperText={errors.officeHours?.message}
-                            />
-                        )}
-                    />
-                </Grid>
-                {/* <Grid item xs={12} md={6}>
+                    <Grid item xs={12} md={6}>
+                        <Controller
+                            name="qualifications"
+                            control={control}
+                            rules={{ required: 'Qualifications is required' }}
+                            render={({ field }) => (
+                                <TextField
+                                    {...field}
+                                    label="Qualifications"
+                                    fullWidth
+                                    margin="normal"
+                                    error={!!errors.qualifications}
+                                    helperText={errors.qualifications?.message}
+                                />
+                            )}
+                        />
+                    </Grid>
+                    <Grid item xs={12} md={6}>
+                        <Controller
+                            name="experience"
+                            control={control}
+                            rules={{ required: 'Experience is required' }}
+                            render={({ field }) => (
+                                <TextField
+                                    {...field}
+                                    label="Experience"
+                                    fullWidth
+                                    margin="normal"
+                                    error={!!errors.experience}
+                                    helperText={errors.experience?.message}
+                                />
+                            )}
+                        />
+                    </Grid>
+                    <Grid item xs={12} md={6}>
+                        <Controller
+                            name="officeHours"
+                            control={control}
+                            rules={{ required: 'Office Hours is required' }}
+                            render={({ field }) => (
+                                <TextField
+                                    {...field}
+                                    label="Office Hours"
+                                    fullWidth
+                                    margin="normal"
+                                    error={!!errors.officeHours}
+                                    helperText={errors.officeHours?.message}
+                                />
+                            )}
+                        />
+                    </Grid>
+                    {/* <Grid item xs={12} md={6}>
                     <Controller
                         name="coursesTaught"
                         control={control}
@@ -376,7 +382,7 @@ const TeacherForm: React.FC<TeacherFormProps> = ({ initialValues, onSubmit, onCl
                         )}
                     />
                 </Grid> */}
-                {/* <Grid item xs={12} md={6}>
+                    {/* <Grid item xs={12} md={6}>
                     <Controller
                         name="performanceReviews"
                         control={control}
@@ -409,35 +415,36 @@ const TeacherForm: React.FC<TeacherFormProps> = ({ initialValues, onSubmit, onCl
                         )}
                     />
                 </Grid> */}
-                <Grid item xs={12} md={6}>
-                    <Controller
-                        name="specialResponsibilities"
-                        control={control}
-                        rules={{ required: 'Special Responsibilities is required' }}
-                        render={({ field }) => (
-                            <TextField
-                                {...field}
-                                label="Special Responsibilities"
-                                fullWidth
-                                margin="normal"
-                                error={!!errors.specialResponsibilities}
-                                helperText={errors.specialResponsibilities?.message}
-                            />
-                        )}
-                    />
+                    <Grid item xs={12} md={6}>
+                        <Controller
+                            name="specialResponsibilities"
+                            control={control}
+                            rules={{ required: 'Special Responsibilities is required' }}
+                            render={({ field }) => (
+                                <TextField
+                                    {...field}
+                                    label="Special Responsibilities"
+                                    fullWidth
+                                    margin="normal"
+                                    error={!!errors.specialResponsibilities}
+                                    helperText={errors.specialResponsibilities?.message}
+                                />
+                            )}
+                        />
+                    </Grid>
+                    <Grid item xs={12}>
+                        <Box sx={{ display: 'flex', justifyContent: 'flex-end', gap: 2, mt: 2 }}>
+                            <Button variant="outlined" color="primary" onClick={() => { reset(defaultValues); onClose(); }}>
+                                Cancel
+                            </Button>
+                            <Button type="submit" variant="contained" color="primary">
+                                Save
+                            </Button>
+                        </Box>
+                    </Grid>
                 </Grid>
-                <Grid item xs={12}>
-                    <Box sx={{ display: 'flex', justifyContent: 'flex-end', gap: 2, mt: 2 }}>
-                        <Button variant="outlined" color="primary" onClick={() => { reset(defaultValues); onClose(); }}>
-                            Cancel
-                        </Button>
-                        <Button type="submit" variant="contained" color="primary">
-                            Save
-                        </Button>
-                    </Box>
-                </Grid>
-            </Grid>
-        </form>
+            </form>
+        </GranularErrorBoundary>
     );
 };
 

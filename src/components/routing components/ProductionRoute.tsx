@@ -1,23 +1,14 @@
-import React from "react";
+import React, { Suspense } from "react";
 import { RouteConfig } from "@models/routes.types";
-import { Suspense } from "react";
 import DefaultLoadingComponent from "./DefaultLoadingComponent";
 import AccessDeniedComponent from "./AccessDeniedComponent";
-import { ErrorBoundary } from "./ErrorBoundary";
 import { useRouteData } from "@hooks/useRouteData";
 import { useRouteGuard } from "@hooks/useRouteGuard";
-
-import {
-    Box,
-    Typography,
-    Button,
-    Paper,
-    Backdrop,
-    SvgIcon,
-} from "@mui/material";
+import { Box, Typography, Button, Paper, Backdrop, SvgIcon } from "@mui/material";
 import ReportProblemOutlinedIcon from "@mui/icons-material/ReportProblemOutlined";
 import { useParams } from "react-router-dom";
 import DefaultErrorComponent from "./DefaultErrorComponent";
+import GranularErrorBoundary from "@components/Granularerrorboundary ";
 
 const BlurOverlay: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     return (
@@ -71,7 +62,8 @@ const BlurOverlay: React.FC<{ children: React.ReactNode }> = ({ children }) => {
                         Access Denied
                     </Typography>
                     <Typography variant="body2" color="textSecondary" gutterBottom>
-                        You don't have permission to access this page. Please contact your administrator if you believe this is an error.
+                        You don't have permission to access this page. Please contact your
+                        administrator if you believe this is an error.
                     </Typography>
                     <Button
                         variant="contained"
@@ -88,7 +80,6 @@ const BlurOverlay: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     );
 };
 
-
 export const ProductionRoute: React.FC<{
     route: RouteConfig;
     params?: any;
@@ -97,8 +88,8 @@ export const ProductionRoute: React.FC<{
     const urlParams = useParams();
 
     // Use passed params or fallback to URL params
-    // If params is passed and not empty, use it; otherwise use URL params
-    const routeParams = (params && Object.keys(params).length > 0) ? params : urlParams;
+    const routeParams =
+        params && Object.keys(params).length > 0 ? params : urlParams;
     const Layout = route.layout;
     const { canActivateRoute } = useRouteGuard();
     const { data, loading, error, refetch } = useRouteData(route, routeParams);
@@ -106,49 +97,166 @@ export const ProductionRoute: React.FC<{
     // Check if user can activate this route
     const canActivate = canActivateRoute(route);
 
-    // Handle loading state
-    if (loading) {
-        const LoadingComponent = route.loadingComponent || DefaultLoadingComponent;
-        return <LoadingComponent />;
-    }
+    // PAGE LEVEL ERROR BOUNDARY - Wraps the entire route
+    return (
+        <GranularErrorBoundary
+            level="page"
+            componentName={`Route: ${route.id}`}
+            onError={(error, errorInfo) => {
+                console.error(`Page-level error in route ${route.id}:`, error);
+                // Send to analytics/monitoring
+            }}
+            resetKeys={[route.id, routeParams]}
+        >
+            {/* Handle loading state */}
+            {loading && (
+                <GranularErrorBoundary
+                    level="component"
+                    componentName="LoadingComponent"
+                    isolate
+                >
+                    {route.loadingComponent ? (
+                        <route.loadingComponent />
+                    ) : (
+                        <DefaultLoadingComponent />
+                    )}
+                </GranularErrorBoundary>
+            )}
 
-    // Handle error state
-    if (error) {
-        if (error.response.data.statusCode === 403) {
-            return <BlurOverlay>
-                {/* <AccessDeniedComponent route={route} /> */}
-            </BlurOverlay>
-        }
-        return (
-            <ErrorBoundary route={route}>
-                <DefaultErrorComponent error={error} retry={refetch} errorId={new Date().getTime().toString()} />
-            </ErrorBoundary>
-        );
-    }
+            {/* Handle error state from data fetching */}
+            {!loading && error && (
+                <GranularErrorBoundary
+                    level="section"
+                    componentName="ErrorComponent"
+                    isolate
+                >
+                    {error.response?.data?.statusCode === 403 ? (
+                        <BlurOverlay>
+                            {/* Placeholder for blurred content */}
+                        </BlurOverlay>
+                    ) : (
+                        <DefaultErrorComponent
+                            error={error}
+                            retry={refetch}
+                            errorId={new Date().getTime().toString()}
+                        />
+                    )}
+                </GranularErrorBoundary>
+            )}
 
-    // Render main component
-    const mainComponent = (
-        <ErrorBoundary route={route}>
-            <Suspense fallback={route.loadingComponent || <DefaultLoadingComponent />}>
+            {/* Render main component when no loading or error */}
+            {!loading && !error && (
+                <>
+                    {/* Handle access denied */}
+                    {!canActivate ? (
+                        useBlurOverlay ? (
+                            <BlurOverlay>
+                                {renderMainComponent(
+                                    route,
+                                    Layout,
+                                    params,
+                                    data,
+                                    canActivate,
+                                    routeParams
+                                )}
+                            </BlurOverlay>
+                        ) : (
+                            <GranularErrorBoundary
+                                level="component"
+                                componentName="AccessDeniedComponent"
+                                isolate
+                            >
+                                <AccessDeniedComponent route={route} />
+                            </GranularErrorBoundary>
+                        )
+                    ) : (
+                        renderMainComponent(
+                            route,
+                            Layout,
+                            params,
+                            data,
+                            canActivate,
+                            routeParams
+                        )
+                    )}
+                </>
+            )}
+        </GranularErrorBoundary>
+    );
+};
+
+/**
+ * Renders the main component with proper error boundary isolation
+ */
+const renderMainComponent = (
+    route: RouteConfig,
+    Layout: any,
+    params: any,
+    data: any,
+    canActivate: boolean,
+    routeParams: any
+) => {
+    // SECTION LEVEL ERROR BOUNDARY - Wraps the layout and component
+    return (
+        <GranularErrorBoundary
+            level="section"
+            componentName={`Component: ${route.id}`}
+            isolate
+            onError={(error, errorInfo) => {
+                console.error(`Component error in ${route.id}:`, error);
+            }}
+        >
+            <Suspense
+                fallback={
+                    <GranularErrorBoundary
+                        level="component"
+                        componentName="SuspenseFallback"
+                        isolate
+                    >
+                        {route.loadingComponent ? (
+                            <route.loadingComponent />
+                        ) : (
+                            <DefaultLoadingComponent />
+                        )}
+                    </GranularErrorBoundary>
+                }
+            >
                 {Layout ? (
-                    <Layout>
-                        <route.component {...params} routeData={data} route={route} canActivate={canActivate} />
-                    </Layout>
+                    <GranularErrorBoundary
+                        level="component"
+                        componentName="Layout"
+                        isolate
+                    >
+                        <Layout>
+                            <GranularErrorBoundary
+                                level="component"
+                                componentName={route.id}
+                                isolate
+                            >
+                                <route.component
+                                    {...params}
+                                    routeData={data}
+                                    route={route}
+                                    canActivate={canActivate}
+                                />
+                            </GranularErrorBoundary>
+                        </Layout>
+                    </GranularErrorBoundary>
                 ) : (
-                    <route.component {...params} routeData={data} route={route} canActivate={canActivate} />
+                    <GranularErrorBoundary
+                        level="component"
+                        componentName={route.id}
+                        isolate
+                    >
+                        <route.component
+                            {...params}
+                            routeData={data}
+                            route={route}
+                            canActivate={canActivate}
+                        />
+                    </GranularErrorBoundary>
                 )}
             </Suspense>
-        </ErrorBoundary>
+        </GranularErrorBoundary>
     );
-
-    // Handle access denied
-    if (!canActivate) {
-        if (useBlurOverlay) {
-            return <BlurOverlay>{mainComponent}</BlurOverlay>;
-        } else {
-            return <AccessDeniedComponent route={route} />;
-        }
-    }
-
-    return mainComponent;
 };

@@ -46,7 +46,7 @@ function CourseDetailsPage() {
                 <Typography variant="h3" component="h1" gutterBottom>
                     {course.name}
                 </Typography>
-                <Chip label={course.code} color="primary" size="large" />
+                <Chip label={course.code} color="primary" size="medium" />
             </Box>
 
             {/* Course Info Card */}
@@ -178,3 +178,18 @@ function CourseDetailsPage() {
                             <Typography variant="body2">{course.teacherIds.length}</Typography>
                         </Grid>
                         <Grid item xs={12} sm={4}>
+                            <Typography variant="subtitle2" color="text.secondary">Students:</Typography>
+                            <Typography variant="body2">{course.studentIds.length}</Typography>
+                        </Grid>
+                        <Grid item xs={12} sm={4}>
+                            <Typography variant="subtitle2" color="text.secondary">Assignments:</Typography>
+                            <Typography variant="body2">{course.assignmentIds.length}</Typography>
+                        </Grid>
+                    </Grid>
+                </CardContent>
+            </Card>
+        </Box>
+    );
+}
+
+export default CourseDetailsPage;

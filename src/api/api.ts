@@ -62,7 +62,7 @@ export const teacherApi = {
 
 export const studentApi = {
     getStudents: (queryParams: string, signal?: AbortSignal) => axiosInstance.get<StudentApiResponse<Student[]>>(`/students?${queryParams}`, { signal: abortManager.getSignal('getStudents') }),
-    getStudentById: (id: string, signal?: AbortSignal) => axiosInstance.get<StudentApiResponse<Student>>(`/students/${id}`, { signal: abortManager.getSignal(`getStudentById-${id}`)  }),
+    getStudentById: (id: string, signal?: AbortSignal) => axiosInstance.get<StudentApiResponse<Student>>(`/students/${id}`, { signal: abortManager.getSignal(`getStudentById-${id}`) }),
     createStudent: (student: Student, signal?: AbortSignal) => axiosInstance.post<StudentApiResponse<Student>>('/students', student, { signal: abortManager.getSignal('createStudent') }),
     updateStudent: (student: Student, signal?: AbortSignal) => axiosInstance.put<StudentApiResponse<Student>>('/students', student, { signal: abortManager.getSignal(`updateStudent-${student._id}`) }),
     deleteStudent: (id: string, signal?: AbortSignal) => axiosInstance.delete<StudentApiResponse<Student>>(`/students/${id}`, { signal: abortManager.getSignal(`deleteStudent-${id}`) }),
@@ -131,7 +131,7 @@ export const examApi = {
 }
 
 export const attendanceApi = {
-    getAttendances: (params: string, signal?: AbortSignal) => axiosInstance.get<AttendanceApiResponse<Attendance[]>>(`/attendances?${params}`, { signal: abortManager.getSignal('getAttendances')  }),
+    getAttendances: (params: string, signal?: AbortSignal) => axiosInstance.get<AttendanceApiResponse<Attendance[]>>(`/attendances?${params}`, { signal: abortManager.getSignal('getAttendances') }),
     getAttendanceById: (id: string, signal?: AbortSignal) => axiosInstance.get<AttendanceApiResponse<Attendance>>(`/attendances/${id}`, { signal: abortManager.getSignal(`getAttendanceById-${id}`) }),
     createAttendance: (attendance: Attendance, signal?: AbortSignal) => axiosInstance.post<AttendanceApiResponse<Attendance>>('/attendances', attendance, { signal: abortManager.getSignal('createAttendance') }),
     updateAttendance: (attendance: Omit<Attendance, 'createdAt' | 'updatedAt'>, _id: string, signal?: AbortSignal) => axiosInstance.put<AttendanceApiResponse<Attendance>>(`/attendance/${_id}`, attendance, { signal: abortManager.getSignal(`updateAttendance-${_id}`) }),
@@ -150,4 +150,8 @@ export const attendanceApi = {
         signal: abortManager.getSignal('deleteBulkAttendances'),
         data
     }),
+}
+
+export const orgAdminApi = {
+    getDashboardData: () => axiosInstance.get(`org-admin/dashboard`)
 }
