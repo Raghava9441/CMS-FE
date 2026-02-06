@@ -2,11 +2,6 @@ import { lazy } from 'react';
 import { PERMISSIONS, ROLES } from '../constants/roles';
 import { RouteConfig } from '@models/routes.types';
 import appRoutes from '@routes/routePaths';
-import DefaultLoadingComponent from '@components/routing components/DefaultLoadingComponent';
-const Users = lazy(() => import('../pages/Users.page'));
-const Teachers = lazy(() => import('../pages/Teacher.page'));
-const Login = lazy(() => import('../pages/Login.page'));
-const NotFound = lazy(() => import('../pages/_404'));
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import CorporateFareIcon from '@mui/icons-material/CorporateFare';
 import CastForEducationIcon from '@mui/icons-material/CastForEducation';
@@ -20,6 +15,11 @@ import Diversity2Icon from '@mui/icons-material/Diversity2';
 import AssignmentIcon from '@mui/icons-material/Assignment';
 import MenuBookIcon from '@mui/icons-material/MenuBook';
 import { courseApi, teacherApi } from '@api/api';
+const Users = lazy(() => import('../pages/Users.page'));
+const Teachers = lazy(() => import('../pages/Teacher.page'));
+const Login = lazy(() => import('../pages/Login.page'));
+const NotFound = lazy(() => import('../pages/_404'));
+
 export const routeConfig: RouteConfig[] = [
     // Auth routes
     {

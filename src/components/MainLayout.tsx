@@ -392,7 +392,7 @@ export default function MainLayout() {
         // return () => {
         //     socketManager.disconnect();
         // }
-    }, [isAuthenticated, dispatch, navigate]);
+    }, [isAuthenticated, dispatch]);
 
     const handleDrawerCollapse = useCallback(() => {
         setDrawerCollapsed((prev) => !prev);
@@ -568,15 +568,24 @@ export default function MainLayout() {
                 transformOrigin={{ horizontal: 'right', vertical: 'top' }}
                 anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
             >
-                <MenuItem onClick={handleMenuClose}>
+                <MenuItem onClick={() => {
+                    handleMenuClose();
+                    navigate(appRoutes.PROFILE);
+                }}>
                     <PersonIcon fontSize="small" color="primary" />
                     Profile
                 </MenuItem>
-                <MenuItem onClick={handleMenuClose}>
+                <MenuItem onClick={() => {
+                    handleMenuClose();
+                    navigate(appRoutes.SETTINGS);
+                }}>
                     <SettingsIcon fontSize="small" color="primary" />
                     Settings
                 </MenuItem>
-                <MenuItem onClick={handleMenuClose}>
+                <MenuItem onClick={() => {
+                    handleMenuClose();
+                    navigate(appRoutes.FEATURE_FLAGS);
+                }}>
                     <FlagIcon fontSize="small" color="primary" />
                     Feature Control
                 </MenuItem>

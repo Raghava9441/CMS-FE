@@ -2,8 +2,6 @@ import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { RootState } from '../redux/store';
-import { findRouteByPath } from '@utils/routes.utills';
-import { routeConfig } from '../config/routes.config';
 import { RouteConfig } from '@models/routes.types';
 import appRoutes from '@routes/routePaths';
 import { Permission } from '@models/Permission.types';
@@ -21,6 +19,7 @@ export const useRouteGuard = () => {
         if (!permission) return false;
 
         return permission[permissionType];
+        //    return  true
     };
 
     const checkPermissions = (route: RouteConfig): boolean => {
@@ -37,7 +36,7 @@ export const useRouteGuard = () => {
         }
 
         // Check role-based permissions
-        if (route.permission?.roles && !route.permission.roles.includes(user?.role)) {
+        if (route.permission?.roles && !route.permission.roles.includes(user?.role as string)) {
             console.warn(`Access denied: User role '${user?.role}' not in allowed roles`, route.permission.roles);
             return false;
         }

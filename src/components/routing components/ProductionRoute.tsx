@@ -87,14 +87,12 @@ export const ProductionRoute: React.FC<{
 }> = ({ route, params = {}, useBlurOverlay = false }) => {
     const urlParams = useParams();
 
-    // Use passed params or fallback to URL params
     const routeParams =
         params && Object.keys(params).length > 0 ? params : urlParams;
     const Layout = route.layout;
     const { canActivateRoute } = useRouteGuard();
     const { data, loading, error, refetch } = useRouteData(route, routeParams);
 
-    // Check if user can activate this route
     const canActivate = canActivateRoute(route);
 
     // PAGE LEVEL ERROR BOUNDARY - Wraps the entire route
@@ -123,7 +121,6 @@ export const ProductionRoute: React.FC<{
                 </GranularErrorBoundary>
             )}
 
-            {/* Handle error state from data fetching */}
             {!loading && error && (
                 <GranularErrorBoundary
                     level="section"
@@ -144,10 +141,8 @@ export const ProductionRoute: React.FC<{
                 </GranularErrorBoundary>
             )}
 
-            {/* Render main component when no loading or error */}
             {!loading && !error && (
                 <>
-                    {/* Handle access denied */}
                     {!canActivate ? (
                         useBlurOverlay ? (
                             <BlurOverlay>
@@ -185,9 +180,7 @@ export const ProductionRoute: React.FC<{
     );
 };
 
-/**
- * Renders the main component with proper error boundary isolation
- */
+
 const renderMainComponent = (
     route: RouteConfig,
     Layout: any,
@@ -196,7 +189,6 @@ const renderMainComponent = (
     canActivate: boolean,
     routeParams: any
 ) => {
-    // SECTION LEVEL ERROR BOUNDARY - Wraps the layout and component
     return (
         <GranularErrorBoundary
             level="section"

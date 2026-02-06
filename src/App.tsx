@@ -1,70 +1,24 @@
-import './App.css'
 import './styles/app.scss'
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import MainLayout from './components/MainLayout';
-import { routesWithAuth, routesWithoutAuth } from './routes';
-import _404 from './pages/_404';
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "./redux/store";
-import { Suspense, useEffect, useState } from "react";
-import { Alert, CircularProgress, Slide, Snackbar, useMediaQuery, useTheme } from "@mui/material";
+import { useEffect, useState } from "react";
+import { Alert, Snackbar, } from "@mui/material";
 import { HideSnackbar } from './redux/slices/authSlice';
-import LoadingScreen from '@components/LoadingScreen';
 import NewAppRouter from './NewAppRouter';
-const AppRouter = () => {
-    const user = useSelector((state: RootState) => state.auth.user);
-    return (
-        <Router>
-            <Suspense fallback={<LoadingScreen fromChat={false} />}>
-                <Routes>
-                    <Route path="/" element={<MainLayout />}>
-                        {routesWithAuth(user?.role).map((route, index) => (
-                            <Route key={index} path={route.path} element={<route.component />} />
-                        ))}
-                        <Route path="*" element={<_404 />} />
-                    </Route>
-
-                    {routesWithoutAuth.map((route, index) => (
-                        <Route key={index} path={route.path} element={<route.component />} />
-                    ))}
-                </Routes>
-            </Suspense>
-        </Router>
-    );
-};
-
-const vertical = "top";
-const horizontal = "right";
-
-
-function SlideTransition(props) {
-    const theme = useTheme();
-    const isSmallScreen = useMediaQuery(theme.breakpoints.down("md"));
-
-    return <Slide {...props} direction={isSmallScreen ? "down" : "left"} />;
-}
-
 
 function App() {
-    const theme = useTheme();
-
-    const isSmallScreen = useMediaQuery(theme.breakpoints.down("md"));
-
     const { open, message, severity } = useSelector(
         (state: RootState) => state.auth.snackbar
     );
 
     const dispatch = useDispatch();
 
-    // Local state to manage Snackbar visibility
     const [localOpen, setLocalOpen] = useState(false);
 
-    // Effect to synchronize localOpen with the global open state
     useEffect(() => {
         setLocalOpen(open);
     }, [open]);
 
-    // Handler for Snackbar close
     const handleCloseSnackbar = () => {
         setLocalOpen(false);
         setTimeout(() => {
@@ -74,23 +28,22 @@ function App() {
 
     return (
         <>
-            {/* <AppRouter /> */}
-            <NewAppRouter/>
+            <NewAppRouter />
             <Snackbar
-                anchorOrigin={{
-                    vertical: "top",
-                    horizontal: isSmallScreen ? "center" : "right",
-                }}
-                open={localOpen}
-                autoHideDuration={5000}
-                key={vertical + horizontal}
+                open={open}
+                autoHideDuration={4000}
                 onClose={handleCloseSnackbar}
-                TransitionComponent={SlideTransition}
+                anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
             >
                 <Alert
                     onClose={handleCloseSnackbar}
                     severity={severity}
-                    sx={{ width: "100%" }}
+                    variant="filled"
+                    sx={{
+                        borderRadius: 2,
+                        boxShadow: 3,
+                        alignItems: 'center'
+                    }}
                 >
                     {message}
                 </Alert>

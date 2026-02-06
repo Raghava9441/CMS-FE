@@ -1,8 +1,6 @@
-import React from 'react'
 
-type Props = {}
 
-function ProfileSettings({ }: Props) {
+function ProfileSettings() {
     return (
         <div>ProfileSettings</div>
     )
