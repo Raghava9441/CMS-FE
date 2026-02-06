@@ -1,2 +1,0 @@
-import{E as s,C as e}from"./index-B_cqZJjc.js";function a(t){return e("MuiListItemIcon",t)}const n=s("MuiListItemIcon",["root","alignItemsFlexStart"]);function l(t){return e("MuiListItemText",t)}const o=s("MuiListItemText",["root","multiline","dense","inset","primary","secondary"]);export{l as a,n as b,a as g,o as l};
-//# sourceMappingURL=listItemTextClasses-CDVTXtLO.js.map
