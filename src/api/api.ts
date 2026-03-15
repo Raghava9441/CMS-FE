@@ -20,17 +20,10 @@ import {
 } from "../types/class.modals";
 
 export const AsyncorganizationApi = {
-
     getOrganizations: (params: any, signal?: AbortSignal) => axiosInstance.get<ApiResponse<Organization[]>>(`/organizations?${params}`, { signal: abortManager.getSignal('getOrganizations') }),
-
     getOrganizationById: (id: string, signal?: AbortSignal) => axiosInstance.get<ApiResponse<Organization>>(`/organizations/${id}`, { signal: abortManager.getSignal(`getOrganizationById-${id}`) }),
-
-
     createOrganization: (organization: Omit<Organization, 'createdAt' | 'updatedAt'>, signal?: AbortSignal) => axiosInstance.post<ApiResponse<Organization>>(`/organizations`, organization, { signal: abortManager.getSignal('createOrganization') }),
-
-
     updateOrganization: (organization: Omit<Organization, 'createdAt' | 'updatedAt'>, _id: string, signal?: AbortSignal) => axiosInstance.put<ApiResponse<Organization>>(`/organizations/${_id}`, organization, { signal: abortManager.getSignal('updateOrganization') }),
-
     deleteOrganization: (id: string, signal?: AbortSignal) => axiosInstance.delete<ApiResponse<Organization>>(`/organizations/${id}`, { signal: abortManager.getSignal('deleteOrganization') })
 }
 
@@ -58,22 +51,7 @@ export const teacherApi = {
     createTeacher: (teacher: Teacher, signal?: AbortSignal) => axiosInstance.post<TeacherApiResponse<Teacher>>('/teachers', teacher, { signal }),
     updateTeacher: (teacher: Omit<Teacher, 'createdAt' | 'updatedAt'>, _id: string, signal?: AbortSignal) => axiosInstance.put<TeacherApiResponse<Teacher>>(`/teachers/${_id}`, teacher, { signal }),
     deleteTeacher: (id: string, signal?: AbortSignal) => axiosInstance.delete<TeacherApiResponse<Teacher>>(`/teachers/${id}`, { signal }),
-}
-
-export const studentApi = {
-    getStudents: (queryParams: string, signal?: AbortSignal) => axiosInstance.get<StudentApiResponse<Student[]>>(`/students?${queryParams}`, { signal: abortManager.getSignal('getStudents') }),
-    getStudentById: (id: string, signal?: AbortSignal) => axiosInstance.get<StudentApiResponse<Student>>(`/students/${id}`, { signal: abortManager.getSignal(`getStudentById-${id}`) }),
-    createStudent: (student: Student, signal?: AbortSignal) => axiosInstance.post<StudentApiResponse<Student>>('/students', student, { signal: abortManager.getSignal('createStudent') }),
-    updateStudent: (student: Student, signal?: AbortSignal) => axiosInstance.put<StudentApiResponse<Student>>('/students', student, { signal: abortManager.getSignal(`updateStudent-${student._id}`) }),
-    deleteStudent: (id: string, signal?: AbortSignal) => axiosInstance.delete<StudentApiResponse<Student>>(`/students/${id}`, { signal: abortManager.getSignal(`deleteStudent-${id}`) }),
-}
-
-export const parentApi = {
-    getParents: (queryParams: string, signal?: AbortSignal) => axiosInstance.get<ParentApiResponse<Parent[]>>(`/parents?${queryParams}`, { signal }),
-    getParentById: (id: string, signal?: AbortSignal) => axiosInstance.get<ParentApiResponse<Parent>>(`/parents/${id}`, { signal }),
-    createParent: (parent: Parent, signal?: AbortSignal) => axiosInstance.post<ParentApiResponse<Parent>>('/parents', parent, { signal }),
-    updateParent: (parent: Parent, signal?: AbortSignal) => axiosInstance.put<ParentApiResponse<Parent>>('/parents', parent, { signal }),
-    deleteParent: (id: string, signal?: AbortSignal) => axiosInstance.delete<ParentApiResponse<Parent>>(`/parents/${id}`, { signal }),
+    getDashboardData: () => axiosInstance.get(`teacher/dashboard`)
 }
 
 export const courseApi = {
@@ -83,6 +61,7 @@ export const courseApi = {
     updateCourse: (course: Course, signal?: AbortSignal) => axiosInstance.put<CourseApiResponse<Course>>('/courses', course, { signal }),
     deleteCourse: (id: string, signal?: AbortSignal) => axiosInstance.delete<CourseApiResponse<Course>>(`/courses/${id}`, { signal }),
 }
+
 
 export const MessageApi = {
     sendMessage: (payload, signal?: AbortSignal) => axiosInstance.post('/message/send-message', payload, { signal }),
@@ -155,6 +134,26 @@ export const attendanceApi = {
 export const orgAdminApi = {
     getDashboardData: () => axiosInstance.get(`org-admin/dashboard`)
 }
+
+export const studentApi = {
+    getStudents: (queryParams: string, signal?: AbortSignal) => axiosInstance.get<StudentApiResponse<Student[]>>(`/students?${queryParams}`, { signal: abortManager.getSignal('getStudents') }),
+    getStudentById: (id: string, signal?: AbortSignal) => axiosInstance.get<StudentApiResponse<Student>>(`/students/${id}`, { signal: abortManager.getSignal(`getStudentById-${id}`) }),
+    createStudent: (student: Student, signal?: AbortSignal) => axiosInstance.post<StudentApiResponse<Student>>('/students', student, { signal: abortManager.getSignal('createStudent') }),
+    updateStudent: (student: Student, signal?: AbortSignal) => axiosInstance.put<StudentApiResponse<Student>>('/students', student, { signal: abortManager.getSignal(`updateStudent-${student._id}`) }),
+    deleteStudent: (id: string, signal?: AbortSignal) => axiosInstance.delete<StudentApiResponse<Student>>(`/students/${id}`, { signal: abortManager.getSignal(`deleteStudent-${id}`) }),
+    getDashboardData: () => axiosInstance.get(`student/dashboard`)
+}
+
+export const parentApi = {
+    getParents: (queryParams: string, signal?: AbortSignal) => axiosInstance.get<ParentApiResponse<Parent[]>>(`/parents?${queryParams}`, { signal }),
+    getParentById: (id: string, signal?: AbortSignal) => axiosInstance.get<ParentApiResponse<Parent>>(`/parents/${id}`, { signal }),
+    createParent: (parent: Parent, signal?: AbortSignal) => axiosInstance.post<ParentApiResponse<Parent>>('/parents', parent, { signal }),
+    updateParent: (parent: Parent, signal?: AbortSignal) => axiosInstance.put<ParentApiResponse<Parent>>('/parents', parent, { signal }),
+    deleteParent: (id: string, signal?: AbortSignal) => axiosInstance.delete<ParentApiResponse<Parent>>(`/parents/${id}`, { signal }),
+    getDashboardData: () => axiosInstance.get(`parent/dashboard`)
+}
+
+
 
 export const classApi = {
     getClasses: (params: string, signal?: AbortSignal) => axiosInstance.get<ClassesApiResponse<ClassesApiResponseData>>(`/classes?${params}`, { signal: abortManager.getSignal('getClasses') }),

@@ -1,11 +1,14 @@
 import React, { createContext, useReducer, useEffect, useCallback } from 'react';
 
 // Define the types
+import { ROLES } from '../constants/roles';
+
 interface User {
     id: string;
     name: string;
     email: string;
     isAdmin: boolean;
+    role: string;
 }
 
 interface AuthState {
@@ -78,12 +81,13 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => 
 
     // Login action
     const login = async (email: string, password: string) => {
-        // Simulate login API call
+        // Simulate login API call - you would normally get this from your backend
         const user: User = {
             id: '1',
             name: 'John Doe',
             email,
             isAdmin: true, // Set based on your user role
+            role: ROLES.ORGADMIN, // Default role for testing
         };
 
         localStorage.setItem('user', JSON.stringify(user));
