@@ -1,0 +1,1 @@
+import{r as t}from"./index-AXdoo_BM.js";function c(e,a){const[s,r]=t.useState(e),u=t.useCallback(o=>{r(i=>({...i,...o}))},[]);return t.useEffect(()=>{a&&a(s)},[s,a]),{params:s,setParams:r,handleParamsChange:u}}export{c as u};
