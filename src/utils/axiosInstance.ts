@@ -70,7 +70,8 @@ axiosInstance.interceptors.response.use(
                     throw new Error('No refresh token available');
                 }
 
-                const response = await userApi.refreshAccessToken(refreshToken);
+                // const response = await userApi.refreshAccessToken(refreshToken);
+                const response = await axiosInstance.post('/refresh-token');
                 refreshingTokenInProgress = false;
 
                 if (!(response instanceof ApiError)) {
